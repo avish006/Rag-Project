@@ -1,7 +1,7 @@
 # 🚀 RAG-Based Document Q&A System  
 
 ## 📌 Overview  
-This project is an **AI-powered Retrieval-Augmented Generation (RAG) system** that allows users to upload documents and ask questions. The system retrieves relevant information from the document and generates **context-aware responses** using an **LLM (DeepSeek R1 via OpenRouter API).**  
+This project is an **AI-powered Retrieval-Augmented Generation (RAG) system** that allows users to upload documents and ask questions. The system retrieves relevant information from the document and generates **context-aware responses** using an **LLM (DeepSeek R1 via OpenRouter API).**
 
 ## 🔍 Features  
 ✅ Upload documents (PDFs, text files, etc.)  
@@ -51,7 +51,6 @@ Feel free to fork the repo, submit PRs, or report issues. Let's improve it toget
 ✅ Implement FastAPI/Flask for a REST API
 ✅ Build a Streamlit/React UI for an interactive frontend
 ✅ Optimize embeddings & chunking for better retrieval
-✅ Explore multi-document processing
 
 📌 License
 This project is open-source under the Apache 2.0 License.
