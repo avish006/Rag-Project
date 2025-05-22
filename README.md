@@ -53,8 +53,11 @@ Feel free to fork the repo, submit PRs, or report issues. Let's improve it toget
 ✅ Optimize embeddings & chunking for better retrieval
 
 ✅ Deployment
+
 A full scale deployment of all the feature was not possible cause of resource constraints (512MB of ram resource cannot run all the different features).
+
 Here is a basic version of my document upload RAG system without real-time viewing of the document and saving/editing responses to notes feature: [Link](https://app-rag-project.streamlit.app/).
+
 You can see the video I have attached with explaination which contains the use of my full scale project
 [Video](https://www.linkedin.com/feed/update/urn:li:activity:7319416932598738944/).
 
