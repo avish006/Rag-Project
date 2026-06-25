@@ -1,4 +1,4 @@
-# DocuMind — AI-Powered PDF Chat Assistant
+# DocuMind AI-Powered PDF Chat Assistant
 
 <div align="center">
 
@@ -30,7 +30,7 @@ No tab-switching. No copy-pasting. Just open a document and ask.
 |---|---|
 | 📄 **PDF Viewer** | Embedded side-by-side PDF reader with drag-and-drop upload |
 | 🤖 **RAG Chat** | Hybrid BM25 + vector search feeds precise context to the LLM |
-| 🧮 **Math Rendering** | Full KaTeX support — renders `$inline$` and `$$block$$` LaTeX |
+| 🧮 **Math Rendering** | Full KaTeX support  renders `$inline$` and `$$block$$` LaTeX |
 | 📝 **Notes** | Save, edit, download any Q&A pair as a personal note |
 | 🌙 **Dark / Light Mode** | Persisted theme toggle |
 | ⚡ **PDF Caching** | First upload processes and caches; subsequent opens are instant |
@@ -85,7 +85,7 @@ flowchart TD
     Serve --> PDF
 ```
 
-### Data Flow — Query Time
+### Data Flow Query Time
 
 ```mermaid
 sequenceDiagram
