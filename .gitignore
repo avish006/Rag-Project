@@ -1,0 +1,48 @@
+# ── Python ──────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+*.egg
+
+# ── Virtual Environment ──────────────────────────────────────────────────────
+.venv/
+venv/
+env/
+ENV/
+
+# ── Environment Variables (NEVER commit secrets) ─────────────────────────────
+.env
+.env.*
+!.env.example
+
+# ── Runtime / Generated Data ─────────────────────────────────────────────────
+uploads/
+cache/
+figures/
+model_cache/
+instance/
+nltk_temp/
+
+# ── Large / Auto-generated Files ─────────────────────────────────────────────
+*.pkl
+*.faiss
+combicode.txt
+
+# ── Logs ────────────────────────────────────────────────────────────────────
+*.log
+logs/
+
+# ── OS ───────────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── IDE ───────────────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace

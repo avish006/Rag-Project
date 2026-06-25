@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DocuMind — AI Document Assistant</title>
+    <meta name="description" content="Read PDF documents and ask questions in real-time using AI. DocuMind brings RAG-powered intelligence directly alongside your document.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <!-- KaTeX for math rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+    <!-- Top Header Bar -->
+    <header class="app-header">
+        <div class="header-brand">
+            <div class="brand-icon">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 12h6M9 16h6M9 8h3M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                    <circle cx="18" cy="18" r="5" fill="var(--accent)" stroke="var(--bg-primary)" stroke-width="1.5"/>
+                    <path d="M18 16v2l1 1" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
+                </svg>
+            </div>
+            <div class="brand-text">
+                <span class="brand-name">DocuMind</span>
+                <span class="brand-tagline">AI Document Assistant</span>
+            </div>
+        </div>
+        <div class="header-status" id="headerStatus">
+            <span class="status-dot idle"></span>
+            <span class="status-text">No document loaded</span>
+        </div>
+        <div class="header-actions">
+            <button class="icon-btn" id="themeToggle" title="Toggle Theme" aria-label="Toggle Theme">
+                <svg id="themeIconSun" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.8"/><path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                <svg id="themeIconMoon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Layout -->
+    <main class="app-container">
+
+        <!-- Left Pane: PDF Viewer -->
+        <div class="left-pane" id="leftPane">
+            <!-- Upload Overlay (shown when no PDF loaded) -->
+            <div class="upload-overlay" id="uploadOverlay">
+                <div class="upload-drop-zone" id="dropZone">
+                    <div class="drop-icon">
+                        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="8" y="4" width="36" height="48" rx="4" stroke="var(--accent)" stroke-width="2.5" fill="none"/>
+                            <rect x="16" y="4" width="36" height="48" rx="4" stroke="var(--accent-secondary)" stroke-width="2.5" fill="none" opacity="0.5"/>
+                            <path d="M20 20h16M20 28h16M20 36h10" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/>
+                            <circle cx="48" cy="48" r="12" fill="var(--accent)" />
+                            <path d="M48 44v8M44 48l4-4 4 4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h2 class="drop-title">Drop your PDF here</h2>
+                    <p class="drop-subtitle">or click the button below to browse</p>
+                    <label class="upload-label-btn" for="pdfUploadOverlay">
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        Choose PDF
+                    </label>
+                    <input type="file" id="pdfUploadOverlay" accept=".pdf" style="display:none">
+                    <p class="drop-hint">Supports PDF files up to 50 MB</p>
+                </div>
+            </div>
+
+            <!-- PDF Viewer (shown after upload) -->
+            <div class="pdf-viewer-wrapper" id="pdfViewerWrapper" style="display:none;">
+                <div class="pdf-toolbar">
+                    <div class="pdf-doc-info">
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" stroke-width="1.8"/><polyline points="14 2 14 8 20 8" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+                        <span id="pdfDocName" class="pdf-name">document.pdf</span>
+                    </div>
+                    <label class="pdf-toolbar-btn" for="pdfUploadMain" title="Load new PDF">
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                        New PDF
+                    </label>
+                    <input type="file" id="pdfUploadMain" accept=".pdf" style="display:none">
+                </div>
+                <iframe id="pdfViewer" src="" title="PDF Viewer"></iframe>
+            </div>
+        </div>
+
+        <!-- Resizer -->
+        <div class="resizer" id="dragResizer">
+            <div class="resizer-handle">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+
+        <!-- Right Pane: Chat & Notes -->
+        <div class="right-pane" id="rightPane">
+
+            <!-- Tab Navigation -->
+            <div class="tab-bar">
+                <button class="tab-btn active" data-tab="chat" id="tabChat" aria-selected="true">
+                    <svg viewBox="0 0 24 24" fill="none"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+                    Chat
+                </button>
+                <button class="tab-btn" data-tab="notes" id="tabNotes" aria-selected="false">
+                    <svg viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" stroke-width="1.8"/><polyline points="14 2 14 8 20 8" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><line x1="16" y1="13" x2="8" y2="13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><line x1="16" y1="17" x2="8" y2="17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                    Notes
+                    <span class="notes-badge" id="notesBadge" style="display:none">0</span>
+                </button>
+            </div>
+
+            <!-- ── CHAT TAB ── -->
+            <div class="tab-content active" id="chatTab">
+
+                <!-- Upload Progress Bar (inside chat pane, shown during upload) -->
+                <div class="upload-progress-bar" id="uploadProgressBar" style="display:none">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="upload-status-msg" id="uploadStatus"></div>
+
+                <!-- Chat Messages -->
+                <div class="chat-history" id="chatHistory">
+                    <!-- Welcome state -->
+                    <div class="chat-empty-state" id="chatEmptyState">
+                        <div class="empty-icon">
+                            <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="40" cy="40" r="38" stroke="var(--accent)" stroke-width="2" opacity="0.2"/>
+                                <circle cx="40" cy="40" r="28" stroke="var(--accent)" stroke-width="1.5" opacity="0.15"/>
+                                <path d="M27 40c0-7.18 5.82-13 13-13s13 5.82 13 13c0 5.2-3.06 9.7-7.5 11.8" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/>
+                                <path d="M40 53v2M40 57v2" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <h3>Ready to assist</h3>
+                        <p>Upload a PDF on the left, then ask anything about it here.</p>
+                        <div class="suggestion-chips">
+                            <button class="chip" onclick="setQuestion(this)">Summarize this document</button>
+                            <button class="chip" onclick="setQuestion(this)">What are the key findings?</button>
+                            <button class="chip" onclick="setQuestion(this)">Explain the main concepts</button>
+                            <button class="chip" onclick="setQuestion(this)">List all important terms</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chat Input -->
+                <div class="chat-input-area">
+                    <div class="input-wrapper">
+                        <textarea
+                            id="userInput"
+                            class="chat-textarea"
+                            placeholder="Ask anything about the document…"
+                            rows="1"
+                            aria-label="Your question"
+                        ></textarea>
+                        <button id="askButton" class="send-btn" title="Send message" aria-label="Send message">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M22 2L15 22 11 13 2 9l20-7z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="input-hint">Press <kbd>Enter</kbd> to send &nbsp;·&nbsp; <kbd>Shift+Enter</kbd> for new line</div>
+                </div>
+            </div>
+
+            <!-- ── NOTES TAB ── -->
+            <div class="tab-content" id="notesTab">
+                <div class="notes-toolbar">
+                    <h2 class="notes-heading">Saved Notes</h2>
+                    <button class="outline-btn" id="downloadAllNotes">
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        Export All
+                    </button>
+                </div>
+                <div class="notes-empty-state" id="notesEmptyState">
+                    <svg viewBox="0 0 64 64" fill="none"><rect x="8" y="8" width="48" height="48" rx="6" stroke="var(--text-muted)" stroke-width="2" fill="none" opacity="0.3"/><path d="M20 24h24M20 32h24M20 40h14" stroke="var(--text-muted)" stroke-width="2" stroke-linecap="round" opacity="0.3"/></svg>
+                    <p>No notes saved yet.<br>Chat with a document and save your findings.</p>
+                </div>
+                <div class="notes-grid" id="savedNotesList"></div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Note Name Modal -->
+    <div class="modal-backdrop" id="noteModal" style="display:none" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="modal-card">
+            <h3 class="modal-title" id="modalTitle">Save to Notes</h3>
+            <p class="modal-subtitle">Give this note a memorable name</p>
+            <input type="text" class="modal-input" id="noteNameInput" placeholder="e.g. Key findings, Chapter 3 summary…" maxlength="80">
+            <div class="modal-actions">
+                <button class="modal-cancel" id="modalCancel">Cancel</button>
+                <button class="modal-save" id="modalSave">Save Note</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.7/dist/purify.min.js"></script>
+    <!-- KaTeX -->
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+    <script src="/static/script.js"></script>
+</body>
+</html>
