@@ -217,11 +217,44 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function loadPDFViewer(url, filename) {
-        el.pdfViewer.src = url;
+    async function loadPDFViewer(url, filename) {
         el.pdfDocName.textContent = filename || 'document.pdf';
         el.uploadOverlay.style.display = 'none';
         el.pdfViewerWrapper.style.display = 'flex';
+
+        // Clear any previously rendered pages
+        el.pdfViewer.innerHTML = '<p style="color:var(--text-muted);margin:auto;">Rendering PDF…</p>';
+
+        try {
+            // Dynamically import PDF.js as an ES module
+            const pdfjsLib = await import('https://cdn.jsdelivr.net/npm/pdfjs-dist@4.4.168/build/pdf.min.mjs');
+            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.4.168/build/pdf.worker.min.mjs';
+
+            // Fetch the PDF as an ArrayBuffer
+            const response = await fetch(url);
+            const pdfData   = await response.arrayBuffer();
+            const pdf       = await pdfjsLib.getDocument({ data: pdfData }).promise;
+
+            el.pdfViewer.innerHTML = ''; // clear loading message
+
+            // Render each page onto a separate canvas
+            for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+                const page     = await pdf.getPage(pageNum);
+                const viewport = page.getViewport({ scale: 1.5 });
+
+                const canvas  = document.createElement('canvas');
+                canvas.width  = viewport.width;
+                canvas.height = viewport.height;
+                canvas.style.cssText = 'max-width:100%;border-radius:6px;margin-bottom:12px;box-shadow:0 2px 12px rgba(0,0,0,0.3);';
+
+                const ctx = canvas.getContext('2d');
+                await page.render({ canvasContext: ctx, viewport }).promise;
+                el.pdfViewer.appendChild(canvas);
+            }
+        } catch (err) {
+            el.pdfViewer.innerHTML = `<p style="color:var(--error,#f87171);margin:auto;">Failed to render PDF: ${err.message}</p>`;
+            console.error('PDF.js render error:', err);
+        }
     }
 
     // File input handlers
