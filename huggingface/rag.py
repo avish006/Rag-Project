@@ -15,7 +15,6 @@ import faiss
 from google import genai
 from google.genai import types as genai_types
 import nltk
-import psutil
 from dotenv import load_dotenv
 
 load_dotenv()

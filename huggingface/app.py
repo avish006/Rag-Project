@@ -4,14 +4,12 @@ from rag import process_uploaded_pdf, handle_query
 import os
 import tempfile
 import logging
-import pytesseract
 import time
 
 # === Config ===
 UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'pdf'}
 MAX_CONTENT_LENGTH_MB = 50
-TESSERACT_CMD = os.getenv('TESSERACT_CMD', r'C:\Program Files\Tesseract-OCR\tesseract.exe')
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -71,5 +69,4 @@ def health_check():
 
 if __name__ == '__main__':
     os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-    pytesseract.pytesseract.tesseract_cmd = TESSERACT_CMD
     app.run(host='0.0.0.0', port=5000, debug=False)
