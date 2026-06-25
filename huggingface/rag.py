@@ -12,11 +12,9 @@ from rank_bm25 import BM25Okapi
 from sentence_transformers import SentenceTransformer
 from langchain.text_splitter import CharacterTextSplitter
 import faiss
-from transformers import CLIPProcessor, CLIPModel
 from google import genai
 from google.genai import types as genai_types
 import nltk
-import easyocr
 import psutil
 from dotenv import load_dotenv
 
@@ -37,13 +35,9 @@ for pkg in ('punkt', 'punkt_tab'):
     except Exception:
         pass
 
-# ── Embedding & vision models ─────────────────────────────────────────────────
+# ── Embedding model ───────────────────────────────────────────────────────────
 logger.info("Loading SentenceTransformer…")
 embed_model = SentenceTransformer('BAAI/bge-small-en-v1.5', cache_folder='./model_cache')
-
-logger.info("Loading CLIP…")
-clip_model     = CLIPModel.from_pretrained("openai/clip-vit-base-patch32", cache_dir='./model_cache')
-clip_processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32", cache_dir='./model_cache')
 
 GEMINI_MODEL  = "gemma-4-31b-it"
 
@@ -166,38 +160,7 @@ def hybrid_search(query, index, chunks, image_metadata, alpha=0.5, top_k=5):
     )
     results = [chunks[i] for i, _ in combined[:top_k]]
 
-    # ── Attach image metadata if user referenced an image ──
-    img_ref = re.search(r"Image (\d+)", query, re.IGNORECASE)
-    if img_ref:
-        img_key = f"Image {img_ref.group(1)}"
-        if img_key in image_metadata:
-            results.append(f"[Image Metadata]: {image_metadata[img_key]['description']}")
-
     return results
-
-
-# ── CLIP image analysis ───────────────────────────────────────────────────────
-
-def explain_image_with_clip(query, image_path, img_key, image_metadata):
-    """Run on-demand OCR + CLIP similarity for an image."""
-    try:
-        image = Image.open(image_path).convert("RGB")
-
-        if image_metadata[img_key]["description"] == "OCR deferred to query time":
-            reader      = easyocr.Reader(['en'], gpu=False)
-            ocr_result  = reader.readtext(image_path, detail=0)
-            description = " ".join(ocr_result) if ocr_result else "No OCR text found"
-            image_metadata[img_key]["description"] = description
-        else:
-            description = image_metadata[img_key]["description"]
-
-        inputs  = clip_processor(text=[query], images=image, return_tensors="pt", padding=True)
-        outputs = clip_model(**inputs)
-        sim     = outputs.logits_per_image.item()
-        return f"Image relevance score: {sim:.2f}. OCR text: {description}"
-    except Exception as e:
-        logger.error(f"CLIP analysis failed: {e}")
-        return "Image analysis failed."
 
 
 # ── PDF caching ───────────────────────────────────────────────────────────────
@@ -250,19 +213,6 @@ def query_rag(user_query, index, chunks, image_metadata, chat_history, api_key):
         local_gemini_client = genai.Client(api_key=api_key)
 
         retrieved = hybrid_search(user_query, index, chunks, image_metadata)
-
-        # On-demand image analysis
-        img_ref = re.search(r"Image (\d+)", user_query, re.IGNORECASE)
-        if img_ref:
-            img_key = f"Image {img_ref.group(1)}"
-            if img_key in image_metadata:
-                explanation = explain_image_with_clip(
-                    user_query,
-                    image_metadata[img_key]["path"],
-                    img_key,
-                    image_metadata,
-                )
-                retrieved.append(f"[Image Analysis]: {explanation}")
 
         # Build recent history string (last 6 turns to stay within context)
         history_str = ""

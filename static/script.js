@@ -35,6 +35,11 @@ document.addEventListener('DOMContentLoaded', () => {
         themeToggle:        document.getElementById('themeToggle'),
         themeIconSun:       document.getElementById('themeIconSun'),
         themeIconMoon:      document.getElementById('themeIconMoon'),
+        settingsBtn:        document.getElementById('settingsBtn'),
+        apiKeyModal:        document.getElementById('apiKeyModal'),
+        apiKeyValue:        document.getElementById('apiKeyValue'),
+        apiModalCancel:     document.getElementById('apiModalCancel'),
+        apiModalSave:       document.getElementById('apiModalSave'),
 
         // Left Pane / PDF
         leftPane:           document.getElementById('leftPane'),
@@ -73,6 +78,37 @@ document.addEventListener('DOMContentLoaded', () => {
         modalCancel:        document.getElementById('modalCancel'),
         modalSave:          document.getElementById('modalSave'),
     };
+
+    // ── API Key Management ────────────────────────────────────────────────────
+    function initApiKey() {
+        const savedKey = localStorage.getItem('docuMindApiKey');
+        if (savedKey) {
+            el.apiKeyValue.value = savedKey;
+        } else {
+            // Prompt user on first load
+            el.apiKeyModal.style.display = 'flex';
+        }
+
+        el.settingsBtn.addEventListener('click', () => {
+            const currentKey = localStorage.getItem('docuMindApiKey');
+            el.apiKeyValue.value = currentKey || '';
+            el.apiKeyModal.style.display = 'flex';
+        });
+
+        el.apiModalCancel.addEventListener('click', () => {
+            el.apiKeyModal.style.display = 'none';
+        });
+
+        el.apiModalSave.addEventListener('click', () => {
+            const key = el.apiKeyValue.value.trim();
+            if (key) {
+                localStorage.setItem('docuMindApiKey', key);
+                el.apiKeyModal.style.display = 'none';
+            } else {
+                alert('Please enter a valid API Key.');
+            }
+        });
+    }
 
     // ── State ───────────────────────────────────────────────────────────────
     let isResizing = false;
@@ -428,6 +464,13 @@ document.addEventListener('DOMContentLoaded', () => {
         el.userInput.style.height = 'auto';
         el.askButton.disabled = true;
 
+        const apiKey = localStorage.getItem('docuMindApiKey');
+        if (!apiKey) {
+            el.apiKeyModal.style.display = 'flex';
+            el.askButton.disabled = false;
+            return;
+        }
+
         appendUserMessage(question);
         appendTypingIndicator();
 
@@ -435,7 +478,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await fetch('/query', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ query: question }),
+                body: JSON.stringify({ query: question, api_key: apiKey }),
             });
 
             const result = await response.json();
@@ -624,5 +667,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initTabs();
     updateNotesBadge();
     renderNotes();
+    initApiKey();
 
 });

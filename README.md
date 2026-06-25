@@ -199,16 +199,16 @@ pip install -r requirements.txt
 python nltk_download.py
 ```
 
-### 5. Configure environment variables
+### 5. Configure environment variables (Optional)
 
 Create a `.env` file in the project root:
 
 ```env
-GOOGLE_API_KEY="your-google-ai-api-key-here"
 FLASK_SECRET_KEY="any-random-secret-string"
+# TESSERACT_CMD="C:\\Program Files\\Tesseract-OCR\\tesseract.exe" (Windows only)
 ```
 
-> 🔑 Get your Google AI API key at **[ai.google.dev](https://ai.google.dev)**  
+> 🔑 **API Keys:** You no longer need to put your Google API key in the `.env` file. The app now uses a **Bring Your Own Key (BYOK)** model. You will enter your key securely directly in the browser UI when you launch the app.
 > ⚠️ **Never commit your `.env` file** — it is listed in `.gitignore`.
 
 ### 6. Run the application
@@ -279,10 +279,29 @@ The AI can render full LaTeX math. Examples you can ask:
 
 | Variable | Default | Description |
 |---|---|---|
-| `GOOGLE_API_KEY` | — | **Required.** Google AI Studio API key |
-| `FLASK_SECRET_KEY` | — | Flask session secret |
+| `FLASK_SECRET_KEY` | — | Flask session secret (set in `.env`) |
 | `TESSERACT_CMD` | `C:\Program Files\Tesseract-OCR\tesseract.exe` | Path to Tesseract binary |
 | `MAX_CONTENT_LENGTH_MB` | `50` | Max PDF upload size |
+
+---
+
+## ☁️ Deployment (Hugging Face Spaces)
+
+You can easily host this application for free on [Hugging Face Spaces](https://huggingface.co/spaces) using Docker.
+
+> **⚠️ Important note on Deployment vs Local:**
+> The `main` branch of this repository contains the **full application**, including CLIP and EasyOCR for image understanding. However, these models require ~2.7GB of RAM, which exceeds the free tier limits of most platforms (including Hugging Face Spaces' 16GB limit due to boot-time memory spiking and persistent disk limits). 
+> 
+> To solve this, a `huggingface/` directory is provided. It contains a "slimmed down" version of the app that removes the Image OCR/CLIP models. The text-based RAG chat works perfectly and fits within a ~300MB footprint.
+
+### How to deploy to Hugging Face Free Tier:
+1. Create a new Space on Hugging Face.
+2. Choose **Docker** as the Space SDK.
+3. Choose **Blank** template.
+4. Upload the contents of the `huggingface/` directory (the modified `rag.py`, `app.py`, `requirements.txt`, and `Dockerfile`).
+5. Copy the `templates/` and `static/` directories from the root folder into the Space as well.
+6. The Space will automatically build and start the Docker container.
+7. Users can visit your Space, enter their own Google API key in the UI, and chat with PDFs for free.
 
 ---
 
