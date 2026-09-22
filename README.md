@@ -1,7 +1,11 @@
-#   DocuMind AI-Powered PDF Chat Assistant
+<div align="center">
+    
+# DocuMind AI-Powered PDF Chat Assistant
+
+</div>
 
 <div align="center">
-
+    
 ![DocuMind Banner](https://img.shields.io/badge/DocuMind-AI%20Document%20Assistant-6366f1?style=for-the-badge&logo=bookstack&logoColor=white)
 
 [![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
