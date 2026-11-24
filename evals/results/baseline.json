@@ -1,0 +1,163 @@
+{
+  "mode": "baseline",
+  "model": "gemini-3.5-flash-lite",
+  "suite_sha256": "587dabce8c97b31b757f47bb9406f6e905dfcac829ec49c7ff7ae7e0c3d48ee2",
+  "pdf_sha256": {
+    "harbor": "f094fda6f6b6f999306a4147cc623c48fc88a1b54d3cb418ecadad03c111ae06",
+    "orchard": "4ad7304435ee96fda1afcca5ec298efde191f527ca143099dc9b1f24ef713530"
+  },
+  "run_id": "be2db4fa3e1349a3bb23f152f3350447",
+  "cases": [
+    {
+      "id": "H1",
+      "kind": "text",
+      "trace_id": "cba17da9cec24d2a9a095a9aa25adf51",
+      "response": "The pilot trial was held at Cedar Quay.",
+      "correct": true,
+      "cited_pages": [],
+      "citation_correct": false,
+      "abstained": false,
+      "decision_correct": true
+    },
+    {
+      "id": "H2",
+      "kind": "text",
+      "trace_id": "4ffae067228140ed86709aba2f9e809a",
+      "response": "The inspection was scheduled to take place every 18 days.",
+      "correct": true,
+      "cited_pages": [],
+      "citation_correct": false,
+      "abstained": false,
+      "decision_correct": true
+    },
+    {
+      "id": "H3",
+      "kind": "figure",
+      "trace_id": "fa967cde46684836b903fa26f48ab238",
+      "response": "Based on the provided information, Figure 1 shows the dock throughput, but the specific number of crates handled by the west dock is not mentioned in the details.",
+      "correct": false,
+      "cited_pages": [],
+      "citation_correct": false,
+      "abstained": true,
+      "decision_correct": false
+    },
+    {
+      "id": "H4",
+      "kind": "figure",
+      "trace_id": "1951c2f2dd70490e89fac2184ade0b45",
+      "response": "Based on Figure 1, the provided information doesn't specify the exact numbers or names of the docks shown in the chart. You can see the image of the dock throughput in the document, but the text doesn't break down the individual numbers for each one.",
+      "correct": false,
+      "cited_pages": [],
+      "citation_correct": false,
+      "abstained": true,
+      "decision_correct": false
+    },
+    {
+      "id": "H5",
+      "kind": "unanswerable",
+      "trace_id": "3d881b1de71f4b468380c1cf597122dc",
+      "response": "Based on the provided information, there is no mention of how many workers unloaded the west dock crates.",
+      "correct": true,
+      "cited_pages": [],
+      "citation_correct": null,
+      "abstained": true,
+      "decision_correct": true
+    },
+    {
+      "id": "H6",
+      "kind": "unanswerable",
+      "trace_id": "7c58871dfe434087a28638da0f6a7d80",
+      "response": "I'm sorry, but the provided information doesn't mention anything about a fuel budget for the harbor pilot.",
+      "correct": true,
+      "cited_pages": [],
+      "citation_correct": null,
+      "abstained": true,
+      "decision_correct": true
+    },
+    {
+      "id": "O1",
+      "kind": "text",
+      "trace_id": "fbfcf13a3d4c4cf9a88e9cb6575bc4df",
+      "response": "Mira Vale led the orchard survey.",
+      "correct": true,
+      "cited_pages": [],
+      "citation_correct": false,
+      "abstained": false,
+      "decision_correct": true
+    },
+    {
+      "id": "O2",
+      "kind": "text",
+      "trace_id": "31fa91d794274fcd92a7ca69f3eca35a",
+      "response": "The calibration window lasts 36 hours.",
+      "correct": true,
+      "cited_pages": [],
+      "citation_correct": false,
+      "abstained": false,
+      "decision_correct": true
+    },
+    {
+      "id": "O3",
+      "kind": "figure",
+      "trace_id": "32fc67211d994f19a6c7c8acbe39e446",
+      "response": "Based on the provided information, Figure 1 shows the plot yield, but it doesn't specifically mention the yield for the alder plot.",
+      "correct": false,
+      "cited_pages": [],
+      "citation_correct": false,
+      "abstained": true,
+      "decision_correct": false
+    },
+    {
+      "id": "O4",
+      "kind": "figure",
+      "trace_id": "64adca946d9b4d36bb5c63be8c2c374e",
+      "response": "Based on the provided information, Figure 1 (Plot yield) is supposed to show this, but the image itself isn't available. Therefore, I can't tell you which plot had the highest yield or what the exact number is!",
+      "correct": false,
+      "cited_pages": [],
+      "citation_correct": false,
+      "abstained": true,
+      "decision_correct": false
+    },
+    {
+      "id": "O5",
+      "kind": "unanswerable",
+      "trace_id": "d6ab7d83db544e08a0ea75c8af631a73",
+      "response": "I'm sorry, but the provided information doesn't mention anything about the fertilizer dose applied to the maple plot.",
+      "correct": true,
+      "cited_pages": [],
+      "citation_correct": null,
+      "abstained": true,
+      "decision_correct": true
+    },
+    {
+      "id": "O6",
+      "kind": "unanswerable",
+      "trace_id": "fdf7cc15f10248698ea2b9e3ce0166c2",
+      "response": "Based on the provided information, there is no mention of the temperature at which the amber cases were stored.",
+      "correct": true,
+      "cited_pages": [],
+      "citation_correct": null,
+      "abstained": true,
+      "decision_correct": true
+    }
+  ],
+  "scores": {
+    "answer_correctness": {
+      "passed": 8,
+      "total": 12
+    },
+    "citation_accuracy": {
+      "passed": 0,
+      "total": 8
+    },
+    "abstention_recall": {
+      "passed": 4,
+      "total": 4
+    },
+    "evidence_decisions": {
+      "passed": 8,
+      "total": 12
+    }
+  },
+  "finished_at": "2026-11-24T19:00:01.853869+00:00"
+}

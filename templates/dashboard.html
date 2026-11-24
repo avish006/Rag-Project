@@ -1,0 +1,13 @@
+{% extends "operations.html" %}
+{% block content %}
+<h1>Dashboard</h1><p class="sub">Uploads and questions · Last 24 hours · <span id="fresh" role="status">Loading…</span></p>
+<section class="stats" aria-label="Live metrics">
+{% for id, label in [('requests','Requests'),('latency','p95 latency'),('errors','Errors'),('insufficient','Insufficient evidence')] %}
+<article><h2>{{ label }}</h2><strong id="{{ id }}">—</strong></article>
+{% endfor %}</section>
+<section class="panel"><h2>Latest evaluation</h2><p id="eval-info" class="sub"></p>
+<table><thead><tr><th>Metric</th><th><a href="/evaluations/baseline">Baseline</a></th><th><a href="/evaluations/guarded">Guarded</a></th></tr></thead><tbody id="scores"></tbody></table></section>
+<section class="panel"><h2>Recent failures</h2><p id="empty" class="sub">Loading…</p>
+<div id="failures"></div></section>
+{% endblock %}
+{% block scripts %}<script src="/static/operations.js"></script>{% endblock %}

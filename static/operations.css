@@ -1,0 +1,22 @@
+.ops {display:block; height:auto; min-height:100vh; overflow:auto}
+.ops .app-header {justify-content:space-between}
+.ops a,.trace-link {color:var(--accent-hover);text-underline-offset:.2em}
+.ops .brand-name {text-decoration:none}
+.ops main {width:min(960px,92vw);margin:3rem auto}
+.ops h1 {font-size:clamp(2rem,4vw,2.8rem);letter-spacing:-.045em;margin:.5rem 0}
+.ops h2 {font-size:1.2rem;font-weight:600}
+.ops .sub {color:var(--text-secondary);line-height:1.6;margin:.65rem 0}
+.stats {display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin:2rem 0}
+.stats article,.panel,.ops dl {background:var(--bg-elevated);border:1px solid var(--border-default);border-radius:var(--radius-lg);padding:1.4rem}
+.stats h2 {color:var(--text-secondary);font-size:.95rem}
+.stats strong {display:block;font:600 2.2rem var(--font-mono);margin-top:.6rem}
+.panel {margin:1.2rem 0}
+.ops table {width:100%;border-collapse:collapse}
+.ops td,.ops th {text-align:left;padding:.75rem .25rem;border-bottom:1px solid var(--border-subtle)}
+.ops th {color:var(--text-secondary);font-weight:500}
+.ops dl {display:grid;grid-template-columns: minmax(100px,1fr) 3fr;gap:1rem;overflow-wrap:anywhere}
+.ops dt {color:var(--text-secondary)}
+.ops dd {font-family:var(--font-mono)}
+.failure {display:block;padding:.8rem 0;border-top:1px solid var(--border-subtle);overflow-wrap:anywhere}
+.trace-link {font-size:.82rem;margin:.25rem .4rem;display:inline-block}
+.citation {color:var(--accent-hover);cursor:pointer}

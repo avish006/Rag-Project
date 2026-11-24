@@ -1,0 +1,116 @@
+[
+  {
+    "id": "H1",
+    "document": "harbor",
+    "kind": "text",
+    "question": "Where was the pilot trial held?",
+    "facts": [
+      "Cedar Quay"
+    ],
+    "page": 1
+  },
+  {
+    "id": "H2",
+    "document": "harbor",
+    "kind": "text",
+    "question": "How often was the inspection scheduled?",
+    "facts": [
+      "18 days"
+    ],
+    "page": 1
+  },
+  {
+    "id": "H3",
+    "document": "harbor",
+    "kind": "figure",
+    "question": "In Figure 1, how many crates did the west dock handle?",
+    "facts": [
+      "42 crates"
+    ],
+    "page": 2
+  },
+  {
+    "id": "H4",
+    "document": "harbor",
+    "kind": "figure",
+    "question": "Which dock had the highest throughput in Figure 1, and how many crates did it handle?",
+    "facts": [
+      "East dock",
+      "67 crates"
+    ],
+    "page": 2
+  },
+  {
+    "id": "H5",
+    "document": "harbor",
+    "kind": "unanswerable",
+    "question": "How many workers unloaded the west dock crates?",
+    "facts": [],
+    "page": null
+  },
+  {
+    "id": "H6",
+    "document": "harbor",
+    "kind": "unanswerable",
+    "question": "What was the pilot's fuel budget?",
+    "facts": [],
+    "page": null
+  },
+  {
+    "id": "O1",
+    "document": "orchard",
+    "kind": "text",
+    "question": "Who led the orchard survey?",
+    "facts": [
+      "Mira Vale"
+    ],
+    "page": 1
+  },
+  {
+    "id": "O2",
+    "document": "orchard",
+    "kind": "text",
+    "question": "How long is the calibration window?",
+    "facts": [
+      "36 hours"
+    ],
+    "page": 1
+  },
+  {
+    "id": "O3",
+    "document": "orchard",
+    "kind": "figure",
+    "question": "What yield is shown for the alder plot in Figure 1?",
+    "facts": [
+      "21 kg"
+    ],
+    "page": 2
+  },
+  {
+    "id": "O4",
+    "document": "orchard",
+    "kind": "figure",
+    "question": "Which plot had the highest yield, and what yield is shown?",
+    "facts": [
+      "Maple plot",
+      "58 kg"
+    ],
+    "page": 2
+  },
+  {
+    "id": "O5",
+    "document": "orchard",
+    "kind": "unanswerable",
+    "question": "What fertilizer dose was applied to the maple plot?",
+    "facts": [],
+    "page": null
+  },
+  {
+    "id": "O6",
+    "document": "orchard",
+    "kind": "unanswerable",
+    "question": "At what temperature were the amber cases stored?",
+    "facts": [],
+    "page": null
+  }
+]

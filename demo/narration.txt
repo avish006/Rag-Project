@@ -1,0 +1,9 @@
+Here’s DocuMind. I’ve opened a short harbor report in the document reader. On the second page, the throughput chart is embedded as an image.
+
+Let’s ask how many crates the west dock handled. DocuMind reads the chart, checks the answer against the page, and gives us a citation. Click Page Two and you can check the bar yourself.
+
+Now let’s ask how many workers unloaded those crates. The report doesn’t give a head count. DocuMind says there’s insufficient evidence.
+
+The dashboard shows the last twenty-four hours of uploads and questions. You can see the ninety-fifth percentile latency, errors, and how often the system reported insufficient evidence.
+
+The evaluation compares the same twelve questions before and after the upgrade. Open either column to inspect the actual answers. And if a request fails, click its trace to see where it stopped and why.

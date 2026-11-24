@@ -1,0 +1,8 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}Dashboard{% endblock %} · DocuMind</title>
+<link rel="stylesheet" href="/static/style.css"><link rel="stylesheet" href="/static/operations.css">
+</head><body class="ops"><header class="app-header"><a class="brand-name" href="/">DocuMind</a><a href="/" class="back">Document reader</a></header>
+<main>{% block content %}{% endblock %}</main>
+<script>document.documentElement.dataset.theme = localStorage.getItem('docuMindTheme') || 'dark';</script>
+{% block scripts %}{% endblock %}</body></html>

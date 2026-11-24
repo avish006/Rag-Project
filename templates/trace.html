@@ -1,0 +1,12 @@
+{% extends "operations.html" %}
+{% block title %}Run details{% endblock %}
+{% block content %}
+<a href="/dashboard">← Dashboard</a>
+{% if run %}
+<h1>Run details</h1>
+<dl>{% for key, label in [('trace_id','Trace ID'),('operation','Operation'),('status','HTTP status'),('outcome','Outcome'),('stage','Stage'),('reason','Diagnostic'),('duration_ms','Duration (ms)')] %}
+<dt>{{ label }}</dt><dd>{{ run[key] }}</dd>{% endfor %}</dl>
+<p class="sub">Started <time id="started" datetime="{{ run.started }}"></time></p>
+<script>const time=document.getElementById('started');time.textContent=new Date(Number(time.dateTime)*1000).toLocaleString();</script>
+{% else %}<h1>Trace unavailable</h1><p>This trace has expired or the ID is unknown.</p>{% endif %}
+{% endblock %}

@@ -1,0 +1,4 @@
+evals/*.json text eol=lf
+evals/results/*.json text eol=lf
+*.pdf binary
+*.mp4 binary

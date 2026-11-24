@@ -1,0 +1,18 @@
+# Evaluation protocol
+
+Each of the two PDFs has six hand-labeled questions, two per category. Gold facts, expected page and answerability are in [cases.json](cases.json). Text facts are on page 1. Chart values are raster-only on page 2. The four unanswerable questions deliberately reuse entities from the source. The PDFs contain synthetic data and can be redistributed.
+
+## Reproduce the comparison
+
+Install the root requirements and put a Google API key in the environment or ignored `.env`. Run `python -m evals.run both` from the repository root. The runner makes real requests to Google and updates each report only after that arm completes. Run `python -m evals.run both --output instance/experiment` for a separate experiment. Use a fresh output directory after changing prompts or implementation. A partial run for the same model, suite and PDFs can resume from its checkpoint. Provider failures are retried for transient conditions and are never graded as correct refusals.
+
+The baseline adapter reproduces the deployed Space's original prompt, text extraction and image markers at revision `470ae7f`. Its two fixture documents each fit entirely in one original text chunk. For these fixtures the chunk selected by the legacy hybrid ranker is therefore determined exactly. This narrow adapter rejects larger inputs. The guarded arm calls the same indexing, retrieval, generation and verification functions as the live reader. The comparison holds the provider model, questions, documents, initial history, generation temperature (0.7) and maximum output tokens (1,600) constant. The verification pass uses temperature zero. The original Space's configured Gemma model returned intermittent service errors, so the published paired comparison uses Flash Lite for both arms.
+
+## Scoring
+
+- **Answer correctness** counts an answerable case when the response contains all labeled facts after case, spacing and punctuation normalization, and counts an unanswerable case when it declines. Required facts include the unit for numeric answers. For this run, the raw answers were also inspected for contradictory extra claims. The automated rule alone cannot detect every contradiction or paraphrase.
+- **Citation accuracy** counts an answerable case when the set of cited pages equals the gold page set. Missing and extraneous pages fail. Baseline page citations are parsed from prose. Guarded citations come from validated source metadata. This metric measures page location, with runtime verification separately checking the evidence.
+- **Insufficient-evidence recall** counts the correctly declined questions among the four unanswerable cases. **Evidence decision accuracy** also penalizes declining an answerable question. The guarded arm reports a structured status. Legacy prose uses an English refusal-pattern matcher. During review the matcher was expanded to recognize “no mention of” and “doesn't specifically mention”; both arms were rescored from the unchanged recorded outputs.
+- Every report includes the model, completion time, run ID, fixture and suite hashes, case trace IDs, raw response, predicted abstention, cited pages and case grades. The guarded report also records the verification outcome and supporting evidence.
+
+The checked-in fixtures are the reference inputs. `python -m evals.make_fixtures` rebuilds their content. Fonts and PDF library versions can change the resulting file hashes. This suite covers straightforward English text, labeled charts and near-miss questions. It does not characterize cross-page reasoning, ambiguous chart labels or retrieval quality across a long corpus.

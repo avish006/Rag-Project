@@ -1,0 +1,14 @@
+**
+!requirements.txt
+!app.py
+!rag.py
+!provider.py
+!telemetry.py
+!templates/
+!templates/**
+!static/
+!static/**
+!evals/
+!evals/cases.json
+!evals/results/
+!evals/results/*.json

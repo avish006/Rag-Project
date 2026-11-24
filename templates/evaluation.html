@@ -1,0 +1,12 @@
+{% extends "operations.html" %}
+{% block title %}Evaluation cases{% endblock %}
+{% block content %}
+<a href="/dashboard">← Dashboard</a><h1>{{ mode|capitalize }} evaluation</h1>
+<p class="sub">{{ report.model }} · {{ report.finished_at }} · Run {{ report.run_id }}</p>
+{% for row in report.cases %}
+<section id="{{ row.trace_id }}" class="panel"><h2>{{ row.id }} · {{ labels[row.id].question }}</h2>
+<p class="sub">{{ row.kind }} · Answer {{ 'passed' if row.correct else 'failed' }}{% if row.citation_correct is not none %} · Citation {{ 'passed' if row.citation_correct else 'failed' }}{% endif %}</p>
+<p>{{ row.response }}</p><p class="sub">Expected {{ labels[row.id].facts|join(' and ') if labels[row.id].page else 'insufficient evidence' }}{% if labels[row.id].page %} · page {{ labels[row.id].page }}{% endif %}</p>
+<small>Trace {{ row.trace_id }}</small></section>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,271 @@
+{
+  "mode": "guarded",
+  "model": "gemini-3.5-flash-lite",
+  "suite_sha256": "587dabce8c97b31b757f47bb9406f6e905dfcac829ec49c7ff7ae7e0c3d48ee2",
+  "pdf_sha256": {
+    "harbor": "f094fda6f6b6f999306a4147cc623c48fc88a1b54d3cb418ecadad03c111ae06",
+    "orchard": "4ad7304435ee96fda1afcca5ec298efde191f527ca143099dc9b1f24ef713530"
+  },
+  "run_id": "6cd5630505d440ddb6b4d6baecbf9760",
+  "cases": [
+    {
+      "id": "H1",
+      "kind": "text",
+      "trace_id": "28336dd052d44e7aa5cbf1615c0ce05c",
+      "status": "answered",
+      "response": "The pilot trial was held at Cedar Quay. [p. 1]",
+      "citations": [
+        {
+          "page": 1,
+          "kind": "text",
+          "source": "P1T1",
+          "evidence": "Harbor pilot Trial site: Cedar Quay."
+        }
+      ],
+      "reason": "verified",
+      "correct": true,
+      "cited_pages": [
+        1
+      ],
+      "citation_correct": true,
+      "abstained": false,
+      "decision_correct": true
+    },
+    {
+      "id": "H2",
+      "kind": "text",
+      "trace_id": "5f3214b48e1f4bc88f0521d4a22ab79a",
+      "status": "answered",
+      "response": "The inspection interval is 18 days. [p. 1]",
+      "citations": [
+        {
+          "page": 1,
+          "kind": "text",
+          "source": "P1T1",
+          "evidence": "Inspection interval: 18 days."
+        }
+      ],
+      "reason": "verified",
+      "correct": true,
+      "cited_pages": [
+        1
+      ],
+      "citation_correct": true,
+      "abstained": false,
+      "decision_correct": true
+    },
+    {
+      "id": "H3",
+      "kind": "figure",
+      "trace_id": "6a761e67e4d849538004d5a445b751c5",
+      "status": "answered",
+      "response": "The west dock handled 42 crates according to Figure 1. [p. 2]",
+      "citations": [
+        {
+          "page": 2,
+          "kind": "figure",
+          "source": "P2V",
+          "evidence": "West dock: 42 crates"
+        }
+      ],
+      "reason": "verified",
+      "correct": true,
+      "cited_pages": [
+        2
+      ],
+      "citation_correct": true,
+      "abstained": false,
+      "decision_correct": true
+    },
+    {
+      "id": "H4",
+      "kind": "figure",
+      "trace_id": "bb87f46d966a4ce7b33f9443d0197537",
+      "status": "answered",
+      "response": "The East dock had the highest throughput in Figure 1, handling 67 crates. [p. 2]",
+      "citations": [
+        {
+          "page": 2,
+          "kind": "figure",
+          "source": "P2V",
+          "evidence": "East dock 67 crates"
+        }
+      ],
+      "reason": "verified",
+      "correct": true,
+      "cited_pages": [
+        2
+      ],
+      "citation_correct": true,
+      "abstained": false,
+      "decision_correct": true
+    },
+    {
+      "id": "H5",
+      "kind": "unanswerable",
+      "trace_id": "610a3528b076404d996fc759dfe244b2",
+      "status": "insufficient_evidence",
+      "response": "There is insufficient evidence in this document to answer that question.",
+      "citations": [],
+      "reason": "model_abstained",
+      "correct": true,
+      "cited_pages": [],
+      "citation_correct": null,
+      "abstained": true,
+      "decision_correct": true
+    },
+    {
+      "id": "H6",
+      "kind": "unanswerable",
+      "trace_id": "6fad96dec08546b2b646c320999afe26",
+      "status": "insufficient_evidence",
+      "response": "There is insufficient evidence in this document to answer that question.",
+      "citations": [],
+      "reason": "model_abstained",
+      "correct": true,
+      "cited_pages": [],
+      "citation_correct": null,
+      "abstained": true,
+      "decision_correct": true
+    },
+    {
+      "id": "O1",
+      "kind": "text",
+      "trace_id": "07bbf056ee9d412bbbf391dea1b2bac4",
+      "status": "answered",
+      "response": "Mira Vale led the orchard survey. [p. 1]",
+      "citations": [
+        {
+          "page": 1,
+          "kind": "text",
+          "source": "P1T1",
+          "evidence": "Orchard survey Survey leader: Mira Vale."
+        }
+      ],
+      "reason": "verified",
+      "correct": true,
+      "cited_pages": [
+        1
+      ],
+      "citation_correct": true,
+      "abstained": false,
+      "decision_correct": true
+    },
+    {
+      "id": "O2",
+      "kind": "text",
+      "trace_id": "25a547debb1f4ab2b6c565460e76a85b",
+      "status": "answered",
+      "response": "The calibration window is 36 hours long. [p. 1]",
+      "citations": [
+        {
+          "page": 1,
+          "kind": "text",
+          "source": "P1T1",
+          "evidence": "The calibration window lasts 36 hours."
+        }
+      ],
+      "reason": "verified",
+      "correct": true,
+      "cited_pages": [
+        1
+      ],
+      "citation_correct": true,
+      "abstained": false,
+      "decision_correct": true
+    },
+    {
+      "id": "O3",
+      "kind": "figure",
+      "trace_id": "7784d9147ded4925880dbd4644e04b21",
+      "status": "answered",
+      "response": "The yield shown for the alder plot in Figure 1 is 21 kg. [p. 2]",
+      "citations": [
+        {
+          "page": 2,
+          "kind": "figure",
+          "source": "P2V",
+          "evidence": "Alder plot | 21 kg"
+        }
+      ],
+      "reason": "verified",
+      "correct": true,
+      "cited_pages": [
+        2
+      ],
+      "citation_correct": true,
+      "abstained": false,
+      "decision_correct": true
+    },
+    {
+      "id": "O4",
+      "kind": "figure",
+      "trace_id": "ba244714e78a438cb8d469d421f2534c",
+      "status": "answered",
+      "response": "The Maple plot had the highest yield, with a yield of 58 kg. [p. 2]",
+      "citations": [
+        {
+          "page": 2,
+          "kind": "figure",
+          "source": "P2V",
+          "evidence": "Maple plot | 58 kg"
+        }
+      ],
+      "reason": "verified",
+      "correct": true,
+      "cited_pages": [
+        2
+      ],
+      "citation_correct": true,
+      "abstained": false,
+      "decision_correct": true
+    },
+    {
+      "id": "O5",
+      "kind": "unanswerable",
+      "trace_id": "ac3fa6867c47400194f71291add69848",
+      "status": "insufficient_evidence",
+      "response": "There is insufficient evidence in this document to answer that question.",
+      "citations": [],
+      "reason": "model_abstained",
+      "correct": true,
+      "cited_pages": [],
+      "citation_correct": null,
+      "abstained": true,
+      "decision_correct": true
+    },
+    {
+      "id": "O6",
+      "kind": "unanswerable",
+      "trace_id": "feeca25ebe46406b9adb439080508d44",
+      "status": "insufficient_evidence",
+      "response": "There is insufficient evidence in this document to answer that question.",
+      "citations": [],
+      "reason": "model_abstained",
+      "correct": true,
+      "cited_pages": [],
+      "citation_correct": null,
+      "abstained": true,
+      "decision_correct": true
+    }
+  ],
+  "scores": {
+    "answer_correctness": {
+      "passed": 12,
+      "total": 12
+    },
+    "citation_accuracy": {
+      "passed": 8,
+      "total": 8
+    },
+    "abstention_recall": {
+      "passed": 4,
+      "total": 4
+    },
+    "evidence_decisions": {
+      "passed": 12,
+      "total": 12
+    }
+  },
+  "finished_at": "2026-11-24T19:03:10.746486+00:00"
+}

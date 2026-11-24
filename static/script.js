@@ -112,6 +112,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ── State ───────────────────────────────────────────────────────────────
     let isResizing = false;
+    let documentId = null;
+    let conversation = [];
+    let uploadVersion = 0;
     let pendingSaveNote = null;       // { query, response } — set when modal opens
 
     // ── Markdown / Sanitise Utilities ───────────────────────────────────────
@@ -183,6 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        const version = ++uploadVersion;
         // Show progress UI
         showProgress(20);
         setStatus('loading', 'Processing…');
@@ -196,8 +200,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await fetch('/upload', { method: 'POST', body: formData });
             showProgress(90);
             const result = await response.json();
+            if (version !== uploadVersion) return;
 
             if (response.ok) {
+                documentId = result.document_id;
+                conversation = [];
                 showProgress(100);
                 hideProgress();
                 setUploadMsg(`"${file.name}" ready ✓`, 'success');
@@ -207,17 +214,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 el.chatHistory.innerHTML = '';
                 el.chatHistory.appendChild(buildEmptyState());
             } else {
-                throw new Error(result.error || 'Unknown error');
+                throw Object.assign(new Error(result.error || 'Unknown error'), {traceId: result.trace_id});
             }
         } catch (err) {
+            if (version !== uploadVersion) return;
             showProgress(0);
             hideProgress();
             setUploadMsg(`Upload failed: ${err.message}`, 'error');
+            addTrace(el.uploadStatus, err.traceId);
             setStatus('error', 'Upload failed');
         }
     }
 
     async function loadPDFViewer(url, filename) {
+        const version = uploadVersion;
         el.pdfDocName.textContent = filename || 'document.pdf';
         el.uploadOverlay.style.display = 'none';
         el.pdfViewerWrapper.style.display = 'flex';
@@ -234,6 +244,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await fetch(url);
             const pdfData   = await response.arrayBuffer();
             const pdf       = await pdfjsLib.getDocument({ data: pdfData }).promise;
+            if (version !== uploadVersion) return;
 
             el.pdfViewer.innerHTML = ''; // clear loading message
 
@@ -243,16 +254,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 const viewport = page.getViewport({ scale: 1.5 });
 
                 const canvas  = document.createElement('canvas');
+                canvas.id = 'pdf-page-' + pageNum;
                 canvas.width  = viewport.width;
                 canvas.height = viewport.height;
                 canvas.style.cssText = 'max-width:100%;border-radius:6px;margin-bottom:12px;box-shadow:0 2px 12px rgba(0,0,0,0.3);';
 
                 const ctx = canvas.getContext('2d');
                 await page.render({ canvasContext: ctx, viewport }).promise;
+                if (version !== uploadVersion) return;
                 el.pdfViewer.appendChild(canvas);
             }
         } catch (err) {
-            el.pdfViewer.innerHTML = `<p style="color:var(--error,#f87171);margin:auto;">Failed to render PDF: ${err.message}</p>`;
+            if (version !== uploadVersion) return;
+            el.pdfViewer.textContent = 'PDF preview unavailable. ';
+            const link = document.createElement('a');
+            link.href = url;
+            link.target = '_blank';
+            link.rel = 'noopener';
+            link.textContent = 'Open PDF';
+            el.pdfViewer.append(link);
             console.error('PDF.js render error:', err);
         }
     }
@@ -432,7 +452,18 @@ document.addEventListener('DOMContentLoaded', () => {
         el.chatHistory.scrollTop = el.chatHistory.scrollHeight;
     }
 
-    function appendAIMessage(question, responseText) {
+    function addTrace(parent, traceId) {
+        if (!/^[a-f0-9]{32}$/.test(traceId || '')) return;
+        const link = document.createElement('a');
+        link.href = '/traces/' + traceId;
+        link.target = '_blank';
+        link.rel = 'noopener';
+        link.className = 'msg-action-btn';
+        link.textContent = 'View trace';
+        parent.append(link);
+    }
+
+    function appendAIMessage(question, responseText, result) {
         removeTypingIndicator();
         const group = document.createElement('div');
         group.className = 'message-group';
@@ -456,6 +487,16 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
 
         // Save to notes
+        const actions = group.querySelector('.msg-actions');
+        for (const page of new Set(result.citations.map(c => c.page))) {
+            const cite = document.createElement('button');
+            cite.className = 'msg-action-btn';
+            cite.textContent = 'Page ' + page;
+            cite.title = result.citations.filter(c => c.page === page).map(c => c.evidence).join('\n');
+            cite.onclick = () => document.getElementById('pdf-page-' + page)?.scrollIntoView({block:'start', behavior:'smooth'});
+            actions.append(cite);
+        }
+        addTrace(actions, result.trace_id);
         group.querySelector('.save-btn').addEventListener('click', () => openNoteModal(question, responseText));
 
         // Copy to clipboard
@@ -475,7 +516,7 @@ document.addEventListener('DOMContentLoaded', () => {
         renderMath(group.querySelector('.ai-bubble'));
     }
 
-    function appendErrorMessage(text) {
+    function appendErrorMessage(text, traceId) {
         removeTypingIndicator();
         const group = document.createElement('div');
         group.className = 'message-group';
@@ -485,6 +526,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 ${DOMPurify.sanitize(text)}
             </div>
         `;
+        addTrace(group.querySelector('.error-bubble'), traceId);
         el.chatHistory.appendChild(group);
         el.chatHistory.scrollTop = el.chatHistory.scrollHeight;
     }
@@ -506,20 +548,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
         appendUserMessage(question);
         appendTypingIndicator();
+        const askedDocument = documentId;
 
         try {
             const response = await fetch('/query', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ query: question, api_key: apiKey }),
+                body: JSON.stringify({ query: question, api_key: apiKey, document_id: documentId, history: conversation }),
             });
 
             const result = await response.json();
-            if (!response.ok) throw new Error(result.error || 'Query failed.');
+            if (documentId !== askedDocument) return;
+            if (!response.ok) throw Object.assign(new Error(result.error || 'Query failed.'), {traceId: result.trace_id});
 
-            appendAIMessage(question, result.response || 'No response received.');
+            appendAIMessage(question, result.response, result);
+            conversation = [...conversation, {query:question, response:result.response}].slice(-6);
         } catch (err) {
-            appendErrorMessage(`Error: ${err.message}`);
+            if (documentId === askedDocument) appendErrorMessage(`Error: ${err.message}`, err.traceId);
         } finally {
             el.askButton.disabled = false;
             el.userInput.focus();

@@ -34,6 +34,9 @@
             <span class="status-text">No document loaded</span>
         </div>
         <div class="header-actions">
+            <a class="icon-btn" href="/dashboard" target="_blank" rel="noopener" title="Live dashboard" aria-label="Live dashboard">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M3 3v18h18M7 16v-4m5 4V6m5 10V9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            </a>
             <button class="icon-btn" id="themeToggle" title="Toggle Theme" aria-label="Toggle Theme">
                 <svg id="themeIconSun" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.8"/><path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
                 <svg id="themeIconMoon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
@@ -193,7 +196,7 @@
     <div class="modal-backdrop" id="apiKeyModal" style="display:none" role="dialog" aria-modal="true" aria-labelledby="apiModalTitle">
         <div class="modal-card">
             <h3 class="modal-title" id="apiModalTitle">Configure AI</h3>
-            <p class="modal-subtitle">Enter your Google Gemini API Key. It is stored securely in your browser's local storage.</p>
+            <p class="modal-subtitle">Enter your Google Gemini API key. This browser remembers it for future questions.</p>
             <input type="password" class="modal-input" id="apiKeyValue" placeholder="e.g. AIzaSy...">
             <div class="modal-actions">
                 <button class="modal-cancel" id="apiModalCancel">Cancel</button>
