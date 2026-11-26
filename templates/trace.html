@@ -7,6 +7,16 @@
 <dl>{% for key, label in [('trace_id','Trace ID'),('operation','Operation'),('status','HTTP status'),('outcome','Outcome'),('stage','Stage'),('reason','Diagnostic'),('duration_ms','Duration (ms)')] %}
 <dt>{{ label }}</dt><dd>{{ run[key] }}</dd>{% endfor %}</dl>
 <p class="sub">Started <time id="started" datetime="{{ run.started }}"></time></p>
+{% if run.operation == 'query' %}<h2>RAG measurements</h2>
+{% if run.quality %}<dl>{% for key,(label,description) in live.items() %}<dt title="{{ description }}">{{ label }}</dt>
+<dd>{% if key not in run.quality %}—{% elif key == 'retrieved_count' %}{{ run.quality[key]|int }}{% else %}{{ '%.1f%%'|format(100*run.quality[key]) }}{% endif %}</dd>{% endfor %}</dl>
+{% else %}<p class="sub">No RAG measurements were recorded for this query.</p>{% endif %}{% endif %}
+{% if run.operation == 'query' %}<p class="sub">Background evaluation {{ run.eval_status|replace('_',' ') }}.
+{% for name,status in run.metric_status.items() if status != 'complete' %}{{ live[name][0] }} {{ status|replace('_',' ') }}. {% endfor %}</p>{% endif %}
+<section class="panel"><h2>OpenTelemetry spans</h2><table><thead><tr><th>Stage</th><th>Duration</th><th>Status</th></tr></thead><tbody>
+{% for span in run.spans %}<tr><td>{{ span.name|replace('_',' ') }}</td><td>{{ '%.1f ms'|format(span.duration_ms) }}</td><td>{{ span.status }}</td></tr>
+{% else %}<tr><td colspan="3">This historical trace has no spans.</td></tr>{% endfor %}</tbody></table></section>
+{% if run.eval_status in ['pending','running'] %}<script>setTimeout(()=>location.reload(),5000);</script>{% endif %}
 <script>const time=document.getElementById('started');time.textContent=new Date(Number(time.dateTime)*1000).toLocaleString();</script>
 {% else %}<h1>Trace unavailable</h1><p>This trace has expired or the ID is unknown.</p>{% endif %}
 {% endblock %}

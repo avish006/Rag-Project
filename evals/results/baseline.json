@@ -1,146 +1,328 @@
 {
   "mode": "baseline",
   "model": "gemini-3.5-flash-lite",
-  "suite_sha256": "587dabce8c97b31b757f47bb9406f6e905dfcac829ec49c7ff7ae7e0c3d48ee2",
+  "suite_sha256": "7165648f411a95b5a4d56781c87913a93fa17084fef44d3d12541925014152c1",
   "pdf_sha256": {
     "harbor": "f094fda6f6b6f999306a4147cc623c48fc88a1b54d3cb418ecadad03c111ae06",
     "orchard": "4ad7304435ee96fda1afcca5ec298efde191f527ca143099dc9b1f24ef713530"
   },
-  "run_id": "be2db4fa3e1349a3bb23f152f3350447",
+  "run_id": "184dc99a0a0d4256889f8b8b6a0dc064",
   "cases": [
     {
       "id": "H1",
       "kind": "text",
-      "trace_id": "cba17da9cec24d2a9a095a9aa25adf51",
+      "trace_id": "95692fa4fc424ea8bb235468ea862116",
       "response": "The pilot trial was held at Cedar Quay.",
+      "retrieved_context_ids": [
+        "P1T1",
+        "P2T1"
+      ],
       "correct": true,
       "cited_pages": [],
       "citation_correct": false,
       "abstained": false,
-      "decision_correct": true
+      "decision_correct": true,
+      "retrieval_scores": {
+        "context_precision": 0.5,
+        "context_recall": 1.0,
+        "reciprocal_rank": 1.0
+      },
+      "quality": {
+        "ragas_faithfulness": 1.0,
+        "ragas_answer_relevancy": 0.9999999999999053
+      },
+      "metric_status": {
+        "ragas_faithfulness": "complete",
+        "ragas_answer_relevancy": "complete"
+      }
     },
     {
       "id": "H2",
       "kind": "text",
-      "trace_id": "4ffae067228140ed86709aba2f9e809a",
+      "trace_id": "65d103ef34c04ee9bb477c6528be871e",
       "response": "The inspection was scheduled to take place every 18 days.",
+      "retrieved_context_ids": [
+        "P1T1",
+        "P2T1"
+      ],
       "correct": true,
       "cited_pages": [],
       "citation_correct": false,
       "abstained": false,
-      "decision_correct": true
+      "decision_correct": true,
+      "retrieval_scores": {
+        "context_precision": 0.5,
+        "context_recall": 1.0,
+        "reciprocal_rank": 1.0
+      },
+      "quality": {
+        "ragas_faithfulness": 1.0,
+        "ragas_answer_relevancy": 0.9827305122821542
+      },
+      "metric_status": {
+        "ragas_faithfulness": "complete",
+        "ragas_answer_relevancy": "complete"
+      }
     },
     {
       "id": "H3",
       "kind": "figure",
-      "trace_id": "fa967cde46684836b903fa26f48ab238",
-      "response": "Based on the provided information, Figure 1 shows the dock throughput, but the specific number of crates handled by the west dock is not mentioned in the details.",
+      "trace_id": "a0ff68144fc1460c96599bb0a3b967eb",
+      "response": "Based on the provided information, the text mentions that Figure 1 shows \"Dock throughput\" along with an image placeholder, but it doesn't include any specific data or numbers regarding how many crates the west dock handled.",
+      "retrieved_context_ids": [
+        "P1T1",
+        "P2T1"
+      ],
       "correct": false,
       "cited_pages": [],
       "citation_correct": false,
       "abstained": true,
-      "decision_correct": false
+      "decision_correct": false,
+      "retrieval_scores": {
+        "context_precision": 0.0,
+        "context_recall": 0.0,
+        "reciprocal_rank": 0.0
+      }
     },
     {
       "id": "H4",
       "kind": "figure",
-      "trace_id": "1951c2f2dd70490e89fac2184ade0b45",
-      "response": "Based on Figure 1, the provided information doesn't specify the exact numbers or names of the docks shown in the chart. You can see the image of the dock throughput in the document, but the text doesn't break down the individual numbers for each one.",
+      "trace_id": "7efd5c68786149c5979023a05ffbd7b3",
+      "response": "Based on Figure 1, the specific throughput numbers for each dock aren't explicitly listed in the text, so I can't give you the exact crate count from the provided information.",
+      "retrieved_context_ids": [
+        "P1T1",
+        "P2T1"
+      ],
       "correct": false,
       "cited_pages": [],
       "citation_correct": false,
       "abstained": true,
-      "decision_correct": false
+      "decision_correct": false,
+      "retrieval_scores": {
+        "context_precision": 0.0,
+        "context_recall": 0.0,
+        "reciprocal_rank": 0.0
+      }
     },
     {
       "id": "H5",
       "kind": "unanswerable",
-      "trace_id": "3d881b1de71f4b468380c1cf597122dc",
-      "response": "Based on the provided information, there is no mention of how many workers unloaded the west dock crates.",
+      "trace_id": "9bdad32a4f3641748b731e4103d843bb",
+      "response": "Based on the provided information, there is no mention of workers or the west dock crates. The text only notes a harbor pilot, a trial site at Cedar Quay, an 18-day inspection interval, a reference gauge mounted on Pier K, and dock throughput figures.",
+      "retrieved_context_ids": [
+        "P1T1",
+        "P2T1"
+      ],
       "correct": true,
       "cited_pages": [],
       "citation_correct": null,
       "abstained": true,
-      "decision_correct": true
+      "decision_correct": true,
+      "retrieval_scores": {
+        "context_precision": null,
+        "context_recall": null,
+        "reciprocal_rank": null
+      }
     },
     {
       "id": "H6",
       "kind": "unanswerable",
-      "trace_id": "7c58871dfe434087a28638da0f6a7d80",
+      "trace_id": "3419f37b2125457f80c55f1355380083",
       "response": "I'm sorry, but the provided information doesn't mention anything about a fuel budget for the harbor pilot.",
+      "retrieved_context_ids": [
+        "P1T1",
+        "P2T1"
+      ],
       "correct": true,
       "cited_pages": [],
       "citation_correct": null,
       "abstained": true,
-      "decision_correct": true
+      "decision_correct": true,
+      "retrieval_scores": {
+        "context_precision": null,
+        "context_recall": null,
+        "reciprocal_rank": null
+      }
     },
     {
       "id": "O1",
       "kind": "text",
-      "trace_id": "fbfcf13a3d4c4cf9a88e9cb6575bc4df",
+      "trace_id": "3b4ca614ab374a9590556687e2c694ca",
       "response": "Mira Vale led the orchard survey.",
+      "retrieved_context_ids": [
+        "P1T1",
+        "P2T1"
+      ],
       "correct": true,
       "cited_pages": [],
       "citation_correct": false,
       "abstained": false,
-      "decision_correct": true
+      "decision_correct": true,
+      "retrieval_scores": {
+        "context_precision": 0.5,
+        "context_recall": 1.0,
+        "reciprocal_rank": 1.0
+      },
+      "quality": {
+        "ragas_answer_relevancy": 0.9999999999999992,
+        "ragas_faithfulness": 1.0
+      },
+      "metric_status": {
+        "ragas_faithfulness": "complete",
+        "ragas_answer_relevancy": "complete"
+      }
     },
     {
       "id": "O2",
       "kind": "text",
-      "trace_id": "31fa91d794274fcd92a7ca69f3eca35a",
+      "trace_id": "11316c8f828e43a8a9041b34e6dc7f4e",
       "response": "The calibration window lasts 36 hours.",
+      "retrieved_context_ids": [
+        "P1T1",
+        "P2T1"
+      ],
       "correct": true,
       "cited_pages": [],
       "citation_correct": false,
       "abstained": false,
-      "decision_correct": true
+      "decision_correct": true,
+      "retrieval_scores": {
+        "context_precision": 0.5,
+        "context_recall": 1.0,
+        "reciprocal_rank": 1.0
+      },
+      "quality": {
+        "ragas_answer_relevancy": 0.9388683849266339,
+        "ragas_faithfulness": 1.0
+      },
+      "metric_status": {
+        "ragas_answer_relevancy": "complete",
+        "ragas_faithfulness": "complete"
+      }
     },
     {
       "id": "O3",
       "kind": "figure",
-      "trace_id": "32fc67211d994f19a6c7c8acbe39e446",
-      "response": "Based on the provided information, Figure 1 shows the plot yield, but it doesn't specifically mention the yield for the alder plot.",
+      "trace_id": "0f4e3dbdf14a49a886e8c75b81257143",
+      "response": "Based on Figure 1, the specific yield for the alder plot isn't mentioned in the text — it just shows an image of the plot yield.",
+      "retrieved_context_ids": [
+        "P1T1",
+        "P2T1"
+      ],
       "correct": false,
       "cited_pages": [],
       "citation_correct": false,
       "abstained": true,
-      "decision_correct": false
+      "decision_correct": false,
+      "retrieval_scores": {
+        "context_precision": 0.0,
+        "context_recall": 0.0,
+        "reciprocal_rank": 0.0
+      }
     },
     {
       "id": "O4",
       "kind": "figure",
-      "trace_id": "64adca946d9b4d36bb5c63be8c2c374e",
-      "response": "Based on the provided information, Figure 1 (Plot yield) is supposed to show this, but the image itself isn't available. Therefore, I can't tell you which plot had the highest yield or what the exact number is!",
+      "trace_id": "4ddac9f473244a2ba4356252463cde22",
+      "response": "Based on the provided information, Figure 1 (Plot yield) shows the plot results, but the specific plot with the highest yield and the exact yield value are not mentioned in the text.",
+      "retrieved_context_ids": [
+        "P1T1",
+        "P2T1"
+      ],
       "correct": false,
       "cited_pages": [],
       "citation_correct": false,
       "abstained": true,
-      "decision_correct": false
+      "decision_correct": false,
+      "retrieval_scores": {
+        "context_precision": 0.0,
+        "context_recall": 0.0,
+        "reciprocal_rank": 0.0
+      }
     },
     {
       "id": "O5",
       "kind": "unanswerable",
-      "trace_id": "d6ab7d83db544e08a0ea75c8af631a73",
-      "response": "I'm sorry, but the provided information doesn't mention anything about the fertilizer dose applied to the maple plot.",
+      "trace_id": "468a7b69b67945f78ab443cb4a3e03dc",
+      "response": "I'm sorry, but the provided information doesn't mention anything about fertilizer doses or a maple plot!",
+      "retrieved_context_ids": [
+        "P1T1",
+        "P2T1"
+      ],
       "correct": true,
       "cited_pages": [],
       "citation_correct": null,
       "abstained": true,
-      "decision_correct": true
+      "decision_correct": true,
+      "retrieval_scores": {
+        "context_precision": null,
+        "context_recall": null,
+        "reciprocal_rank": null
+      }
     },
     {
       "id": "O6",
       "kind": "unanswerable",
-      "trace_id": "fdf7cc15f10248698ea2b9e3ce0166c2",
+      "trace_id": "b1d5387678ff457c9ba9df9a4f6b253c",
       "response": "Based on the provided information, there is no mention of the temperature at which the amber cases were stored.",
+      "retrieved_context_ids": [
+        "P1T1",
+        "P2T1"
+      ],
       "correct": true,
       "cited_pages": [],
       "citation_correct": null,
       "abstained": true,
-      "decision_correct": true
+      "decision_correct": true,
+      "retrieval_scores": {
+        "context_precision": null,
+        "context_recall": null,
+        "reciprocal_rank": null
+      }
     }
   ],
+  "rag_scores": {
+    "context_precision": {
+      "mean": 0.25,
+      "n": 8
+    },
+    "context_recall": {
+      "mean": 0.5,
+      "n": 8
+    },
+    "reciprocal_rank": {
+      "mean": 0.5,
+      "n": 8
+    },
+    "ragas_answer_relevancy": {
+      "mean": 0.9803997243021731,
+      "n": 4
+    },
+    "ragas_faithfulness": {
+      "mean": 1.0,
+      "n": 4
+    },
+    "retrieved_count": {
+      "mean": null,
+      "n": 0
+    },
+    "context_relevance": {
+      "mean": null,
+      "n": 0
+    },
+    "draft_faithfulness": {
+      "mean": null,
+      "n": 0
+    },
+    "draft_responsiveness": {
+      "mean": null,
+      "n": 0
+    },
+    "source_utilization": {
+      "mean": null,
+      "n": 0
+    }
+  },
   "scores": {
     "answer_correctness": {
       "passed": 8,
@@ -159,5 +341,13 @@
       "total": 12
     }
   },
-  "finished_at": "2026-11-24T19:00:01.853869+00:00"
+  "finished_at": "2026-11-24T19:24:33.596647+00:00",
+  "evaluation_framework": "ragas==0.3.7",
+  "ragas_scored_at": "2026-11-26T13:40:47.689590+00:00",
+  "ragas_configuration": {
+    "version": "0.3.7",
+    "judge_model": "gemini-3.5-flash-lite",
+    "embeddings": "BAAI/bge-small-en-v1.5",
+    "relevancy_strictness": 3
+  }
 }

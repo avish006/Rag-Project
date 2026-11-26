@@ -24,6 +24,15 @@ The two original PDFs each contain a native-text page and a chart whose values e
 | Correct page citations, answerable questions | 0/8 | 8/8 |
 | Insufficient-evidence recall, unanswerable questions | 4/4 | 4/4 |
 | Correct answer-or-abstain decision, all questions | 8/12 | 12/12 |
+| Context precision, labeled source IDs | 25.0% | 33.3% |
+| Context recall, labeled source IDs | 50.0% | 100.0% |
+| First relevant evidence, mean reciprocal rank | 0.500 | 0.667 |
+| Ragas answer relevancy | 98.0%, n=4 | 95.5%, n=8 |
+| Ragas text faithfulness | 100.0%, n=4 | 100.0%, n=4 |
+
+The retrieval rows average over the eight answerable questions. Each needs one source. The guarded system retrieved the required evidence every time, and also supplied two other sources on each question.
+
+Ragas scores apply to delivered answers. The baseline delivered only the four text answers. The guarded system also delivered the four figure answers, so the relevancy averages cover different question subsets. Text faithfulness covers the same four text questions in each arm.
 
 The original pipeline answered the four text questions and declined the four chart questions. Both versions declined the four genuinely unanswerable questions. The comparison measures the **combined** effect of page-aware retrieval, visual evidence and answer checks on a small English regression suite. It does not estimate general accuracy on unfamiliar documents. See the [evaluation protocol](evals/README.md), [case labels](evals/cases.json), [baseline responses](evals/results/baseline.json) and [guarded responses](evals/results/guarded.json).
 
@@ -32,7 +41,7 @@ The original pipeline answered the four text questions and declined the four cha
 1. PyMuPDF extracts page-local text windows (900 characters with 150 characters of overlap) and identifies pages with embedded images or vector drawings. Each source keeps a stable ID and a one-based page number.
 2. BGE-small-en-v1.5 encodes the sources. Retrieval combines exact normalized-vector ranking with BM25 using reciprocal ranks. It selects up to five text windows and two visual pages. NumPy implements the exact dense search. Index data is saved with the upload.
 3. DocuMind sends selected text and rendered page pixels to the model. The last six conversation turns help resolve follow-ups. The model returns claims with source IDs and evidence, or an empty list when evidence is insufficient.
-4. The server validates source IDs and checks that text excerpts occur in the cited window. A second model call checks the claims against the cited text or image and the question. An unknown citation, mismatched quote or negative verdict yields an insufficient-evidence response. Provider outages and malformed model output produce errors with a trace ID.
+4. Pydantic validates strict claim and verdict schemas. The server checks that source IDs exist and that text excerpts occur in the cited window. A second model call checks each claim against the cited text or image and the question. Every claim must be supported and the answer must address the question. An unknown citation, mismatched quote or negative verdict yields an insufficient-evidence response. Missing verdict fields, wrong types, provider outages and malformed model output produce errors with a trace ID.
 5. The reader displays the verified statements and page links. Visual verification uses the same model in a separate call, so correlated mistakes remain possible. Retrieval can miss relevant pages in long documents. Scanned pages are read visually only when retrieved.
 
 ## Live operations
@@ -41,11 +50,18 @@ The dashboard refreshes every five seconds. It counts completed uploads and ques
 
 Each upload and query returns a unique `trace_id` and `X-Trace-ID`. Click **View trace** in chat or select a recent failure on the dashboard to see the operation, stage, diagnostic, HTTP status, timestamp and duration. Select **Baseline** or **Guarded** to inspect the latest published evaluation question by question.
 
+**Live RAG quality** updates from actual query traffic. Ragas 0.3.7 scores answer relevancy for delivered answers and faithfulness for text answers in the background. Relevancy uses three reverse-generated questions and local BGE embeddings. Faithfulness checks answer statements against retrieved text. Figure answers use the visual verifier for support, and remain eligible for Ragas answer relevancy. Each score shows its measured query count. The dashboard also shows context relevance, draft claim support, responsiveness and cited-source share from the guardrail checks, plus hourly traffic, latency and RAG quality charts built with Chart.js.
+
+Ragas scoring starts after the request completes. It typically adds three Google generation calls for relevancy and two for text faithfulness, with limited transient retries. These calls use the same visitor-supplied Google key and count against its quota. One scoring worker handles up to eight pending/running jobs in memory. At capacity, the answer still returns and scoring is marked skipped busy. The dashboard displays pending, complete, partial and failed jobs, with detailed metric status in the trace. A restart marks unfinished jobs interrupted. User text and keys remain in memory for scoring, and public traces store only numeric scores, statuses and stage timings. See the [formulas and measurement limits](evals/README.md#rag-quality-metrics).
+
+OpenTelemetry records indexing, retrieval, rendering, generation, verification and background scoring spans beneath the request trace. Prometheus can scrape `GET /metrics` for rolling request counts, p95 latency, scored sample counts, mean RAG scores and guardrail outcomes. SQLite keeps the application dashboard available without an external telemetry account. The single-worker Gunicorn configuration keeps the bounded scoring queue and restart recovery consistent.
+
 | Endpoint | Purpose |
 | --- | --- |
 | `POST /upload` | Multipart field `file`. Returns `document_id`, `pdf_url` and `trace_id`. |
 | `POST /query` | JSON with `document_id`, `query`, `api_key` and optional `history`. Returns `response`, `status`, `citations`, `reason` and `trace_id`. |
 | `GET /api/metrics` | Live totals, p95 in milliseconds, 25 latest failure summaries and latest completed eval scores. |
+| `GET /metrics` | Prometheus exposition of rolling 24-hour gauges. |
 | `GET /traces/<id>` | Operational details for a single request. |
 | `GET /evaluations/baseline`, `/evaluations/guarded` | Recorded answers, gold labels, scores and evaluation trace IDs. |
 | `GET /health` | HTTP liveness check. |
@@ -76,6 +92,7 @@ Open [localhost:5000](http://localhost:5000). The first upload downloads the BGE
 ```sh
 python -m unittest discover -s tests -v
 python -m evals.run both
+python -m evals.run both --score-recorded
 ```
 
 ## Deploy

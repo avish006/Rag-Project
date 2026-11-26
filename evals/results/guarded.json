@@ -1,19 +1,19 @@
 {
   "mode": "guarded",
   "model": "gemini-3.5-flash-lite",
-  "suite_sha256": "587dabce8c97b31b757f47bb9406f6e905dfcac829ec49c7ff7ae7e0c3d48ee2",
+  "suite_sha256": "7165648f411a95b5a4d56781c87913a93fa17084fef44d3d12541925014152c1",
   "pdf_sha256": {
     "harbor": "f094fda6f6b6f999306a4147cc623c48fc88a1b54d3cb418ecadad03c111ae06",
     "orchard": "4ad7304435ee96fda1afcca5ec298efde191f527ca143099dc9b1f24ef713530"
   },
-  "run_id": "6cd5630505d440ddb6b4d6baecbf9760",
+  "run_id": "b9864f3d4b884eb4819ebc02fbca05e5",
   "cases": [
     {
       "id": "H1",
       "kind": "text",
-      "trace_id": "28336dd052d44e7aa5cbf1615c0ce05c",
+      "trace_id": "306a198324c14a28b565615526ee3798",
       "status": "answered",
-      "response": "The pilot trial was held at Cedar Quay. [p. 1]",
+      "response": "The harbor pilot trial was held at Cedar Quay. [p. 1]",
       "citations": [
         {
           "page": 1,
@@ -23,20 +23,43 @@
         }
       ],
       "reason": "verified",
+      "retrieved_context_ids": [
+        "P1T1",
+        "P2T1",
+        "P2V"
+      ],
+      "quality": {
+        "retrieved_count": 3,
+        "context_relevance": 0.3333333333333333,
+        "draft_faithfulness": 1.0,
+        "draft_responsiveness": 1,
+        "source_utilization": 0.3333333333333333,
+        "ragas_faithfulness": 1.0,
+        "ragas_answer_relevancy": 0.9018915626413139
+      },
       "correct": true,
       "cited_pages": [
         1
       ],
       "citation_correct": true,
       "abstained": false,
-      "decision_correct": true
+      "decision_correct": true,
+      "retrieval_scores": {
+        "context_precision": 0.3333333333333333,
+        "context_recall": 1.0,
+        "reciprocal_rank": 1.0
+      },
+      "metric_status": {
+        "ragas_faithfulness": "complete",
+        "ragas_answer_relevancy": "complete"
+      }
     },
     {
       "id": "H2",
       "kind": "text",
-      "trace_id": "5f3214b48e1f4bc88f0521d4a22ab79a",
+      "trace_id": "3cb81cc7e62f4178acd046095132ad9c",
       "status": "answered",
-      "response": "The inspection interval is 18 days. [p. 1]",
+      "response": "The inspection is scheduled at an interval of 18 days. [p. 1]",
       "citations": [
         {
           "page": 1,
@@ -46,18 +69,41 @@
         }
       ],
       "reason": "verified",
+      "retrieved_context_ids": [
+        "P1T1",
+        "P2T1",
+        "P2V"
+      ],
+      "quality": {
+        "retrieved_count": 3,
+        "context_relevance": 0.3333333333333333,
+        "draft_faithfulness": 1.0,
+        "draft_responsiveness": 1,
+        "source_utilization": 0.3333333333333333,
+        "ragas_answer_relevancy": 0.8602367136764885,
+        "ragas_faithfulness": 1.0
+      },
       "correct": true,
       "cited_pages": [
         1
       ],
       "citation_correct": true,
       "abstained": false,
-      "decision_correct": true
+      "decision_correct": true,
+      "retrieval_scores": {
+        "context_precision": 0.3333333333333333,
+        "context_recall": 1.0,
+        "reciprocal_rank": 1.0
+      },
+      "metric_status": {
+        "ragas_faithfulness": "complete",
+        "ragas_answer_relevancy": "complete"
+      }
     },
     {
       "id": "H3",
       "kind": "figure",
-      "trace_id": "6a761e67e4d849538004d5a445b751c5",
+      "trace_id": "916bd36a2bd0463793be9f2634f7a005",
       "status": "answered",
       "response": "The west dock handled 42 crates according to Figure 1. [p. 2]",
       "citations": [
@@ -65,73 +111,145 @@
           "page": 2,
           "kind": "figure",
           "source": "P2V",
-          "evidence": "West dock: 42 crates"
+          "evidence": "West dock bar with text '42 crates'"
         }
       ],
       "reason": "verified",
+      "retrieved_context_ids": [
+        "P2T1",
+        "P1T1",
+        "P2V"
+      ],
+      "quality": {
+        "retrieved_count": 3,
+        "context_relevance": 0.3333333333333333,
+        "draft_faithfulness": 1.0,
+        "draft_responsiveness": 1,
+        "source_utilization": 0.3333333333333333,
+        "ragas_answer_relevancy": 0.9939613308197229
+      },
       "correct": true,
       "cited_pages": [
         2
       ],
       "citation_correct": true,
       "abstained": false,
-      "decision_correct": true
+      "decision_correct": true,
+      "retrieval_scores": {
+        "context_precision": 0.3333333333333333,
+        "context_recall": 1.0,
+        "reciprocal_rank": 0.3333333333333333
+      },
+      "metric_status": {
+        "ragas_faithfulness": "not_applicable",
+        "ragas_answer_relevancy": "complete"
+      }
     },
     {
       "id": "H4",
       "kind": "figure",
-      "trace_id": "bb87f46d966a4ce7b33f9443d0197537",
+      "trace_id": "7acf147fffc547c7895bd6a7c47dbe61",
       "status": "answered",
-      "response": "The East dock had the highest throughput in Figure 1, handling 67 crates. [p. 2]",
+      "response": "East dock had the highest throughput in Figure 1, handling 67 crates. [p. 2]",
       "citations": [
         {
           "page": 2,
           "kind": "figure",
           "source": "P2V",
-          "evidence": "East dock 67 crates"
+          "evidence": "East dock: 67 crates"
         }
       ],
       "reason": "verified",
+      "retrieved_context_ids": [
+        "P2T1",
+        "P1T1",
+        "P2V"
+      ],
+      "quality": {
+        "retrieved_count": 3,
+        "context_relevance": 0.3333333333333333,
+        "draft_faithfulness": 1.0,
+        "draft_responsiveness": 1,
+        "source_utilization": 0.3333333333333333,
+        "ragas_answer_relevancy": 0.9995387707020967
+      },
       "correct": true,
       "cited_pages": [
         2
       ],
       "citation_correct": true,
       "abstained": false,
-      "decision_correct": true
+      "decision_correct": true,
+      "retrieval_scores": {
+        "context_precision": 0.3333333333333333,
+        "context_recall": 1.0,
+        "reciprocal_rank": 0.3333333333333333
+      },
+      "metric_status": {
+        "ragas_faithfulness": "not_applicable",
+        "ragas_answer_relevancy": "complete"
+      }
     },
     {
       "id": "H5",
       "kind": "unanswerable",
-      "trace_id": "610a3528b076404d996fc759dfe244b2",
+      "trace_id": "8bd11392fc1349aa91bd0a515ce22ba7",
       "status": "insufficient_evidence",
       "response": "There is insufficient evidence in this document to answer that question.",
       "citations": [],
       "reason": "model_abstained",
+      "retrieved_context_ids": [
+        "P2T1",
+        "P1T1",
+        "P2V"
+      ],
+      "quality": {
+        "retrieved_count": 3,
+        "context_relevance": 0.0
+      },
       "correct": true,
       "cited_pages": [],
       "citation_correct": null,
       "abstained": true,
-      "decision_correct": true
+      "decision_correct": true,
+      "retrieval_scores": {
+        "context_precision": null,
+        "context_recall": null,
+        "reciprocal_rank": null
+      }
     },
     {
       "id": "H6",
       "kind": "unanswerable",
-      "trace_id": "6fad96dec08546b2b646c320999afe26",
+      "trace_id": "1ecc5ba6a8b8455ebcd69db84d1f08ef",
       "status": "insufficient_evidence",
       "response": "There is insufficient evidence in this document to answer that question.",
       "citations": [],
       "reason": "model_abstained",
+      "retrieved_context_ids": [
+        "P1T1",
+        "P2T1",
+        "P2V"
+      ],
+      "quality": {
+        "retrieved_count": 3,
+        "context_relevance": 0.0
+      },
       "correct": true,
       "cited_pages": [],
       "citation_correct": null,
       "abstained": true,
-      "decision_correct": true
+      "decision_correct": true,
+      "retrieval_scores": {
+        "context_precision": null,
+        "context_recall": null,
+        "reciprocal_rank": null
+      }
     },
     {
       "id": "O1",
       "kind": "text",
-      "trace_id": "07bbf056ee9d412bbbf391dea1b2bac4",
+      "trace_id": "131d98bf9cfb4733b0c5fd4340e452cf",
       "status": "answered",
       "response": "Mira Vale led the orchard survey. [p. 1]",
       "citations": [
@@ -143,20 +261,43 @@
         }
       ],
       "reason": "verified",
+      "retrieved_context_ids": [
+        "P1T1",
+        "P2T1",
+        "P2V"
+      ],
+      "quality": {
+        "retrieved_count": 3,
+        "context_relevance": 0.3333333333333333,
+        "draft_faithfulness": 1.0,
+        "draft_responsiveness": 1,
+        "source_utilization": 0.3333333333333333,
+        "ragas_answer_relevancy": 0.9999999999999992,
+        "ragas_faithfulness": 1.0
+      },
       "correct": true,
       "cited_pages": [
         1
       ],
       "citation_correct": true,
       "abstained": false,
-      "decision_correct": true
+      "decision_correct": true,
+      "retrieval_scores": {
+        "context_precision": 0.3333333333333333,
+        "context_recall": 1.0,
+        "reciprocal_rank": 1.0
+      },
+      "metric_status": {
+        "ragas_answer_relevancy": "complete",
+        "ragas_faithfulness": "complete"
+      }
     },
     {
       "id": "O2",
       "kind": "text",
-      "trace_id": "25a547debb1f4ab2b6c565460e76a85b",
+      "trace_id": "61aadaabce1a454daa45a5bcc20d64ce",
       "status": "answered",
-      "response": "The calibration window is 36 hours long. [p. 1]",
+      "response": "The calibration window lasts 36 hours. [p. 1]",
       "citations": [
         {
           "page": 1,
@@ -166,18 +307,41 @@
         }
       ],
       "reason": "verified",
+      "retrieved_context_ids": [
+        "P1T1",
+        "P2T1",
+        "P2V"
+      ],
+      "quality": {
+        "retrieved_count": 3,
+        "context_relevance": 0.3333333333333333,
+        "draft_faithfulness": 1.0,
+        "draft_responsiveness": 1,
+        "source_utilization": 0.3333333333333333,
+        "ragas_answer_relevancy": 0.9388683849266339,
+        "ragas_faithfulness": 1.0
+      },
       "correct": true,
       "cited_pages": [
         1
       ],
       "citation_correct": true,
       "abstained": false,
-      "decision_correct": true
+      "decision_correct": true,
+      "retrieval_scores": {
+        "context_precision": 0.3333333333333333,
+        "context_recall": 1.0,
+        "reciprocal_rank": 1.0
+      },
+      "metric_status": {
+        "ragas_answer_relevancy": "complete",
+        "ragas_faithfulness": "complete"
+      }
     },
     {
       "id": "O3",
       "kind": "figure",
-      "trace_id": "7784d9147ded4925880dbd4644e04b21",
+      "trace_id": "f244316719c24a5e9c2f5848f9c132b9",
       "status": "answered",
       "response": "The yield shown for the alder plot in Figure 1 is 21 kg. [p. 2]",
       "citations": [
@@ -185,70 +349,184 @@
           "page": 2,
           "kind": "figure",
           "source": "P2V",
-          "evidence": "Alder plot | 21 kg"
+          "evidence": "Alder plot: 21 kg"
         }
       ],
       "reason": "verified",
+      "retrieved_context_ids": [
+        "P2T1",
+        "P1T1",
+        "P2V"
+      ],
+      "quality": {
+        "retrieved_count": 3,
+        "context_relevance": 0.3333333333333333,
+        "draft_faithfulness": 1.0,
+        "draft_responsiveness": 1,
+        "source_utilization": 0.3333333333333333,
+        "ragas_answer_relevancy": 0.9963719776947287
+      },
       "correct": true,
       "cited_pages": [
         2
       ],
       "citation_correct": true,
       "abstained": false,
-      "decision_correct": true
+      "decision_correct": true,
+      "retrieval_scores": {
+        "context_precision": 0.3333333333333333,
+        "context_recall": 1.0,
+        "reciprocal_rank": 0.3333333333333333
+      },
+      "metric_status": {
+        "ragas_faithfulness": "not_applicable",
+        "ragas_answer_relevancy": "complete"
+      }
     },
     {
       "id": "O4",
       "kind": "figure",
-      "trace_id": "ba244714e78a438cb8d469d421f2534c",
+      "trace_id": "7a49f47565ef44c79b0ebd935026f88b",
       "status": "answered",
-      "response": "The Maple plot had the highest yield, with a yield of 58 kg. [p. 2]",
+      "response": "The Maple plot had the highest yield, which was 58 kg. [p. 2]",
       "citations": [
         {
           "page": 2,
           "kind": "figure",
           "source": "P2V",
-          "evidence": "Maple plot | 58 kg"
+          "evidence": "Maple plot 58 kg"
         }
       ],
       "reason": "verified",
+      "retrieved_context_ids": [
+        "P2T1",
+        "P1T1",
+        "P2V"
+      ],
+      "quality": {
+        "retrieved_count": 3,
+        "context_relevance": 0.3333333333333333,
+        "draft_faithfulness": 1.0,
+        "draft_responsiveness": 1,
+        "source_utilization": 0.3333333333333333,
+        "ragas_answer_relevancy": 0.9467426791240544
+      },
       "correct": true,
       "cited_pages": [
         2
       ],
       "citation_correct": true,
       "abstained": false,
-      "decision_correct": true
+      "decision_correct": true,
+      "retrieval_scores": {
+        "context_precision": 0.3333333333333333,
+        "context_recall": 1.0,
+        "reciprocal_rank": 0.3333333333333333
+      },
+      "metric_status": {
+        "ragas_faithfulness": "not_applicable",
+        "ragas_answer_relevancy": "complete"
+      }
     },
     {
       "id": "O5",
       "kind": "unanswerable",
-      "trace_id": "ac3fa6867c47400194f71291add69848",
+      "trace_id": "7af9921099c248068ab2b75759e05f18",
       "status": "insufficient_evidence",
       "response": "There is insufficient evidence in this document to answer that question.",
       "citations": [],
       "reason": "model_abstained",
+      "retrieved_context_ids": [
+        "P2T1",
+        "P1T1",
+        "P2V"
+      ],
+      "quality": {
+        "retrieved_count": 3,
+        "context_relevance": 0.0
+      },
       "correct": true,
       "cited_pages": [],
       "citation_correct": null,
       "abstained": true,
-      "decision_correct": true
+      "decision_correct": true,
+      "retrieval_scores": {
+        "context_precision": null,
+        "context_recall": null,
+        "reciprocal_rank": null
+      }
     },
     {
       "id": "O6",
       "kind": "unanswerable",
-      "trace_id": "feeca25ebe46406b9adb439080508d44",
+      "trace_id": "cc55c2b0bb03430ca477250bfafd9d8c",
       "status": "insufficient_evidence",
       "response": "There is insufficient evidence in this document to answer that question.",
       "citations": [],
       "reason": "model_abstained",
+      "retrieved_context_ids": [
+        "P1T1",
+        "P2T1",
+        "P2V"
+      ],
+      "quality": {
+        "retrieved_count": 3,
+        "context_relevance": 0.3333333333333333
+      },
       "correct": true,
       "cited_pages": [],
       "citation_correct": null,
       "abstained": true,
-      "decision_correct": true
+      "decision_correct": true,
+      "retrieval_scores": {
+        "context_precision": null,
+        "context_recall": null,
+        "reciprocal_rank": null
+      }
     }
   ],
+  "rag_scores": {
+    "context_precision": {
+      "mean": 0.3333333333333333,
+      "n": 8
+    },
+    "context_recall": {
+      "mean": 1.0,
+      "n": 8
+    },
+    "reciprocal_rank": {
+      "mean": 0.6666666666666666,
+      "n": 8
+    },
+    "ragas_answer_relevancy": {
+      "mean": 0.9547014274481298,
+      "n": 8
+    },
+    "ragas_faithfulness": {
+      "mean": 1.0,
+      "n": 4
+    },
+    "retrieved_count": {
+      "mean": 3,
+      "n": 12
+    },
+    "context_relevance": {
+      "mean": 0.25,
+      "n": 12
+    },
+    "draft_faithfulness": {
+      "mean": 1.0,
+      "n": 8
+    },
+    "draft_responsiveness": {
+      "mean": 1,
+      "n": 8
+    },
+    "source_utilization": {
+      "mean": 0.3333333333333333,
+      "n": 8
+    }
+  },
   "scores": {
     "answer_correctness": {
       "passed": 12,
@@ -267,5 +545,13 @@
       "total": 12
     }
   },
-  "finished_at": "2026-11-24T19:03:10.746486+00:00"
+  "finished_at": "2026-11-24T19:25:06.342241+00:00",
+  "evaluation_framework": "ragas==0.3.7",
+  "ragas_scored_at": "2026-11-26T13:40:47.705367+00:00",
+  "ragas_configuration": {
+    "version": "0.3.7",
+    "judge_model": "gemini-3.5-flash-lite",
+    "embeddings": "BAAI/bge-small-en-v1.5",
+    "relevancy_strictness": 3
+  }
 }

@@ -5,6 +5,7 @@ from pathlib import Path
 import re
 import shutil
 import time
+from contextvars import copy_context
 from uuid import uuid4
 
 import fitz
@@ -15,6 +16,11 @@ from werkzeug.exceptions import HTTPException
 from rag import ask, prepare_document
 from provider import ProviderError
 from telemetry import Traces, latest_evals
+from rag_metrics import LIVE, OFFLINE, EVAL_LABELS
+from tracing import CAPTURE, stage
+from continuous_eval import ContinuousEvaluator
+from prometheus_client import CONTENT_TYPE_LATEST
+from opentelemetry.trace import Status, StatusCode
 
 
 def create_app(directory=None):
@@ -23,6 +29,8 @@ def create_app(directory=None):
     documents = store / "documents"
     documents.mkdir(parents=True, exist_ok=True)
     traces = Traces(store)
+    evaluator = ContinuousEvaluator(traces)
+    app.extensions["continuous_evaluator"] = evaluator
     app.config["MAX_CONTENT_LENGTH"] = 50 * 1024 * 1024
 
     def failure(message, code, reason):
@@ -31,19 +39,43 @@ def create_app(directory=None):
 
     @app.before_request
     def begin():
-        g.trace_id = uuid4().hex
+        g.spans = []
+        g.capture_token = CAPTURE.set(g.spans)
+        g.trace_scope = stage(request.endpoint or "http_request")
+        g.root_span = g.trace_scope.__enter__()
+        g.trace_id = f"{g.root_span.get_span_context().trace_id:032x}"
         g.started, g.clock = time.time(), time.perf_counter()
         g.outcome, g.stage, g.reason = "ok", "validation", "ok"
+        g.measurements = {}
 
     @app.after_request
     def finish(response):
         response.headers["X-Trace-ID"] = g.trace_id
         if request.path in ("/upload", "/query"):
+            if response.status_code >= 400:
+                g.root_span.set_status(Status(StatusCode.ERROR))
+            g.root_span.set_attribute("http.response.status_code", response.status_code)
             traces.add((g.trace_id, g.started, request.path[1:], response.status_code,
-                        round((time.perf_counter() - g.clock) * 1000, 2), g.outcome, g.stage, g.reason))
+                        round((time.perf_counter() - g.clock) * 1000, 2), g.outcome, g.stage, g.reason),
+                       g.measurements)
+            if getattr(g, "evaluate", None):
+                evaluator.submit(g.trace_id, *g.evaluate, context=copy_context())
+        g.trace_scope.__exit__(None, None, None)
+        g.trace_scope = None
+        if request.path in ("/upload", "/query"):
+            traces.save_spans(g.trace_id, g.spans)
         if request.path.startswith(("/api/", "/uploaded/", "/traces/")):
             response.headers["Cache-Control"] = "no-store"
         return response
+
+    @app.teardown_request
+    def end_context(exc):
+        scope = getattr(g, "trace_scope", None)
+        if scope:
+            scope.__exit__(None, None, None)
+        token = g.pop("capture_token", None)
+        if token is not None:
+            CAPTURE.reset(token)
 
     @app.errorhandler(Exception)
     def unexpected(exc):
@@ -78,7 +110,8 @@ def create_app(directory=None):
         try:
             file.save(pdf)
             g.stage = "indexing"
-            sources, vectors = prepare_document(pdf)
+            with stage("indexing"):
+                sources, vectors = prepare_document(pdf)
             np.save(folder / "vectors.npy", vectors, allow_pickle=False)
             (folder / "sources.json").write_text(json.dumps(sources), encoding="utf-8")
             ready = True
@@ -121,8 +154,10 @@ def create_app(directory=None):
         data = (json.loads((folder / "sources.json").read_text(encoding="utf-8")),
                 np.load(folder / "vectors.npy", allow_pickle=False))
         g.stage = "answer_generation"
+        evaluation = {}
         try:
-            result = ask(folder / "document.pdf", data, question.strip(), key.strip(), history)
+            result = ask(folder / "document.pdf", data, question.strip(), key.strip(), history,
+                         measurements=g.measurements, evaluation=evaluation)
         except ProviderError as exc:
             reason = str(exc)
             if reason in ("provider_http_400", "provider_http_401", "provider_http_403"):
@@ -132,6 +167,9 @@ def create_app(directory=None):
             return failure("The model could not complete this request. Please retry.", 502, reason)
         g.outcome, g.reason = result["status"], result["reason"]
         g.stage = "evidence_check"
+        if result["status"] == "answered":
+            g.evaluate = (question.strip(), result["response"], evaluation.get("sources", []),
+                          evaluation.get("visual_answer", False), key.strip())
         return jsonify(**result, trace_id=g.trace_id)
 
     @app.get("/uploaded/<doc_id>.pdf")
@@ -147,7 +185,7 @@ def create_app(directory=None):
 
     @app.get("/dashboard")
     def dashboard():
-        return render_template("dashboard.html")
+        return render_template("dashboard.html", live=LIVE, offline=EVAL_LABELS)
 
     @app.get("/evaluations/<mode>")
     def evaluation(mode):
@@ -157,18 +195,22 @@ def create_app(directory=None):
             return failure("Evaluation unavailable.", 404, "unknown_evaluation")
         report = json.loads(path.read_text(encoding="utf-8"))
         labels = {c["id"]: c for c in json.loads((root / "cases.json").read_text(encoding="utf-8"))}
-        return render_template("evaluation.html", mode=mode, report=report, labels=labels)
+        return render_template("evaluation.html", mode=mode, report=report, labels=labels, offline=OFFLINE, live=LIVE)
 
     @app.get("/api/metrics")
     def metrics():
         return jsonify(**traces.overview(), evals=latest_evals())
+
+    @app.get("/metrics")
+    def prometheus():
+        return app.response_class(traces.prometheus(), content_type=CONTENT_TYPE_LATEST)
 
     @app.get("/traces/<trace_id>")
     def trace(trace_id):
         run = traces.get(trace_id)
         if run is None:
             return render_template("trace.html", run=None), 404
-        return render_template("trace.html", run=run)
+        return render_template("trace.html", run=run, live=LIVE)
 
     return app
 

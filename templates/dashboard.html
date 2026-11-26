@@ -5,9 +5,24 @@
 {% for id, label in [('requests','Requests'),('latency','p95 latency'),('errors','Errors'),('insufficient','Insufficient evidence')] %}
 <article><h2>{{ label }}</h2><strong id="{{ id }}">—</strong></article>
 {% endfor %}</section>
+<section class="panel"><h2>Live RAG quality</h2>
+<p class="sub" id="rag-window">Last 24 hours</p>
+<p class="sub" id="eval-jobs" role="status"></p>
+<table><thead><tr><th>Per-query metric</th><th>Mean</th><th>Scored queries</th></tr></thead><tbody>
+{% for name, (label, description) in live.items() %}<tr><td>{{ label }}<small class="metric-help">{{ description }}</small></td>
+<td id="mean-{{ name }}">—</td><td id="count-{{ name }}">—</td></tr>{% endfor %}
+</tbody></table>
+<details class="recent"><summary>Latest query traces</summary><div class="table-scroll"><table><thead><tr>
+<th>Time</th><th>Outcome</th><th>Ragas relevancy</th><th>Ragas faithfulness</th><th>Evaluation</th></tr></thead><tbody id="queries"></tbody></table></div></details>
+</section>
+<section class="panel"><h2>Traffic and latency</h2><p class="sub">Hourly buckets over the last 24 hours.</p><div class="chart"><canvas id="traffic-chart" aria-label="Requests, errors and p95 latency by hour" role="img"></canvas></div></section>
+<section class="panel"><h2>RAG quality over time</h2><p class="sub">Hourly means from completed Ragas scores. Hours without measurements have a gap.</p><div class="chart"><canvas id="quality-chart" aria-label="Ragas relevancy and faithfulness by hour" role="img"></canvas></div></section>
+<section class="panel"><h2>Guardrail outcomes</h2><div id="guardrails"></div></section>
 <section class="panel"><h2>Latest evaluation</h2><p id="eval-info" class="sub"></p>
-<table><thead><tr><th>Metric</th><th><a href="/evaluations/baseline">Baseline</a></th><th><a href="/evaluations/guarded">Guarded</a></th></tr></thead><tbody id="scores"></tbody></table></section>
+<table><thead><tr><th>Metric</th><th><a href="/evaluations/baseline">Baseline</a></th><th><a href="/evaluations/guarded">Guarded</a></th></tr></thead><tbody id="scores"></tbody>
+<tbody>{% for name,label in offline.items() %}<tr><td>{{ label }}</td>{% for mode in ['baseline','guarded'] %}<td id="eval-{{ mode }}-{{ name }}">—</td>{% endfor %}</tr>{% endfor %}</tbody></table>
+<p class="sub">Retrieval scores use the labeled evidence for answerable questions. MRR is the mean reciprocal rank of the first relevant source.</p></section>
 <section class="panel"><h2>Recent failures</h2><p id="empty" class="sub">Loading…</p>
 <div id="failures"></div></section>
 {% endblock %}
-{% block scripts %}<script src="/static/operations.js"></script>{% endblock %}
+{% block scripts %}<script src="/static/chart.umd.min.js"></script><script src="/static/operations.js"></script>{% endblock %}

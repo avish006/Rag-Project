@@ -13,6 +13,8 @@ from pathlib import Path
 from dotenv import load_dotenv
 from provider import MODEL, ProviderError
 from evals import baseline
+from ragas_eval import score_answer
+from rag_metrics import LIVE, OFFLINE, retrieval_scores, summarize_metrics
 
 ROOT = Path(__file__).resolve().parent
 CASES = json.loads((ROOT / "cases.json").read_text())
@@ -30,6 +32,7 @@ def norm(s):
 def score(case, result):
     raw = result["response"]
     prose = re.sub(r"\b(?:specifically|explicitly)\s+", "", raw, flags=re.I)
+    prose = re.sub(r"\b(is|are|was|were)n['’]t\b", r"\1 not", prose, flags=re.I)
     abstained = (result["status"] == "insufficient_evidence" if "status" in result
                  else bool(ABSENCE.search(prose) or re.search(r"\bno mention of\b", prose, re.I)))
     pages = {c["page"] for c in result.get("citations", [])}
@@ -60,6 +63,13 @@ def summarize(report):
     cases = report["cases"]
     for row in cases:
         row.update(score(labels[row["id"]], row))
+        gold = labels[row["id"]]["reference_context_ids"]
+        row["retrieval_scores"] = retrieval_scores(row.get("retrieved_context_ids"), gold)
+    report["rag_scores"] = {
+        **summarize_metrics([r["retrieval_scores"] for r in cases], OFFLINE),
+        **summarize_metrics([r.get("quality", {}) for r in cases], LIVE),
+    }
+    report["evaluation_framework"] = "ragas==0.3.7"
     report["scores"] = {
         "answer_correctness": metric([r["correct"] for r in cases]),
         "citation_accuracy": metric([r["citation_correct"] for r in cases if r["citation_correct"] is not None]),
@@ -96,7 +106,10 @@ def run(mode, output):
                 else:
                     if pdf not in cache:
                         cache[pdf] = prepare_document(pdf)
-                    result = ask(pdf, cache[pdf], case["question"], key, [])
+                    observed = {}
+                    result = ask(pdf, cache[pdf], case["question"], key, [], measurements=observed)
+                    result["retrieved_context_ids"] = observed.pop("retrieved_context_ids")
+                    result["quality"] = observed
                 break
             except ProviderError as exc:
                 if str(exc) not in {"provider_http_429", "provider_http_503", "provider_unreachable"} or attempt == 3:
@@ -117,6 +130,42 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("mode", choices=["baseline", "guarded", "both"])
     parser.add_argument("--output", type=Path, default=ROOT / "results")
+    parser.add_argument("--score-recorded", action="store_true", help="Run Ragas on the recorded synthetic answers and re-score ID retrieval.")
     args = parser.parse_args()
     for mode in (["baseline", "guarded"] if args.mode == "both" else [args.mode]):
-        run(mode, args.output)
+        if args.score_recorded:
+            import asyncio
+            from rag import prepare_document
+            load_dotenv()
+            report = json.loads((args.output / f"{mode}.json").read_text(encoding="utf-8"))
+            by_id = {c["id"]: c for c in CASES}
+            docs = {}
+            for row in report["cases"]:
+                case = by_id[row["id"]]
+                if score(case, row)["abstained"] or case["kind"] == "unanswerable":
+                    continue
+                quality = row.setdefault("quality", {})
+                if "ragas_answer_relevancy" in quality and ("ragas_faithfulness" in quality or case["kind"] == "figure"):
+                    continue
+                pdf = ROOT / "fixtures" / (case["document"]+".pdf")
+                if pdf not in docs:
+                    docs[pdf] = prepare_document(pdf)[0]
+                retrieved = set(row.get("retrieved_context_ids", []))
+                sources = [s for s in docs[pdf] if s["id"] in retrieved]
+                statuses = row.setdefault("metric_status", {})
+                def save(name, value, status):
+                    statuses[name] = status
+                    if value is not None:
+                        quality[name] = value
+                asyncio.run(score_answer(case["question"], row["response"], sources,
+                                         case["kind"] == "figure", os.environ["GOOGLE_API_KEY"], save,
+                                         skip=set(quality)))
+                print(mode, row["id"], statuses, flush=True)
+                atomic_json(args.output / f"{mode}.json", report)
+            summarize(report)
+            report["ragas_scored_at"] = datetime.now(timezone.utc).isoformat()
+            report["ragas_configuration"] = {"version":"0.3.7", "judge_model":MODEL,
+                                             "embeddings":"BAAI/bge-small-en-v1.5", "relevancy_strictness":3}
+            atomic_json(args.output / f"{mode}.json", report)
+        else:
+            run(mode, args.output)

@@ -20,3 +20,8 @@
 .failure {display:block;padding:.8rem 0;border-top:1px solid var(--border-subtle);overflow-wrap:anywhere}
 .trace-link {font-size:.82rem;margin:.25rem .4rem;display:inline-block}
 .citation {color:var(--accent-hover);cursor:pointer}
+.metric-help {display:block;color:var(--text-secondary);font-weight:400;line-height:1.4;margin-top:.2rem}
+.recent {margin-top:1rem}
+.recent summary {cursor:pointer;color:var(--accent-hover)}
+.table-scroll {overflow-x:auto}
+.chart {height:240px;position:relative}

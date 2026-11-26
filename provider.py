@@ -11,7 +11,7 @@ class ProviderError(Exception):
     pass
 
 
-def generate(parts, key, temperature=0.7):
+def generate(parts, key, temperature=0.7, *, max_tokens=1600, timeout=75):
     if not re.fullmatch(r"[\w.\-]+", MODEL):
         raise ValueError("Invalid model ID")
     try:
@@ -19,8 +19,8 @@ def generate(parts, key, temperature=0.7):
             f"https://generativelanguage.googleapis.com/v1beta/models/{MODEL}:generateContent",
             headers={"x-goog-api-key": key},
             json={"contents": [{"role": "user", "parts": parts}],
-                  "generationConfig": {"maxOutputTokens": 1600, "temperature": temperature}},
-            timeout=(8, 75),
+                  "generationConfig": {"maxOutputTokens": max_tokens, "temperature": temperature}},
+            timeout=(8, timeout),
         )
     except requests.RequestException:
         raise ProviderError("provider_unreachable") from None

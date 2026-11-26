@@ -2,6 +2,11 @@
 !requirements.txt
 !app.py
 !rag.py
+!rag_metrics.py
+!ragas_eval.py
+!continuous_eval.py
+!guardrails.py
+!tracing.py
 !provider.py
 !telemetry.py
 !templates/

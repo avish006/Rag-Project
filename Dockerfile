@@ -5,7 +5,7 @@ RUN useradd --create-home --uid 1000 appuser
 COPY requirements.txt .
 RUN pip install --no-cache-dir torch==2.5.1 --index-url https://download.pytorch.org/whl/cpu && pip install --no-cache-dir -r requirements.txt
 ENV HF_HOME=/home/appuser/.cache/huggingface
-COPY app.py rag.py provider.py telemetry.py ./
+COPY app.py rag.py rag_metrics.py ragas_eval.py continuous_eval.py guardrails.py tracing.py provider.py telemetry.py ./
 COPY templates ./templates
 COPY static ./static
 COPY evals/results ./evals/results
