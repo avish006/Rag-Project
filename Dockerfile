@@ -2,6 +2,7 @@ FROM python:3.11-slim
 ENV PYTHONUNBUFFERED=1 PIP_DISABLE_PIP_VERSION_CHECK=1 OMP_NUM_THREADS=2 TOKENIZERS_PARALLELISM=false
 WORKDIR /app
 RUN useradd --create-home --uid 1000 appuser
+RUN apt-get update && apt-get install -y --no-install-recommends git && rm -rf /var/lib/apt/lists/*
 COPY requirements.txt .
 RUN pip install --no-cache-dir torch==2.5.1 --index-url https://download.pytorch.org/whl/cpu && pip install --no-cache-dir -r requirements.txt
 ENV HF_HOME=/home/appuser/.cache/huggingface
