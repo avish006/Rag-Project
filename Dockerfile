@@ -12,6 +12,6 @@ COPY evals/results ./evals/results
 COPY evals/cases.json ./evals/cases.json
 RUN mkdir -p /app/instance && chown appuser:appuser /app/instance
 USER appuser
-RUN python -c "from rag import encoder; encoder()"
+RUN python -c "from rag import encoder; encoder(); from app import app"
 EXPOSE 7860
 CMD ["gunicorn","--bind","0.0.0.0:7860","--workers","1","--threads","4","--timeout","240","app:app"]

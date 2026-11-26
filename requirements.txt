@@ -14,5 +14,6 @@ langchain==0.3.27
 langchain-core==0.3.79
 langchain-community==0.3.31
 langchain-openai==0.3.35
+pyarrow==21.0.0
 opentelemetry-sdk==1.38.0
 prometheus-client==0.23.1
