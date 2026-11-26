@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="1020" viewBox="0 0 1280 1020" role="img" aria-labelledby="title desc">
+<title id="title">DocuMind retrieval and guardrail components</title><desc id="desc">The answer orchestrator uses hybrid retrieval, shared BGE encoding, PDF rendering, strict Pydantic contracts and cited-evidence validation. Generation and per-claim verification call the Google API.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#52657e"/></marker></defs>
+<style>text{font-family:Inter,Arial,sans-serif;fill:#18314f} .muted{fill:#53677f} .title{font-weight:700} .label{paint-order:stroke;stroke:#f8fafc;stroke-width:6;stroke-linejoin:round}</style>
+<rect width="1280" height="1020" fill="#f8fafc"/>
+<text x="30" y="38" font-size="29" class="title" text-anchor="start">Retrieval and guardrail components</text>
+<text x="30" y="66" font-size="16" class="muted" text-anchor="start">Query inputs / question, visitor key, last six turns, page sources and stored vectors</text>
+<rect x="30" y="100" width="890" height="860" rx="16" fill="#ffffff" stroke="#dce7f5" stroke-width="2"/>
+<text x="50" y="128" font-size="18" class="title" text-anchor="start">Multimodal RAG engine</text>
+<text x="50" y="151" font-size="14" class="muted" text-anchor="start">Logical components inside the shared application process</text>
+<rect x="350" y="185" width="250" height="165" rx="10" fill="#edf3ff" stroke="#90ade0" stroke-width="1.5"/>
+<text x="366" y="214" font-size="18" class="title" text-anchor="start">Answer orchestrator</text>
+<text x="366" y="237" font-size="13" class="muted" text-anchor="start">rag.py / ask</text>
+<text x="366" y="264" font-size="14" class="" text-anchor="start">Selects source evidence</text>
+<text x="366" y="285" font-size="14" class="" text-anchor="start">Answer or insufficient</text>
+<text x="366" y="306" font-size="14" class="" text-anchor="start">evidence</text>
+<text x="366" y="327" font-size="14" class="" text-anchor="start">Errors include trace IDs</text>
+<rect x="60" y="430" width="250" height="190" rx="10" fill="#edf3ff" stroke="#90ade0" stroke-width="1.5"/>
+<text x="76" y="459" font-size="18" class="title" text-anchor="start">Hybrid retrieval</text>
+<text x="76" y="482" font-size="13" class="muted" text-anchor="start">rank-bm25 + NumPy</text>
+<text x="76" y="509" font-size="14" class="" text-anchor="start">BM25 token ranking</text>
+<text x="76" y="530" font-size="14" class="" text-anchor="start">Exact dense cosine search</text>
+<text x="76" y="551" font-size="14" class="" text-anchor="start">Reciprocal-rank fusion</text>
+<text x="76" y="572" font-size="14" class="" text-anchor="start">5 text windows; 2 visual</text>
+<text x="76" y="593" font-size="14" class="" text-anchor="start">pages</text>
+<rect x="350" y="430" width="250" height="190" rx="10" fill="#edf3ff" stroke="#90ade0" stroke-width="1.5"/>
+<text x="366" y="459" font-size="18" class="title" text-anchor="start">Visual renderer</text>
+<text x="366" y="482" font-size="13" class="muted" text-anchor="start">PyMuPDF / evidence_parts</text>
+<text x="366" y="509" font-size="14" class="" text-anchor="start">Selected PDF page pixels</text>
+<text x="366" y="530" font-size="14" class="" text-anchor="start">PNG evidence with source IDs</text>
+<text x="366" y="551" font-size="14" class="" text-anchor="start">Long side capped at 1500 px</text>
+<rect x="640" y="430" width="250" height="190" rx="10" fill="#edf3ff" stroke="#90ade0" stroke-width="1.5"/>
+<text x="656" y="459" font-size="18" class="title" text-anchor="start">Output contracts</text>
+<text x="656" y="482" font-size="13" class="muted" text-anchor="start">Pydantic / guardrails.py</text>
+<text x="656" y="509" font-size="14" class="" text-anchor="start">Strict Claim and Draft fields</text>
+<text x="656" y="530" font-size="14" class="" text-anchor="start">Source ID format</text>
+<text x="656" y="551" font-size="14" class="" text-anchor="start">Typed per-claim verdicts</text>
+<text x="656" y="572" font-size="14" class="" text-anchor="start">Invalid output gives errors</text>
+<rect x="60" y="735" width="250" height="155" rx="10" fill="#eaf7f5" stroke="#83b9af" stroke-width="1.5"/>
+<text x="76" y="764" font-size="18" class="title" text-anchor="start">Shared BGE encoder</text>
+<text x="76" y="787" font-size="13" class="muted" text-anchor="start">Transformers + PyTorch</text>
+<text x="76" y="814" font-size="14" class="" text-anchor="start">BGE-small-en-v1.5</text>
+<text x="76" y="835" font-size="14" class="" text-anchor="start">Cached model, normalized</text>
+<text x="76" y="856" font-size="14" class="" text-anchor="start">vectors</text>
+<text x="76" y="877" font-size="14" class="" text-anchor="start">Synchronized inference</text>
+<rect x="350" y="735" width="250" height="155" rx="10" fill="#eaf7f5" stroke="#83b9af" stroke-width="1.5"/>
+<text x="366" y="764" font-size="18" class="title" text-anchor="start">Original document</text>
+<text x="366" y="787" font-size="13" class="muted" text-anchor="start">Per-document PDF file</text>
+<text x="366" y="814" font-size="14" class="" text-anchor="start">Rendered as visual evidence</text>
+<text x="366" y="835" font-size="14" class="" text-anchor="start">Page IDs remain attached</text>
+<text x="366" y="856" font-size="14" class="" text-anchor="start">Read from document storage</text>
+<rect x="640" y="735" width="250" height="155" rx="10" fill="#edf3ff" stroke="#90ade0" stroke-width="1.5"/>
+<text x="656" y="764" font-size="18" class="title" text-anchor="start">Evidence validator</text>
+<text x="656" y="787" font-size="13" class="muted" text-anchor="start">rag.py</text>
+<text x="656" y="814" font-size="14" class="" text-anchor="start">Known IDs and verbatim quotes</text>
+<text x="656" y="835" font-size="14" class="" text-anchor="start">Supported cited claims</text>
+<text x="656" y="856" font-size="14" class="" text-anchor="start">Whole-question coverage</text>
+<rect x="970" y="185" width="280" height="330" rx="10" fill="#f0f3f7" stroke="#adb9c9" stroke-width="1.5"/>
+<text x="986" y="214" font-size="18" class="title" text-anchor="start">Google model API</text>
+<text x="986" y="237" font-size="13" class="muted" text-anchor="start">Generation and verification / HTTPS</text>
+<text x="986" y="264" font-size="14" class="" text-anchor="start">Receives selected text and PNGs</text>
+<text x="986" y="285" font-size="14" class="" text-anchor="start">Generates structured claims</text>
+<text x="986" y="306" font-size="14" class="" text-anchor="start">Checks cited text or pixels</text>
+<text x="986" y="327" font-size="14" class="" text-anchor="start">Returns support verdicts</text>
+<text x="986" y="348" font-size="14" class="" text-anchor="start">Uses the visitor&#x27;s API key</text>
+<polyline points="400,350 400,375 185,375 185,430" fill="none" stroke="#52657e" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="235" y="362" font-size="13" class="label" text-anchor="middle">Select evidence</text>
+<polyline points="475,350 475,430" fill="none" stroke="#52657e" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="475" y="390" font-size="13" class="label" text-anchor="middle">Render pages</text>
+<polyline points="550,350 550,375 765,375 765,430" fill="none" stroke="#52657e" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="722" y="362" font-size="13" class="label" text-anchor="middle">Validate output</text>
+<polyline points="185,620 185,735" fill="none" stroke="#52657e" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="185" y="687" font-size="13" class="label" text-anchor="middle">Encode query</text>
+<polyline points="475,620 475,735" fill="none" stroke="#52657e" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="475" y="687" font-size="13" class="label" text-anchor="middle">Read PDF</text>
+<polyline points="600,250 970,250" fill="none" stroke="#52657e" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="780" y="236" font-size="13" class="label" text-anchor="middle">Generate draft</text>
+<polyline points="600,295 620,295 620,700 765,700 765,735" fill="none" stroke="#52657e" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<polyline points="890,815 940,815 940,470 970,470" fill="none" stroke="#52657e" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="1080" y="554" font-size="13" class="label" text-anchor="middle">Evidence verification</text>
+<text x="60" y="930" font-size="14" class="muted" text-anchor="start">The orchestrator invokes evidence validation with schema-validated claims and verification results.</text>
+<text x="30" y="995" font-size="15" class="muted" text-anchor="start">Shared encoder users include document indexing, query retrieval and background Ragas answer-relevancy scoring.</text>
+</svg>

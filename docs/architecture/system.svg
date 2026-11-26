@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="1230" viewBox="0 0 1280 1230" role="img" aria-labelledby="title desc">
+<title id="title">DocuMind deployment and component architecture</title><desc id="desc">Browser workspace connects to a single-process Flask application. The backend contains indexing, multimodal RAG, background Ragas evaluation and observability components, with document files, SQLite telemetry and bundled evaluation reports. Google is the external inference provider.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#52657e"/></marker></defs>
+<style>text{font-family:Inter,Arial,sans-serif;fill:#18314f} .muted{fill:#53677f} .title{font-weight:700} .label{paint-order:stroke;stroke:#f8fafc;stroke-width:6;stroke-linejoin:round}</style>
+<rect width="1280" height="1230" fill="#f8fafc"/>
+<text x="30" y="38" font-size="29" class="title" text-anchor="start">DocuMind component architecture</text>
+<text x="30" y="65" font-size="16" class="muted" text-anchor="start">Deployment boundaries, shared resources and synchronous / background interfaces</text>
+<rect x="30" y="90" width="1220" height="175" rx="16" fill="#ffffff" stroke="#dce7f5" stroke-width="2"/>
+<text x="50" y="118" font-size="18" class="title" text-anchor="start">User browser</text>
+<text x="50" y="141" font-size="14" class="muted" text-anchor="start">PDF.js and JavaScript workspace</text>
+<rect x="60" y="160" width="340" height="80" rx="10" fill="#edf3ff" stroke="#90ade0" stroke-width="1.5"/>
+<text x="76" y="189" font-size="18" class="title" text-anchor="start">PDF reader and chat</text>
+<text x="76" y="212" font-size="13" class="muted" text-anchor="start">Upload, question, history and page citations</text>
+<rect x="460" y="160" width="340" height="80" rx="10" fill="#eaf7f5" stroke="#83b9af" stroke-width="1.5"/>
+<text x="476" y="189" font-size="18" class="title" text-anchor="start">Browser local storage</text>
+<text x="476" y="212" font-size="13" class="muted" text-anchor="start">Visitor API key, notes and theme</text>
+<rect x="860" y="160" width="350" height="80" rx="10" fill="#edf3ff" stroke="#90ade0" stroke-width="1.5"/>
+<text x="876" y="189" font-size="18" class="title" text-anchor="start">Dashboard</text>
+<text x="876" y="212" font-size="13" class="muted" text-anchor="start">Chart.js / five-second metrics refresh</text>
+<polyline points="400,202 460,202" fill="none" stroke="#52657e" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="30" y="335" width="890" height="855" rx="16" fill="#ffffff" stroke="#dce7f5" stroke-width="2"/>
+<text x="50" y="363" font-size="18" class="title" text-anchor="start">Hugging Face Docker Space</text>
+<text x="50" y="386" font-size="14" class="muted" text-anchor="start">Gunicorn / one application process / four HTTP request threads</text>
+<rect x="60" y="410" width="830" height="85" rx="10" fill="#edf3ff" stroke="#90ade0" stroke-width="1.5"/>
+<text x="76" y="439" font-size="18" class="title" text-anchor="start">HTTP interface</text>
+<text x="76" y="462" font-size="13" class="muted" text-anchor="start">Flask / app.py</text>
+<text x="76" y="489" font-size="14" class="" text-anchor="start">/upload  /query  /uploaded/...  /api/metrics  /traces/...  /metrics</text>
+<rect x="60" y="565" width="250" height="170" rx="10" fill="#edf3ff" stroke="#90ade0" stroke-width="1.5"/>
+<text x="76" y="594" font-size="18" class="title" text-anchor="start">Document indexing</text>
+<text x="76" y="617" font-size="13" class="muted" text-anchor="start">PyMuPDF + BGE / rag.py</text>
+<text x="76" y="644" font-size="14" class="" text-anchor="start">PDF validation and extraction</text>
+<text x="76" y="665" font-size="14" class="" text-anchor="start">Page IDs and text windows</text>
+<text x="76" y="686" font-size="14" class="" text-anchor="start">Normalized source vectors</text>
+<rect x="350" y="565" width="250" height="170" rx="10" fill="#edf3ff" stroke="#90ade0" stroke-width="1.5"/>
+<text x="366" y="594" font-size="18" class="title" text-anchor="start">Multimodal RAG</text>
+<text x="366" y="617" font-size="13" class="muted" text-anchor="start">rag.py + guardrails.py</text>
+<text x="366" y="644" font-size="14" class="" text-anchor="start">BM25 and dense retrieval</text>
+<text x="366" y="665" font-size="14" class="" text-anchor="start">Text and page-image context</text>
+<text x="366" y="686" font-size="14" class="" text-anchor="start">Structured claims + grounding</text>
+<rect x="640" y="565" width="250" height="170" rx="10" fill="#f3efff" stroke="#b5a2df" stroke-width="1.5"/>
+<text x="656" y="594" font-size="18" class="title" text-anchor="start">Continuous evaluation</text>
+<text x="656" y="617" font-size="13" class="muted" text-anchor="start">Ragas / in-process worker</text>
+<text x="656" y="644" font-size="14" class="" text-anchor="start">One background thread</text>
+<text x="656" y="665" font-size="14" class="" text-anchor="start">Eight admitted jobs maximum</text>
+<text x="656" y="686" font-size="14" class="" text-anchor="start">Key and context in memory</text>
+<rect x="60" y="850" width="830" height="85" rx="10" fill="#eaf7f5" stroke="#83b9af" stroke-width="1.5"/>
+<text x="76" y="879" font-size="18" class="title" text-anchor="start">Observability repository</text>
+<text x="76" y="902" font-size="13" class="muted" text-anchor="start">OpenTelemetry / telemetry.py / tracing.py</text>
+<text x="76" y="929" font-size="14" class="" text-anchor="start">Stage spans, numeric quality scores, request outcomes and rolling 24-hour aggregates</text>
+<text x="970" y="425" font-size="16" class="title" text-anchor="start">External inference service</text>
+<rect x="970" y="455" width="280" height="240" rx="10" fill="#f0f3f7" stroke="#adb9c9" stroke-width="1.5"/>
+<text x="986" y="484" font-size="18" class="title" text-anchor="start">Google model API</text>
+<text x="986" y="507" font-size="13" class="muted" text-anchor="start">Generative Language API</text>
+<text x="986" y="534" font-size="14" class="" text-anchor="start">Structured answer generation</text>
+<text x="986" y="555" font-size="14" class="" text-anchor="start">Text and visual support verdicts</text>
+<text x="986" y="576" font-size="14" class="" text-anchor="start">Ragas judging prompts</text>
+<text x="986" y="597" font-size="14" class="" text-anchor="start">Visitor-supplied API key</text>
+<polyline points="230,240 230,300 700,300 700,410" fill="none" stroke="#52657e" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="460" y="287" font-size="13" class="label" text-anchor="middle">PDF + query / HTTPS</text>
+<polyline points="1035,240 1035,300 850,300 850,410" fill="none" stroke="#52657e" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="920" y="287" font-size="13" class="label" text-anchor="middle">Dashboard and trace reads</text>
+<polyline points="185,495 185,565" fill="none" stroke="#52657e" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="185" y="536" font-size="13" class="label" text-anchor="middle">Upload / index</text>
+<polyline points="475,495 475,565" fill="none" stroke="#52657e" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="475" y="536" font-size="13" class="label" text-anchor="middle">Query / answer</text>
+<polyline points="765,495 765,565" fill="none" stroke="#52657e" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow)" stroke-dasharray="6 5"/>
+<text x="765" y="536" font-size="13" class="label" text-anchor="middle">After response</text>
+<polyline points="890,635 970,635" fill="none" stroke="#52657e" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="930" y="620" font-size="13" class="label" text-anchor="middle">HTTPS</text>
+<polyline points="600,690 620,690 620,790 1110,790 1110,695" fill="none" stroke="#52657e" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="860" y="778" font-size="13" class="label" text-anchor="middle">Draft and visual evidence verification</text>
+<polyline points="185,735 185,850" fill="none" stroke="#52657e" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow)" stroke-dasharray="6 5"/>
+<text x="185" y="813" font-size="13" class="label" text-anchor="middle">Request and stage spans</text>
+<polyline points="765,735 765,850" fill="none" stroke="#52657e" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow)" stroke-dasharray="6 5"/>
+<text x="765" y="828" font-size="13" class="label" text-anchor="middle">Scores, states and spans</text>
+<rect x="50" y="1020" width="850" height="155" rx="16" fill="#ffffff" stroke="#dce7f5" stroke-width="2"/>
+<text x="70" y="1048" font-size="18" class="title" text-anchor="start">Application filesystem</text>
+<text x="70" y="1071" font-size="14" class="muted" text-anchor="start">Document files, SQLite and bundled evaluation reports</text>
+<rect x="60" y="1085" width="250" height="80" rx="10" fill="#eaf7f5" stroke="#83b9af" stroke-width="1.5"/>
+<text x="76" y="1114" font-size="18" class="title" text-anchor="start">Document artifacts</text>
+<text x="76" y="1137" font-size="13" class="muted" text-anchor="start">PDF / source JSON / NumPy vectors</text>
+<rect x="350" y="1085" width="250" height="80" rx="10" fill="#eaf7f5" stroke="#83b9af" stroke-width="1.5"/>
+<text x="366" y="1114" font-size="18" class="title" text-anchor="start">Runtime telemetry</text>
+<text x="366" y="1137" font-size="13" class="muted" text-anchor="start">SQLite WAL / trace and score tables</text>
+<rect x="640" y="1085" width="250" height="80" rx="10" fill="#eaf7f5" stroke="#83b9af" stroke-width="1.5"/>
+<text x="656" y="1114" font-size="18" class="title" text-anchor="start">Published evaluations</text>
+<text x="656" y="1137" font-size="13" class="muted" text-anchor="start">Baseline + guarded result JSON</text>
+<polyline points="60,450 44,450 44,1125 60,1125" fill="none" stroke="#52657e" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<polyline points="475,935 475,1085" fill="none" stroke="#52657e" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="475" y="1009" font-size="13" class="label" text-anchor="middle">Telemetry persistence</text>
+<polyline points="890,450 940,450 940,1000 765,1000 765,1085" fill="none" stroke="#52657e" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="765" y="987" font-size="13" class="label" text-anchor="middle">Evaluation report reads</text>
+<text x="30" y="1215" font-size="14" class="muted" text-anchor="start">Solid connections show component dependencies and data access. Dashed connections show background scheduling and telemetry.</text>
+</svg>

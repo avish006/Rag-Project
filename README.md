@@ -33,22 +33,19 @@ The included Harbor pilot PDF demonstrates both a figure question and an unanswe
 
 ## Architecture
 
-```mermaid
-flowchart TD
-    A[PDF upload] --> B[PyMuPDF extraction and page-local sources]
-    B --> C[BGE embeddings and BM25 retrieval]
-    C --> D[Selected text and rendered page images]
-    D --> E[Google model generates structured claims]
-    E --> F[Pydantic validation and evidence verification]
-    F --> G[Answer with citations or insufficient evidence]
-    G --> H[Background Ragas scoring for delivered answers]
-    B -.-> I[OpenTelemetry traces and SQLite metrics]
-    C -.-> I
-    E -.-> I
-    F -.-> I
-    H -.-> I
-    I --> J[Live dashboard and Prometheus export]
-```
+### Components and deployment boundaries
+
+The browser communicates with a Flask application running in one Gunicorn process. Document indexing, question answering, tracing, and a background evaluation thread share that process. The diagram shows their dependencies, storage ownership, and external API connections.
+
+![DocuMind component architecture showing browser, backend, storage and external API boundaries](docs/architecture/system.svg)
+
+The dashboard reads live aggregates from SQLite through `/api/metrics` every five seconds. Monitoring tools can scrape `/metrics`, and individual requests expose their stage spans through `/traces/<id>`. Published evaluation reports are loaded from bundled JSON files.
+
+### Retrieval and guardrail components
+
+![Detailed retrieval and guardrail components with shared encoding and page-image verification](docs/architecture/rag.svg)
+
+The embedding model is shared by indexing, query retrieval, and Ragas relevancy scoring. Ragas evaluates delivered answers asynchronously with the visitor's Google key. Labeled evaluation runs use the same RAG modules through the CLI and write the JSON reports consumed by the dashboard.
 
 ### Retrieval and generation
 
