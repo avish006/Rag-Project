@@ -1,107 +1,233 @@
 # DocuMind
 
-Read a PDF on the left and ask questions on the right. DocuMind can read chart labels and values, cite the page behind an answer, and say when the document has insufficient evidence. Click a page citation to inspect the original, or save an answer to Notes.
+**Multimodal document question answering with evidence checks, continuous RAG evaluation, and live observability.**
 
-[Open DocuMind](https://avish006-documind.hf.space) · [Live dashboard](https://avish006-documind.hf.space/dashboard) · [Hugging Face Space](https://huggingface.co/spaces/Avish006/DocuMind)
+DocuMind combines a PDF reader with a conversational assistant. It retrieves relevant text and visual pages, generates answers with page citations, and reports insufficient evidence when the document cannot support a response. A live dashboard tracks request performance, guardrail decisions, and RAG quality as users ask questions.
 
-[Watch the 53-second narrated demo](https://github.com/avish006/Rag-Project/releases/download/documind-evidence-v1/documind.mp4) · [Video in this repository](demo/documind.mp4) · [Transcript](demo/narration.txt)
+[Live application](https://avish006-documind.hf.space) · [Live dashboard](https://avish006-documind.hf.space/dashboard) · [Hugging Face Space](https://huggingface.co/spaces/Avish006/DocuMind) · [Evaluation methodology](evals/README.md)
 
-The screen recording uses the local release build, a real Google model response and a synthetic PDF. It includes English captions and a synthesized male voice. Model wait times were shortened for playback.
+## Features
 
-## Try it
+- **Multimodal retrieval** — combines BGE embeddings and BM25 to select text passages and visual pages. Rendered page images let the model inspect charts, figures, diagrams, and table layouts.
+- **Evidence-backed answers** — validates source IDs, checks quoted text, and verifies individual claims against cited text or page images.
+- **Explicit abstention** — reports insufficient evidence when an answer lacks support.
+- **Continuous evaluation** — runs Ragas answer relevancy and text faithfulness checks in the background on delivered answers.
+- **Live observability** — provides request counts, p95 latency, errors, guardrail outcomes, quality trends, and clickable OpenTelemetry traces.
+- **Document workspace** — includes a resizable PDF/chat layout, navigation from citations, dark and light themes, Markdown and math rendering, and browser-local notes with export.
 
-Download the [Harbor pilot PDF](evals/fixtures/harbor.pdf), open DocuMind, and enter your [Google AI Studio API key](https://aistudio.google.com/apikey) in Settings. Upload the PDF and ask “In Figure 1, how many crates did the west dock handle?” The chart on page 2 shows 42 crates. Then ask “How many workers unloaded those crates?” The report gives no head count.
+## Try the application
 
-The reader supports PDF uploads up to 50 MB, a resizable document pane, dark and light themes, Markdown and math rendering, and browser-local notes with export. The chart icon in the header opens the dashboard in a separate tab.
+1. Open DocuMind and enter a Google API key through **Settings**.
+2. Upload a readable PDF of up to **50 MB**.
+3. Ask a question, then select a page citation to inspect its supporting evidence.
+4. Open the chart icon in the header to view the dashboard.
+
+Create or view your key in Google AI Studio. [Google AI Studio](https://aistudio.google.com/apikey)
+
+The included Harbor pilot PDF demonstrates both a figure question and an unanswerable question. [Download the sample PDF](evals/fixtures/harbor.pdf)
+
+| Question | Expected behavior |
+| --- | --- |
+| “In Figure 1, how many crates did the west dock handle?” | Answers 42 crates and cites page 2 |
+| “How many workers unloaded those crates?” | Reports insufficient evidence |
+
+## Architecture
+
+```mermaid
+flowchart TD
+    A[PDF upload] --> B[PyMuPDF extraction and page-local sources]
+    B --> C[BGE embeddings and BM25 retrieval]
+    C --> D[Selected text and rendered page images]
+    D --> E[Google model generates structured claims]
+    E --> F[Pydantic validation and evidence verification]
+    F --> G[Answer with citations or insufficient evidence]
+    G --> H[Background Ragas scoring for delivered answers]
+    B -.-> I[OpenTelemetry traces and SQLite metrics]
+    C -.-> I
+    E -.-> I
+    F -.-> I
+    H -.-> I
+    I --> J[Live dashboard and Prometheus export]
+```
+
+### Retrieval and generation
+
+PyMuPDF extracts text into 900-character windows with 150-character overlap. Each source retains its page number and source ID. Pages containing embedded images or vector drawings also become visual sources.
+
+The retriever combines normalized BGE vector rankings with BM25 rankings using reciprocal ranks. It selects up to five text windows and two visual pages. Exact dense search uses NumPy. Selected visual pages are rendered to images and sent to the Google model alongside the retrieved text. The last six conversation turns help resolve follow-up references.
+
+### Guardrails
+
+Pydantic enforces strict schemas for generated claims and verification results. The server validates each source ID and checks that quoted text appears in its cited source. A separate model call verifies claim support and whether the draft answers the complete question.
+
+Unknown sources, mismatched quotes, and failed evidence checks lead to an insufficient-evidence response. Malformed output and provider failures return a traceable error. Document contents and conversation history are treated as data within generation and verification prompts.
+
+## Technology stack
+
+| Component | Implementation |
+| --- | --- |
+| Web application | Flask, Gunicorn, HTML, CSS, JavaScript |
+| PDF processing | PyMuPDF |
+| Embeddings | BAAI/bge-small-en-v1.5 through Transformers and PyTorch |
+| Retrieval | BM25 and exact dense vector search with NumPy |
+| Generation and verification | Google Generative Language API |
+| Output validation | Pydantic |
+| RAG evaluation | Ragas 0.3.7 |
+| Tracing and metrics | OpenTelemetry, Prometheus client, SQLite |
+| Dashboard charts | Chart.js |
+| Deployment | Docker on Hugging Face Spaces |
 
 ## Evaluation results
 
-The two original PDFs each contain a native-text page and a chart whose values exist only in the image pixels. The same twelve labeled questions were submitted to Google's `gemini-3.5-flash-lite` in both arms, with a fresh conversation for each question.
+The labeled regression suite contains **12 questions across two synthetic PDFs**, with four text questions, four figure questions, and four unanswerable questions. Chart values are present only in image pixels. Both arms use `gemini-3.5-flash-lite` with the same documents, questions, and fresh conversation history.
 
-| Metric | Before | After |
+| Metric | Baseline | Guarded |
 | --- | ---: | ---: |
-| Answer correctness, all questions | 8/12 | 12/12 |
-| Correct page citations, answerable questions | 0/8 | 8/8 |
-| Insufficient-evidence recall, unanswerable questions | 4/4 | 4/4 |
-| Correct answer-or-abstain decision, all questions | 8/12 | 12/12 |
-| Context precision, labeled source IDs | 25.0% | 33.3% |
-| Context recall, labeled source IDs | 50.0% | 100.0% |
-| First relevant evidence, mean reciprocal rank | 0.500 | 0.667 |
+| Answer correctness | 8/12 | 12/12 |
+| Correct page citations | 0/8 | 8/8 |
+| Insufficient-evidence recall | 4/4 | 4/4 |
+| Correct answer-or-abstain decision | 8/12 | 12/12 |
+| Context precision, source IDs | 25.0% | 33.3% |
+| Context recall, source IDs | 50.0% | 100.0% |
+| Mean reciprocal rank | 0.500 | 0.667 |
 | Ragas answer relevancy | 98.0%, n=4 | 95.5%, n=8 |
 | Ragas text faithfulness | 100.0%, n=4 | 100.0%, n=4 |
 
-The retrieval rows average over the eight answerable questions. Each needs one source. The guarded system retrieved the required evidence every time, and also supplied two other sources on each question.
+Retrieval metrics average over the eight answerable questions. The guarded pipeline retrieves the required source for every question, while also supplying two other sources per question.
 
-Ragas scores apply to delivered answers. The baseline delivered only the four text answers. The guarded system also delivered the four figure answers, so the relevancy averages cover different question subsets. Text faithfulness covers the same four text questions in each arm.
+Ragas evaluates delivered answers. The baseline delivered four text answers, while the guarded pipeline delivered all eight answerable responses. Their answer relevancy averages therefore cover different question subsets. Text faithfulness covers the same four text questions in both arms.
 
-The original pipeline answered the four text questions and declined the four chart questions. Both versions declined the four genuinely unanswerable questions. The comparison measures the **combined** effect of page-aware retrieval, visual evidence and answer checks on a small English regression suite. It does not estimate general accuracy on unfamiliar documents. See the [evaluation protocol](evals/README.md), [case labels](evals/cases.json), [baseline responses](evals/results/baseline.json) and [guarded responses](evals/results/guarded.json).
+These results describe a small English regression suite and the combined effect of retrieval, visual evidence, and answer checks. Broader document performance requires additional evaluation.
 
-## How an answer is produced
+[Evaluation protocol](evals/README.md) · [Question labels](evals/cases.json) · [Baseline results](evals/results/baseline.json) · [Guarded results](evals/results/guarded.json)
 
-1. PyMuPDF extracts page-local text windows (900 characters with 150 characters of overlap) and identifies pages with embedded images or vector drawings. Each source keeps a stable ID and a one-based page number.
-2. BGE-small-en-v1.5 encodes the sources. Retrieval combines exact normalized-vector ranking with BM25 using reciprocal ranks. It selects up to five text windows and two visual pages. NumPy implements the exact dense search. Index data is saved with the upload.
-3. DocuMind sends selected text and rendered page pixels to the model. The last six conversation turns help resolve follow-ups. The model returns claims with source IDs and evidence, or an empty list when evidence is insufficient.
-4. Pydantic validates strict claim and verdict schemas. The server checks that source IDs exist and that text excerpts occur in the cited window. A second model call checks each claim against the cited text or image and the question. Every claim must be supported and the answer must address the question. An unknown citation, mismatched quote or negative verdict yields an insufficient-evidence response. Missing verdict fields, wrong types, provider outages and malformed model output produce errors with a trace ID.
-5. The reader displays the verified statements and page links. Visual verification uses the same model in a separate call, so correlated mistakes remain possible. Retrieval can miss relevant pages in long documents. Scanned pages are read visually only when retrieved.
+## Live observability
 
-## Live operations
+The dashboard refreshes every **five seconds** over a rolling **24-hour window**.
 
-The dashboard refreshes every five seconds. It counts completed uploads and questions over a rolling 24 hours. The p95 is the nearest-rank 95th percentile across those requests, including errors. The errors card counts HTTP responses of 400 or above. Insufficient evidence counts successful query responses with that outcome. Dashboard polling, health checks and PDF page downloads do not add traffic to the cards.
-
-Each upload and query returns a unique `trace_id` and `X-Trace-ID`. Click **View trace** in chat or select a recent failure on the dashboard to see the operation, stage, diagnostic, HTTP status, timestamp and duration. Select **Baseline** or **Guarded** to inspect the latest published evaluation question by question.
-
-**Live RAG quality** updates from actual query traffic. Ragas 0.3.7 scores answer relevancy for delivered answers and faithfulness for text answers in the background. Relevancy uses three reverse-generated questions and local BGE embeddings. Faithfulness checks answer statements against retrieved text. Figure answers use the visual verifier for support, and remain eligible for Ragas answer relevancy. Each score shows its measured query count. The dashboard also shows context relevance, draft claim support, responsiveness and cited-source share from the guardrail checks, plus hourly traffic, latency and RAG quality charts built with Chart.js.
-
-Ragas scoring starts after the request completes. It typically adds three Google generation calls for relevancy and two for text faithfulness, with limited transient retries. These calls use the same visitor-supplied Google key and count against its quota. One scoring worker handles up to eight pending/running jobs in memory. At capacity, the answer still returns and scoring is marked skipped busy. The dashboard displays pending, complete, partial and failed jobs, with detailed metric status in the trace. A restart marks unfinished jobs interrupted. User text and keys remain in memory for scoring, and public traces store only numeric scores, statuses and stage timings. See the [formulas and measurement limits](evals/README.md#rag-quality-metrics).
-
-OpenTelemetry records indexing, retrieval, rendering, generation, verification and background scoring spans beneath the request trace. Prometheus can scrape `GET /metrics` for rolling request counts, p95 latency, scored sample counts, mean RAG scores and guardrail outcomes. SQLite keeps the application dashboard available without an external telemetry account. The single-worker Gunicorn configuration keeps the bounded scoring queue and restart recovery consistent.
-
-| Endpoint | Purpose |
+| Area | Measurements |
 | --- | --- |
-| `POST /upload` | Multipart field `file`. Returns `document_id`, `pdf_url` and `trace_id`. |
-| `POST /query` | JSON with `document_id`, `query`, `api_key` and optional `history`. Returns `response`, `status`, `citations`, `reason` and `trace_id`. |
-| `GET /api/metrics` | Live totals, p95 in milliseconds, 25 latest failure summaries and latest completed eval scores. |
-| `GET /metrics` | Prometheus exposition of rolling 24-hour gauges. |
-| `GET /traces/<id>` | Operational details for a single request. |
-| `GET /evaluations/baseline`, `/evaluations/guarded` | Recorded answers, gold labels, scores and evaluation trace IDs. |
-| `GET /health` | HTTP liveness check. |
+| Request performance | Completed uploads and queries, p95 latency, HTTP errors |
+| Retrieval | Retrieved source count and judged context relevance |
+| Generation quality | Ragas answer relevancy and text faithfulness |
+| Guardrails | Draft claim support, question responsiveness, cited-source share, insufficient-evidence outcomes |
+| Trends | Hourly traffic, latency, and RAG quality |
+| Diagnostics | Request trace IDs, stage timings, recent failures, background evaluation status |
 
-The app stores the visitor's key in that browser's local storage until cleared. The server forwards the key to Google's API for that visitor's requests. Public telemetry excludes keys, questions, answers, filenames, document IDs and PDF contents. The public eval pages contain only the included synthetic fixtures. Uploaded PDFs use random bearer URLs, so anyone holding a document URL can read it during its lifetime. Access expires after 24 hours and subsequent uploads sweep old files. SQLite retains seven days of traces and prunes older entries on writes. A host with ephemeral disk can lose uploads and metrics on replacement. The checked-in evaluation reports survive restarts.
+Every upload and query returns a `trace_id` and an `X-Trace-ID` response header. Select **View trace** in chat or a failure in the dashboard to inspect its OpenTelemetry spans. Quality metrics display their measured sample counts, and traces show evaluation status.
 
-## Run locally
+Ragas scoring starts after an answer is delivered. Answer relevancy uses three generated questions and local BGE embeddings. Text faithfulness evaluates answer statements against retrieved text. Figure answers receive a visual support check and remain eligible for answer relevancy scoring.
 
-Use Python 3.11. On Linux or macOS, activate the environment with `source .venv/bin/activate`. On Windows, use `.venv\Scripts\Activate.ps1`.
+Background scoring typically adds three Google calls for relevancy and two for text faithfulness, with limited retries. These calls use the visitor's API key and consume its quota. One worker accepts up to eight pending or running jobs in memory. At capacity, scoring is marked skipped busy and the answer still returns. A restart marks unfinished jobs interrupted.
 
-```sh
+Prometheus can scrape `/metrics` for rolling request counts, p95 latency, score means, sample counts, evaluation status, and guardrail outcomes. [Prometheus endpoint](https://avish006-documind.hf.space/metrics)
+
+## Local development
+
+### Prerequisites
+
+- Python **3.11**
+- Git, including for Ragas' GitPython dependency
+- A Google API key with access to the configured model
+- Internet access for the initial embedding-model download and API requests
+
+### Installation
+
+```bash
+git clone https://github.com/avish006/Rag-Project.git
+cd Rag-Project
 python -m venv .venv
-# Activate the environment, then install dependencies.
+```
+
+Activate the virtual environment using the command for your platform.
+
+| Platform | Command |
+| --- | --- |
+| Windows PowerShell | `.venv\Scripts\Activate.ps1` |
+| Linux or macOS | `source .venv/bin/activate` |
+
+```bash
 python -m pip install -r requirements.txt
 python app.py
 ```
 
-Open [localhost:5000](http://localhost:5000). The first upload downloads the BGE model. Visitors supply their own Google keys. The web server never takes a shared provider key from `.env`.
+The first upload downloads the BGE model unless it is already cached. Enter your API key through the application's Settings dialog. [Open the local application](http://localhost:5000)
 
-| Process environment | Default | Purpose |
+### Configuration
+
+Set optional server configuration through process environment variables. The evaluation CLI can also load its Google key from an ignored `.env` file.
+
+| Variable | Default | Purpose |
 | --- | --- | --- |
-| `DOCUMIND_DATA` | `instance/documind` | Writable document and trace directory |
-| `DOCUMIND_MODEL` | `gemini-3.5-flash-lite` | Google model ID for generation and verification |
-| `DOCUMIND_EMBED_MODEL` | `BAAI/bge-small-en-v1.5` | Hub ID or local encoder directory |
-| `GOOGLE_API_KEY` | unset | CLI evaluation key only. The runner can load it from an ignored `.env`. |
-| `PORT` | `5000` | Local Flask entry point. The container listens on 7860. |
+| `DOCUMIND_DATA` | `instance/documind` | Writable document and telemetry directory |
+| `DOCUMIND_MODEL` | `gemini-3.5-flash-lite` | Google generation, verification, and evaluation model |
+| `DOCUMIND_EMBED_MODEL` | `BAAI/bge-small-en-v1.5` | Embedding-model Hub ID or local directory |
+| `GOOGLE_API_KEY` | Unset | Evaluation CLI credential |
+| `PORT` | `5000` | Port used by the local Flask entry point |
 
-```sh
+The web application takes the visitor's API key from the query request. Server-side evaluation credentials are configured separately. [.env example](.env.example)
+
+### Tests and evaluation
+
+```bash
 python -m unittest discover -s tests -v
 python -m evals.run both
 python -m evals.run both --score-recorded
 ```
 
-## Deploy
+The first evaluation command generates the paired answers. The second applies Ragas to recorded answers and preserves completed scores. To keep an experiment separate, pass `--output instance/experiment` to both evaluation commands.
 
-The repository root is the canonical application for both local and Docker deployments. The image runs Gunicorn as UID 1000 on port 7860 and warms the embedding model during the build.
+## Deployment
 
-```sh
+The root Dockerfile builds the application used for local development. It installs the system dependency, warms the embedding model, and checks the application import during the build. Gunicorn runs as UID 1000 on port 7860 with one worker and four threads.
+
+```bash
 docker build -t documind .
 docker run --rm -p 7860:7860 -v documind-data:/app/instance documind
 ```
 
-The existing Space can deploy a specific public GitHub commit through one file. Run `python deploy/space_file.py <full-github-commit-sha>`, then put its output in the Space's root `Dockerfile` and commit it. This fetches the pinned source and applies the repository's Docker build instructions. To roll back, restore the previous Space Dockerfile revision. After a build, open `/health`, upload the Harbor fixture, follow a page citation and open `/dashboard`. See the [Docker Spaces configuration reference](https://huggingface.co/docs/hub/spaces-config-reference).
+The named volume retains local uploads and telemetry across container replacements.
+
+The Hugging Face Space uses a Dockerfile pinned to a public commit from this repository. Generate it with the deployment helper, then commit the output as the Space's root Dockerfile.
+
+```bash
+python deploy/space_file.py <full-github-commit-sha>
+```
+
+After deployment, verify `/health`, upload a sample PDF, follow an answer citation, and inspect `/dashboard`. Restore a previous Space Dockerfile revision to roll back a deployment. [Deployment helper](deploy/space_file.py)
+
+## API
+
+| Method | Endpoint | Purpose |
+| --- | --- | --- |
+| `POST` | `/upload` | Accepts a PDF in multipart field `file`. Returns document ID, PDF URL, and trace ID. |
+| `POST` | `/query` | Accepts `query`, `api_key`, `document_id`, and optional `history`. Returns response status, citations, diagnostic, and trace ID. |
+| `GET` | `/api/metrics` | Returns live aggregates, recent query traces, failures, hourly trends, and published evaluation scores. |
+| `GET` | `/metrics` | Exposes Prometheus metrics. |
+| `GET` | `/traces/<id>` | Displays one request's diagnostics, spans, and quality measurements. |
+| `GET` | `/evaluations/baseline` | Displays recorded baseline answers and scores. |
+| `GET` | `/evaluations/guarded` | Displays recorded guarded answers and scores. |
+| `GET` | `/health` | Provides an HTTP liveness check. |
+
+## Data handling and limitations
+
+- **API keys** are remembered in browser local storage and forwarded to Google for generation and evaluation requests. Background scoring retains keys and query data temporarily in memory.
+- **Public telemetry** stores numeric scores, statuses, timestamps, and stage timings. Keys, questions, answers, filenames, document IDs, and PDF contents are excluded.
+- **Uploaded PDFs** use random bearer URLs. Anyone holding a document URL can read it during its lifetime. Access expires after 24 hours, and subsequent uploads sweep expired files.
+- **Trace retention** is seven days, with older traces pruned on writes. Hosts with ephemeral storage can lose documents and runtime metrics after replacement. Published evaluation reports are bundled with the application.
+- **Retrieval coverage** is limited to selected passages and visual pages. Long documents and scanned PDFs can require relevant pages that the retriever misses.
+- **Model judgments** can share errors because generation, verification, and Ragas scoring use the same model. Ragas text faithfulness measures support in retrieved text. Visual support is assessed through page-image verification.
+
+## Repository structure
+
+| Path | Responsibility |
+| --- | --- |
+| `app.py` | HTTP routes and request lifecycle |
+| `rag.py` | PDF extraction, retrieval, generation, and evidence verification |
+| `guardrails.py` | Pydantic contracts for claims and verdicts |
+| `ragas_eval.py`, `continuous_eval.py` | Ragas adapters and bounded background scoring |
+| `tracing.py`, `telemetry.py`, `rag_metrics.py` | Trace spans, persistence, metric definitions, and export |
+| `templates/`, `static/` | Reader and dashboard interfaces |
+| `evals/` | Labeled fixtures, runners, methodology, and results |
+| `tests/` | Regression tests |
+| `deploy/`, `Dockerfile` | Deployment helper and container definition |
