@@ -1,17 +1,18 @@
 {
   "mode": "guarded",
   "model": "gemini-3.5-flash-lite",
-  "suite_sha256": "7165648f411a95b5a4d56781c87913a93fa17084fef44d3d12541925014152c1",
+  "protocol": "full-metrics-v1",
+  "suite_sha256": "37004bd70eda571d0269daa86100a2cda1bb7686f5e6b54f2f2b5fd0b6fd4a86",
   "pdf_sha256": {
     "harbor": "f094fda6f6b6f999306a4147cc623c48fc88a1b54d3cb418ecadad03c111ae06",
     "orchard": "4ad7304435ee96fda1afcca5ec298efde191f527ca143099dc9b1f24ef713530"
   },
-  "run_id": "b9864f3d4b884eb4819ebc02fbca05e5",
+  "run_id": "6a1d1727d2d64e93b980a4819dda6cf3",
   "cases": [
     {
       "id": "H1",
       "kind": "text",
-      "trace_id": "306a198324c14a28b565615526ee3798",
+      "trace_id": "b05af4f70d2e4836b82d67d212a307cf",
       "status": "answered",
       "response": "The harbor pilot trial was held at Cedar Quay. [p. 1]",
       "citations": [
@@ -29,14 +30,71 @@
         "P2V"
       ],
       "quality": {
+        "retrieval_cosine_mean": 0.5059043765068054,
+        "retrieval_cosine_max": 0.6097884178161621,
+        "retrieval_score_rows": [
+          {
+            "rank": 1,
+            "kind": "text",
+            "cosine": 0.6097884178161621,
+            "bm25": 1.1703880639984512,
+            "rrf": 0.1
+          },
+          {
+            "rank": 2,
+            "kind": "text",
+            "cosine": 0.452792763710022,
+            "bm25": 0.0,
+            "rrf": 0.045454545454545456
+          },
+          {
+            "rank": 3,
+            "kind": "figure",
+            "cosine": 0.4551318287849426,
+            "bm25": 0.0,
+            "rrf": 0.047619047619047616
+          }
+        ],
         "retrieved_count": 3,
         "context_relevance": 0.3333333333333333,
         "draft_faithfulness": 1.0,
         "draft_responsiveness": 1,
         "source_utilization": 0.3333333333333333,
         "ragas_faithfulness": 1.0,
-        "ragas_answer_relevancy": 0.9018915626413139
+        "ragas_answer_relevancy": 0.9018915626413139,
+        "ragas_factual_correctness": 0.0,
+        "citation_support": 1.0
       },
+      "provider_usage": [
+        {
+          "call_id": "77e667b3e8e54d6bbd52364aeb828bb8",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800593.1050928,
+          "status": "ok",
+          "ttft_ms": 3603.2563999760896,
+          "usage": {
+            "promptTokenCount": 1386,
+            "candidatesTokenCount": 84,
+            "totalTokenCount": 1470
+          },
+          "estimated_cost_usd": 0.0006257999999999999,
+          "duration_ms": 3670.21129996283
+        },
+        {
+          "call_id": "021d0b7eb8134131b7a774b3d318e3a6",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800596.780655,
+          "status": "ok",
+          "ttft_ms": 2135.9345000237226,
+          "usage": {
+            "promptTokenCount": 226,
+            "candidatesTokenCount": 37,
+            "totalTokenCount": 263
+          },
+          "estimated_cost_usd": 0.00016030000000000002,
+          "duration_ms": 2191.0234999959357
+        }
+      ],
       "correct": true,
       "cited_pages": [
         1
@@ -47,19 +105,265 @@
       "retrieval_scores": {
         "context_precision": 0.3333333333333333,
         "context_recall": 1.0,
+        "precision_at_k": 0.3333333333333333,
+        "recall_at_k": 1.0,
+        "ndcg_at_k": 1.0,
+        "ranked_context_precision": 1.0,
         "reciprocal_rank": 1.0
       },
       "metric_status": {
+        "ragas_answer_relevancy": "complete",
+        "ragas_factual_correctness": "complete",
         "ragas_faithfulness": "complete",
-        "ragas_answer_relevancy": "complete"
-      }
+        "citation_support": "complete"
+      },
+      "scoring_usage": [
+        {
+          "call_id": "bab020e5349043a8b6f4f625f67b8c43",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800806.1395526,
+          "status": "ok",
+          "ttft_ms": 1010.7521999743767,
+          "usage": {
+            "promptTokenCount": 366,
+            "candidatesTokenCount": 26,
+            "totalTokenCount": 392
+          },
+          "estimated_cost_usd": 0.00017480000000000002,
+          "duration_ms": 1013.6917000054382
+        },
+        {
+          "call_id": "a1af1c1b8f324570ad281a5e3a07c1f0",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800807.1551542,
+          "status": "ok",
+          "ttft_ms": 986.0248000477441,
+          "usage": {
+            "promptTokenCount": 366,
+            "candidatesTokenCount": 26,
+            "totalTokenCount": 392
+          },
+          "estimated_cost_usd": 0.00017480000000000002,
+          "duration_ms": 987.7708000130951
+        },
+        {
+          "call_id": "5149d7a6d3f347a9b8606b2bdf64b7b4",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800808.1434042,
+          "status": "error",
+          "ttft_ms": null,
+          "usage": {},
+          "estimated_cost_usd": null,
+          "duration_ms": 535.1265000062995
+        },
+        {
+          "call_id": "7055e5c303084c4fa3da201032382062",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800816.6797721,
+          "status": "error",
+          "ttft_ms": null,
+          "usage": {},
+          "estimated_cost_usd": null,
+          "duration_ms": 570.0875999755226
+        },
+        {
+          "call_id": "30c642905f484705a66d69773f635f4d",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800817.531068,
+          "status": "error",
+          "ttft_ms": null,
+          "usage": {},
+          "estimated_cost_usd": null,
+          "duration_ms": 669.2743000457995
+        },
+        {
+          "call_id": "c13a55c77a794c58bcbed276d7169920",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800817.530544,
+          "status": "error",
+          "ttft_ms": null,
+          "usage": {},
+          "estimated_cost_usd": null,
+          "duration_ms": 670.8534000208601
+        },
+        {
+          "call_id": "116513e137ef4a0c8f2c221b791bdd14",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800826.2008138,
+          "status": "error",
+          "ttft_ms": null,
+          "usage": {},
+          "estimated_cost_usd": null,
+          "duration_ms": 717.6829000236467
+        },
+        {
+          "call_id": "29e790a71c1243cbb549c7e088abaa7f",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800826.2018838,
+          "status": "error",
+          "ttft_ms": null,
+          "usage": {},
+          "estimated_cost_usd": null,
+          "duration_ms": 732.4145000311546
+        },
+        {
+          "call_id": "fbb45871e2184b3383294a6f061450f4",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800826.921451,
+          "status": "ok",
+          "ttft_ms": 1089.2107000108808,
+          "usage": {
+            "promptTokenCount": 366,
+            "candidatesTokenCount": 25,
+            "totalTokenCount": 391
+          },
+          "estimated_cost_usd": 0.00017230000000000001,
+          "duration_ms": 1115.0409000110812
+        },
+        {
+          "call_id": "be9cab7460184a0c87ffbd4c9228b8c6",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800828.0399063,
+          "status": "ok",
+          "ttft_ms": 1306.6729999845847,
+          "usage": {
+            "promptTokenCount": 870,
+            "candidatesTokenCount": 67,
+            "totalTokenCount": 937
+          },
+          "estimated_cost_usd": 0.0004285,
+          "duration_ms": 1348.6075999680907
+        },
+        {
+          "call_id": "02357401056d4ed3b93c787ce008f425",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800829.3950505,
+          "status": "error",
+          "ttft_ms": null,
+          "usage": {},
+          "estimated_cost_usd": null,
+          "duration_ms": 688.5403000051156
+        },
+        {
+          "call_id": "3a1c882bc60542af8edbd72883b1fce0",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795801044.2698996,
+          "status": "ok",
+          "ttft_ms": 968.8535000314005,
+          "usage": {
+            "promptTokenCount": 366,
+            "candidatesTokenCount": 26,
+            "totalTokenCount": 392
+          },
+          "estimated_cost_usd": 0.00017480000000000002,
+          "duration_ms": 979.2560000205413
+        },
+        {
+          "call_id": "20ae976e70944d5ab68a0d425ca4006a",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795801045.2501905,
+          "status": "ok",
+          "ttft_ms": 847.4149000248872,
+          "usage": {
+            "promptTokenCount": 366,
+            "candidatesTokenCount": 26,
+            "totalTokenCount": 392
+          },
+          "estimated_cost_usd": 0.00017480000000000002,
+          "duration_ms": 917.7871000138111
+        },
+        {
+          "call_id": "39d97464059d456f933f523ba70e6616",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795801046.1683755,
+          "status": "ok",
+          "ttft_ms": 1038.1300000008196,
+          "usage": {
+            "promptTokenCount": 366,
+            "candidatesTokenCount": 26,
+            "totalTokenCount": 392
+          },
+          "estimated_cost_usd": 0.00017480000000000002,
+          "duration_ms": 1040.8549000276253
+        },
+        {
+          "call_id": "a62dc7bee1db40a5ab7d150d2d9a270d",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795801047.2517617,
+          "status": "ok",
+          "ttft_ms": 1061.1235999967903,
+          "usage": {
+            "promptTokenCount": 321,
+            "candidatesTokenCount": 25,
+            "totalTokenCount": 346
+          },
+          "estimated_cost_usd": 0.0001588,
+          "duration_ms": 1075.4430000088178
+        },
+        {
+          "call_id": "f59cfc5671224a26895845ca57436054",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795801047.2517617,
+          "status": "ok",
+          "ttft_ms": 1073.012100008782,
+          "usage": {
+            "promptTokenCount": 320,
+            "candidatesTokenCount": 24,
+            "totalTokenCount": 344
+          },
+          "estimated_cost_usd": 0.000156,
+          "duration_ms": 1077.5292000034824
+        },
+        {
+          "call_id": "980e1b656ef84bdeb6c5b16157f6a839",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795801048.33201,
+          "status": "ok",
+          "ttft_ms": 1094.8994000209495,
+          "usage": {
+            "promptTokenCount": 845,
+            "candidatesTokenCount": 79,
+            "totalTokenCount": 924
+          },
+          "estimated_cost_usd": 0.000451,
+          "duration_ms": 1258.9413999812678
+        },
+        {
+          "call_id": "90b17781504541b0917e75e47398e4e4",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795801048.3331084,
+          "status": "ok",
+          "ttft_ms": 1207.7178999898024,
+          "usage": {
+            "promptTokenCount": 845,
+            "candidatesTokenCount": 67,
+            "totalTokenCount": 912
+          },
+          "estimated_cost_usd": 0.000421,
+          "duration_ms": 1343.6436000047252
+        },
+        {
+          "call_id": "a60cfdd8dda549e3af25645db054406b",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795801049.6809766,
+          "status": "ok",
+          "ttft_ms": 1215.6681999913417,
+          "usage": {
+            "promptTokenCount": 147,
+            "candidatesTokenCount": 10,
+            "totalTokenCount": 157
+          },
+          "estimated_cost_usd": 6.91e-05,
+          "duration_ms": 1220.4206999740563
+        }
+      ]
     },
     {
       "id": "H2",
       "kind": "text",
-      "trace_id": "3cb81cc7e62f4178acd046095132ad9c",
+      "trace_id": "13d35f3b8eff4f76be7dcdee6da21b45",
       "status": "answered",
-      "response": "The inspection is scheduled at an interval of 18 days. [p. 1]",
+      "response": "The inspection interval was scheduled for every 18 days. [p. 1]",
       "citations": [
         {
           "page": 1,
@@ -75,14 +379,71 @@
         "P2V"
       ],
       "quality": {
+        "retrieval_cosine_mean": 0.5593876242637634,
+        "retrieval_cosine_max": 0.678969144821167,
+        "retrieval_score_rows": [
+          {
+            "rank": 1,
+            "kind": "text",
+            "cosine": 0.678969144821167,
+            "bm25": 0.7802587093323008,
+            "rrf": 0.1
+          },
+          {
+            "rank": 2,
+            "kind": "text",
+            "cosine": 0.4839472472667694,
+            "bm25": 0.0,
+            "rrf": 0.045454545454545456
+          },
+          {
+            "rank": 3,
+            "kind": "figure",
+            "cosine": 0.5152463316917419,
+            "bm25": 0.0,
+            "rrf": 0.047619047619047616
+          }
+        ],
         "retrieved_count": 3,
         "context_relevance": 0.3333333333333333,
         "draft_faithfulness": 1.0,
         "draft_responsiveness": 1,
         "source_utilization": 0.3333333333333333,
-        "ragas_answer_relevancy": 0.8602367136764885,
-        "ragas_faithfulness": 1.0
+        "ragas_factual_correctness": 1.0,
+        "ragas_faithfulness": 1.0,
+        "citation_support": 1.0,
+        "ragas_answer_relevancy": 0.9679779087123156
       },
+      "provider_usage": [
+        {
+          "call_id": "05a678fe287943c1a36a197c0fa7d134",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800599.068845,
+          "status": "ok",
+          "ttft_ms": 2586.9188000215217,
+          "usage": {
+            "promptTokenCount": 1386,
+            "candidatesTokenCount": 85,
+            "totalTokenCount": 1471
+          },
+          "estimated_cost_usd": 0.0006282999999999999,
+          "duration_ms": 2719.205800036434
+        },
+        {
+          "call_id": "c4ffdc32bf664159a2df776de0daac8e",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800601.7923772,
+          "status": "ok",
+          "ttft_ms": 2611.669600009918,
+          "usage": {
+            "promptTokenCount": 227,
+            "candidatesTokenCount": 37,
+            "totalTokenCount": 264
+          },
+          "estimated_cost_usd": 0.0001606,
+          "duration_ms": 2642.2696000081487
+        }
+      ],
       "correct": true,
       "cited_pages": [
         1
@@ -93,17 +454,205 @@
       "retrieval_scores": {
         "context_precision": 0.3333333333333333,
         "context_recall": 1.0,
+        "precision_at_k": 0.3333333333333333,
+        "recall_at_k": 1.0,
+        "ndcg_at_k": 1.0,
+        "ranked_context_precision": 1.0,
         "reciprocal_rank": 1.0
       },
       "metric_status": {
+        "ragas_answer_relevancy": "complete",
+        "ragas_factual_correctness": "complete",
         "ragas_faithfulness": "complete",
-        "ragas_answer_relevancy": "complete"
-      }
+        "citation_support": "complete"
+      },
+      "scoring_usage": [
+        {
+          "call_id": "660f6c1b0d9c4600ae0f1de65ec44ac4",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800830.101701,
+          "status": "error",
+          "ttft_ms": null,
+          "usage": {},
+          "estimated_cost_usd": null,
+          "duration_ms": 731.3358000246808
+        },
+        {
+          "call_id": "2554ce0b5ad34bfaab44c8906a8f6e48",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800838.8335414,
+          "status": "error",
+          "ttft_ms": null,
+          "usage": {},
+          "estimated_cost_usd": null,
+          "duration_ms": 803.3841000287794
+        },
+        {
+          "call_id": "9f75538950d047d58651482a6c81dbca",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800839.641105,
+          "status": "error",
+          "ttft_ms": null,
+          "usage": {},
+          "estimated_cost_usd": null,
+          "duration_ms": 724.0561000071466
+        },
+        {
+          "call_id": "920b6c3c098c45e4ba4b71efdd80ab85",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800839.6400712,
+          "status": "error",
+          "ttft_ms": null,
+          "usage": {},
+          "estimated_cost_usd": null,
+          "duration_ms": 732.3245999868959
+        },
+        {
+          "call_id": "39328ee05ca44bb18825fffd41a998f7",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800848.3730044,
+          "status": "ok",
+          "ttft_ms": 1337.2124000452459,
+          "usage": {
+            "promptTokenCount": 323,
+            "candidatesTokenCount": 32,
+            "totalTokenCount": 355
+          },
+          "estimated_cost_usd": 0.0001769,
+          "duration_ms": 1341.81890002219
+        },
+        {
+          "call_id": "cbf92887622a4989b20184398b204fa0",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800848.365972,
+          "status": "ok",
+          "ttft_ms": 1454.5895000337623,
+          "usage": {
+            "promptTokenCount": 322,
+            "candidatesTokenCount": 26,
+            "totalTokenCount": 348
+          },
+          "estimated_cost_usd": 0.0001616,
+          "duration_ms": 1458.928600011859
+        },
+        {
+          "call_id": "e6afe19a87ee4c958f5496d41470bc92",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800849.718865,
+          "status": "ok",
+          "ttft_ms": 1183.7621000013314,
+          "usage": {
+            "promptTokenCount": 849,
+            "candidatesTokenCount": 75,
+            "totalTokenCount": 924
+          },
+          "estimated_cost_usd": 0.0004422,
+          "duration_ms": 1281.8311000009999
+        },
+        {
+          "call_id": "5b3f83bfa2044dd19260d2897ed2fd0a",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800849.8283184,
+          "status": "ok",
+          "ttft_ms": 1315.0568999699317,
+          "usage": {
+            "promptTokenCount": 849,
+            "candidatesTokenCount": 66,
+            "totalTokenCount": 915
+          },
+          "estimated_cost_usd": 0.0004197,
+          "duration_ms": 1337.5485999858938
+        },
+        {
+          "call_id": "fb6d724b34804a4b8114e7841419e2ef",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800851.1693811,
+          "status": "ok",
+          "ttft_ms": 1672.4792000022717,
+          "usage": {
+            "promptTokenCount": 368,
+            "candidatesTokenCount": 27,
+            "totalTokenCount": 395
+          },
+          "estimated_cost_usd": 0.0001779,
+          "duration_ms": 1685.409100027755
+        },
+        {
+          "call_id": "2231bed83e564931810b0252264a0a2b",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800852.8589718,
+          "status": "ok",
+          "ttft_ms": 1513.3014000020921,
+          "usage": {
+            "promptTokenCount": 872,
+            "candidatesTokenCount": 69,
+            "totalTokenCount": 941
+          },
+          "estimated_cost_usd": 0.0004341,
+          "duration_ms": 1517.6376999588683
+        },
+        {
+          "call_id": "ed8ff82c9ed24338957281b5ce548514",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800854.3810892,
+          "status": "ok",
+          "ttft_ms": 1199.2638000519946,
+          "usage": {
+            "promptTokenCount": 149,
+            "candidatesTokenCount": 14,
+            "totalTokenCount": 163
+          },
+          "estimated_cost_usd": 7.969999999999999e-05,
+          "duration_ms": 1201.37770002475
+        },
+        {
+          "call_id": "21e89894e38c40d18163ff8b768eb24b",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795801050.9163165,
+          "status": "ok",
+          "ttft_ms": 1242.3639000044204,
+          "usage": {
+            "promptTokenCount": 368,
+            "candidatesTokenCount": 20,
+            "totalTokenCount": 388
+          },
+          "estimated_cost_usd": 0.00016039999999999997,
+          "duration_ms": 1244.3778000306338
+        },
+        {
+          "call_id": "9bb24699002a496a937d12c3e2d22cef",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795801052.1611397,
+          "status": "ok",
+          "ttft_ms": 1103.913399972953,
+          "usage": {
+            "promptTokenCount": 368,
+            "candidatesTokenCount": 26,
+            "totalTokenCount": 394
+          },
+          "estimated_cost_usd": 0.00017539999999999998,
+          "duration_ms": 1107.6039000181481
+        },
+        {
+          "call_id": "0bbe445fb94e4d449be5cdc814639c3c",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795801053.2699897,
+          "status": "ok",
+          "ttft_ms": 953.4713999601081,
+          "usage": {
+            "promptTokenCount": 368,
+            "candidatesTokenCount": 20,
+            "totalTokenCount": 388
+          },
+          "estimated_cost_usd": 0.00016039999999999997,
+          "duration_ms": 955.500399984885
+        }
+      ]
     },
     {
       "id": "H3",
       "kind": "figure",
-      "trace_id": "916bd36a2bd0463793be9f2634f7a005",
+      "trace_id": "45b53749aae141949d3d44cc367cfda5",
       "status": "answered",
       "response": "The west dock handled 42 crates according to Figure 1. [p. 2]",
       "citations": [
@@ -111,7 +660,7 @@
           "page": 2,
           "kind": "figure",
           "source": "P2V",
-          "evidence": "West dock bar with text '42 crates'"
+          "evidence": "West dock bar showing 42 crates in Figure 1"
         }
       ],
       "reason": "verified",
@@ -121,13 +670,70 @@
         "P2V"
       ],
       "quality": {
+        "retrieval_cosine_mean": 0.6637884974479675,
+        "retrieval_cosine_max": 0.7011976838111877,
+        "retrieval_score_rows": [
+          {
+            "rank": 1,
+            "kind": "text",
+            "cosine": 0.7011976838111877,
+            "bm25": 0.3280218052276595,
+            "rrf": 0.09761904761904762
+          },
+          {
+            "rank": 2,
+            "kind": "text",
+            "cosine": 0.5972464680671692,
+            "bm25": 0.3901293546661504,
+            "rrf": 0.09545454545454546
+          },
+          {
+            "rank": 3,
+            "kind": "figure",
+            "cosine": 0.6929214000701904,
+            "bm25": 0.27629666665090086,
+            "rrf": 0.09307359307359307
+          }
+        ],
         "retrieved_count": 3,
         "context_relevance": 0.3333333333333333,
         "draft_faithfulness": 1.0,
         "draft_responsiveness": 1,
         "source_utilization": 0.3333333333333333,
-        "ragas_answer_relevancy": 0.9939613308197229
+        "ragas_answer_relevancy": 0.9939613308197229,
+        "ragas_factual_correctness": 0.0,
+        "citation_support": 1.0
       },
+      "provider_usage": [
+        {
+          "call_id": "a7f3e4aab89047a4b3e7b4492889d499",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800604.5312605,
+          "status": "ok",
+          "ttft_ms": 3332.4745999998413,
+          "usage": {
+            "promptTokenCount": 1393,
+            "candidatesTokenCount": 90,
+            "totalTokenCount": 1483
+          },
+          "estimated_cost_usd": 0.0006429,
+          "duration_ms": 3425.6973000010476
+        },
+        {
+          "call_id": "0552197e4c6444c295959b9536a80772",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800608.0009444,
+          "status": "ok",
+          "ttft_ms": 3159.9415999953635,
+          "usage": {
+            "promptTokenCount": 1318,
+            "candidatesTokenCount": 37,
+            "totalTokenCount": 1355
+          },
+          "estimated_cost_usd": 0.0004879,
+          "duration_ms": 3163.572199991904
+        }
+      ],
       "correct": true,
       "cited_pages": [
         2
@@ -138,17 +744,137 @@
       "retrieval_scores": {
         "context_precision": 0.3333333333333333,
         "context_recall": 1.0,
+        "precision_at_k": 0.3333333333333333,
+        "recall_at_k": 1.0,
+        "ndcg_at_k": 0.5,
+        "ranked_context_precision": 0.3333333333333333,
         "reciprocal_rank": 0.3333333333333333
       },
       "metric_status": {
         "ragas_faithfulness": "not_applicable",
-        "ragas_answer_relevancy": "complete"
-      }
+        "ragas_answer_relevancy": "complete",
+        "ragas_factual_correctness": "complete",
+        "citation_support": "complete"
+      },
+      "scoring_usage": [
+        {
+          "call_id": "13fa0ecccdfe436fac88fa7b93867651",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800855.6001067,
+          "status": "ok",
+          "ttft_ms": 2154.7318000230007,
+          "usage": {
+            "promptTokenCount": 370,
+            "candidatesTokenCount": 32,
+            "totalTokenCount": 402
+          },
+          "estimated_cost_usd": 0.000191,
+          "duration_ms": 2159.7636000369675
+        },
+        {
+          "call_id": "426da2da845742d88f328b12658fa4b5",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800857.761026,
+          "status": "ok",
+          "ttft_ms": 1238.5167999891564,
+          "usage": {
+            "promptTokenCount": 370,
+            "candidatesTokenCount": 32,
+            "totalTokenCount": 402
+          },
+          "estimated_cost_usd": 0.000191,
+          "duration_ms": 1244.3362000049092
+        },
+        {
+          "call_id": "93b3a4cd56bb4a1095310d715701893a",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800859.0072596,
+          "status": "ok",
+          "ttft_ms": 960.8586999820545,
+          "usage": {
+            "promptTokenCount": 370,
+            "candidatesTokenCount": 32,
+            "totalTokenCount": 402
+          },
+          "estimated_cost_usd": 0.000191,
+          "duration_ms": 964.838600018993
+        },
+        {
+          "call_id": "8f6bbdf61afe43169359fc9b92b97529",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800860.0827086,
+          "status": "ok",
+          "ttft_ms": 1101.3213999685831,
+          "usage": {
+            "promptTokenCount": 325,
+            "candidatesTokenCount": 34,
+            "totalTokenCount": 359
+          },
+          "estimated_cost_usd": 0.0001825,
+          "duration_ms": 1106.571999960579
+        },
+        {
+          "call_id": "f34cda6670da46498255b29f8aaf5086",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800860.0837615,
+          "status": "ok",
+          "ttft_ms": 1102.5435999617912,
+          "usage": {
+            "promptTokenCount": 320,
+            "candidatesTokenCount": 24,
+            "totalTokenCount": 344
+          },
+          "estimated_cost_usd": 0.000156,
+          "duration_ms": 1109.805099957157
+        },
+        {
+          "call_id": "6001232388654d37895a8e0593027ae1",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800861.1973755,
+          "status": "ok",
+          "ttft_ms": 1614.907499984838,
+          "usage": {
+            "promptTokenCount": 849,
+            "candidatesTokenCount": 71,
+            "totalTokenCount": 920
+          },
+          "estimated_cost_usd": 0.0004322,
+          "duration_ms": 1624.34789998224
+        },
+        {
+          "call_id": "1d3e0dfab4a04b098977b550d98f5b3c",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800861.1953778,
+          "status": "ok",
+          "ttft_ms": 1618.5949000064284,
+          "usage": {
+            "promptTokenCount": 849,
+            "candidatesTokenCount": 79,
+            "totalTokenCount": 928
+          },
+          "estimated_cost_usd": 0.0004522,
+          "duration_ms": 1628.6779000074603
+        },
+        {
+          "call_id": "00fe942cb6364f98900fbca26ffe71aa",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800862.870221,
+          "status": "ok",
+          "ttft_ms": 1971.592399990186,
+          "usage": {
+            "promptTokenCount": 1236,
+            "candidatesTokenCount": 10,
+            "totalTokenCount": 1246
+          },
+          "estimated_cost_usd": 0.0003958,
+          "duration_ms": 1973.8273000111803
+        }
+      ]
     },
     {
       "id": "H4",
       "kind": "figure",
-      "trace_id": "7acf147fffc547c7895bd6a7c47dbe61",
+      "trace_id": "ba06e259eea548a89715b6b7924baaf2",
       "status": "answered",
       "response": "East dock had the highest throughput in Figure 1, handling 67 crates. [p. 2]",
       "citations": [
@@ -156,7 +882,7 @@
           "page": 2,
           "kind": "figure",
           "source": "P2V",
-          "evidence": "East dock: 67 crates"
+          "evidence": "East dock 67 crates"
         }
       ],
       "reason": "verified",
@@ -166,13 +892,70 @@
         "P2V"
       ],
       "quality": {
+        "retrieval_cosine_mean": 0.7075665593147278,
+        "retrieval_cosine_max": 0.8091385364532471,
+        "retrieval_score_rows": [
+          {
+            "rank": 1,
+            "kind": "text",
+            "cosine": 0.8091385364532471,
+            "bm25": 0.43736240697021267,
+            "rrf": 0.1
+          },
+          {
+            "rank": 2,
+            "kind": "text",
+            "cosine": 0.5779768228530884,
+            "bm25": 0.3901293546661504,
+            "rrf": 0.09307359307359307
+          },
+          {
+            "rank": 3,
+            "kind": "figure",
+            "cosine": 0.7355844974517822,
+            "bm25": 0.3571594910907312,
+            "rrf": 0.09307359307359307
+          }
+        ],
         "retrieved_count": 3,
         "context_relevance": 0.3333333333333333,
         "draft_faithfulness": 1.0,
         "draft_responsiveness": 1,
         "source_utilization": 0.3333333333333333,
-        "ragas_answer_relevancy": 0.9995387707020967
+        "ragas_answer_relevancy": 0.9995387707020967,
+        "ragas_factual_correctness": 0.67,
+        "citation_support": 1.0
       },
+      "provider_usage": [
+        {
+          "call_id": "caf5896176284063ac8b22e0fc69d66a",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800611.2736592,
+          "status": "ok",
+          "ttft_ms": 3938.566799974069,
+          "usage": {
+            "promptTokenCount": 1398,
+            "candidatesTokenCount": 87,
+            "totalTokenCount": 1485
+          },
+          "estimated_cost_usd": 0.0006369,
+          "duration_ms": 4103.900199988857
+        },
+        {
+          "call_id": "b0fc9f4efd23428e96c675e9a2273f05",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800615.4166899,
+          "status": "ok",
+          "ttft_ms": 5021.9556000083685,
+          "usage": {
+            "promptTokenCount": 1320,
+            "candidatesTokenCount": 37,
+            "totalTokenCount": 1357
+          },
+          "estimated_cost_usd": 0.0004885,
+          "duration_ms": 5034.4224000000395
+        }
+      ],
       "correct": true,
       "cited_pages": [
         2
@@ -183,17 +966,207 @@
       "retrieval_scores": {
         "context_precision": 0.3333333333333333,
         "context_recall": 1.0,
+        "precision_at_k": 0.3333333333333333,
+        "recall_at_k": 1.0,
+        "ndcg_at_k": 0.5,
+        "ranked_context_precision": 0.3333333333333333,
         "reciprocal_rank": 0.3333333333333333
       },
       "metric_status": {
         "ragas_faithfulness": "not_applicable",
-        "ragas_answer_relevancy": "complete"
-      }
+        "ragas_answer_relevancy": "complete",
+        "ragas_factual_correctness": "complete",
+        "citation_support": "complete"
+      },
+      "scoring_usage": [
+        {
+          "call_id": "57dec483b7d8410fb4c36e687ec9ffad",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800864.858357,
+          "status": "error",
+          "ttft_ms": null,
+          "usage": {},
+          "estimated_cost_usd": null,
+          "duration_ms": 920.3804999706335
+        },
+        {
+          "call_id": "95c794beed924553b0575b75a64316cc",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800873.7789903,
+          "status": "ok",
+          "ttft_ms": 1464.2894000280648,
+          "usage": {
+            "promptTokenCount": 373,
+            "candidatesTokenCount": 37,
+            "totalTokenCount": 410
+          },
+          "estimated_cost_usd": 0.00020439999999999998,
+          "duration_ms": 1467.4006000277586
+        },
+        {
+          "call_id": "026c56c71cf84b28ab9d6395cf0e5b1f",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800875.247693,
+          "status": "ok",
+          "ttft_ms": 1093.7365999561734,
+          "usage": {
+            "promptTokenCount": 373,
+            "candidatesTokenCount": 36,
+            "totalTokenCount": 409
+          },
+          "estimated_cost_usd": 0.00020189999999999997,
+          "duration_ms": 1096.962799958419
+        },
+        {
+          "call_id": "3fe5ade2730049c987d7855b8e1240a6",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800876.3461037,
+          "status": "ok",
+          "ttft_ms": 1222.575300023891,
+          "usage": {
+            "promptTokenCount": 373,
+            "candidatesTokenCount": 36,
+            "totalTokenCount": 409
+          },
+          "estimated_cost_usd": 0.00020189999999999997,
+          "duration_ms": 1234.6346999984235
+        },
+        {
+          "call_id": "147dea12698b4799bfb040bd84256ae1",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800877.703029,
+          "status": "error",
+          "ttft_ms": null,
+          "usage": {},
+          "estimated_cost_usd": null,
+          "duration_ms": 715.3159999870695
+        },
+        {
+          "call_id": "96c965e53eef487dbbf75dfafb3e4f9a",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800877.7040405,
+          "status": "error",
+          "ttft_ms": null,
+          "usage": {},
+          "estimated_cost_usd": null,
+          "duration_ms": 761.1398000153713
+        },
+        {
+          "call_id": "86d9d0b41e2f47c8ad33a132e6a78a71",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800886.4193926,
+          "status": "error",
+          "ttft_ms": null,
+          "usage": {},
+          "estimated_cost_usd": null,
+          "duration_ms": 724.6989999548532
+        },
+        {
+          "call_id": "07ac4e4cdcdb4fb7845f32713327cc11",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800886.4662104,
+          "status": "error",
+          "ttft_ms": null,
+          "usage": {},
+          "estimated_cost_usd": null,
+          "duration_ms": 680.8899999596179
+        },
+        {
+          "call_id": "c1a4c24a5c8c4fa4a589660c42117ae6",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800887.1873975,
+          "status": "error",
+          "ttft_ms": null,
+          "usage": {},
+          "estimated_cost_usd": null,
+          "duration_ms": 802.9195999843068
+        },
+        {
+          "call_id": "b132b19a1efa4acdb0a5b760af55d490",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795801054.295424,
+          "status": "ok",
+          "ttft_ms": 1192.3524000449106,
+          "usage": {
+            "promptTokenCount": 324,
+            "candidatesTokenCount": 38,
+            "totalTokenCount": 362
+          },
+          "estimated_cost_usd": 0.00019219999999999998,
+          "duration_ms": 1288.3205999969505
+        },
+        {
+          "call_id": "f850ef8ed08c4affb1a343d5e5ae5fdf",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795801054.2944236,
+          "status": "ok",
+          "ttft_ms": 1290.5375999980606,
+          "usage": {
+            "promptTokenCount": 328,
+            "candidatesTokenCount": 42,
+            "totalTokenCount": 370
+          },
+          "estimated_cost_usd": 0.00020339999999999998,
+          "duration_ms": 1296.86549998587
+        },
+        {
+          "call_id": "f18724408ef34b65abbd53c8a789f99f",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795801055.591975,
+          "status": "ok",
+          "ttft_ms": 1194.6801000158302,
+          "usage": {
+            "promptTokenCount": 861,
+            "candidatesTokenCount": 113,
+            "totalTokenCount": 974
+          },
+          "estimated_cost_usd": 0.0005407999999999999,
+          "duration_ms": 1344.335800036788
+        },
+        {
+          "call_id": "f9333abd689a4592bc7b89dfade0c100",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795801055.5939753,
+          "status": "ok",
+          "ttft_ms": 1208.348800020758,
+          "usage": {
+            "promptTokenCount": 861,
+            "candidatesTokenCount": 121,
+            "totalTokenCount": 982
+          },
+          "estimated_cost_usd": 0.0005608,
+          "duration_ms": 1406.7416000179946
+        },
+        {
+          "call_id": "6b78b81789c945eb97b9df8a58c87856",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795801057.033296,
+          "status": "error",
+          "ttft_ms": null,
+          "usage": {},
+          "estimated_cost_usd": null,
+          "duration_ms": 744.4221999612637
+        },
+        {
+          "call_id": "f31029ba7ea64702be4c4d10ca4b15d0",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795801249.032794,
+          "status": "ok",
+          "ttft_ms": 1916.9184999773279,
+          "usage": {
+            "promptTokenCount": 1244,
+            "candidatesTokenCount": 14,
+            "totalTokenCount": 1258
+          },
+          "estimated_cost_usd": 0.0004082,
+          "duration_ms": 1923.538200033363
+        }
+      ]
     },
     {
       "id": "H5",
       "kind": "unanswerable",
-      "trace_id": "8bd11392fc1349aa91bd0a515ce22ba7",
+      "trace_id": "84d60416de0840648fea054dd0754781",
       "status": "insufficient_evidence",
       "response": "There is insufficient evidence in this document to answer that question.",
       "citations": [],
@@ -204,15 +1177,60 @@
         "P2V"
       ],
       "quality": {
+        "retrieval_cosine_mean": 0.595512866973877,
+        "retrieval_cosine_max": 0.6275814771652222,
+        "retrieval_score_rows": [
+          {
+            "rank": 1,
+            "kind": "text",
+            "cosine": 0.6275814771652222,
+            "bm25": 0.10934060174255317,
+            "rrf": 0.09761904761904762
+          },
+          {
+            "rank": 2,
+            "kind": "text",
+            "cosine": 0.574171245098114,
+            "bm25": 0.3901293546661504,
+            "rrf": 0.09545454545454546
+          },
+          {
+            "rank": 3,
+            "kind": "figure",
+            "cosine": 0.5847858786582947,
+            "bm25": 0.08086282443983031,
+            "rrf": 0.09307359307359307
+          }
+        ],
         "retrieved_count": 3,
         "context_relevance": 0.0
       },
+      "provider_usage": [
+        {
+          "call_id": "62c44a79aef943daac0c002918b5f117",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800620.5617533,
+          "status": "ok",
+          "ttft_ms": 5317.480100027751,
+          "usage": {
+            "promptTokenCount": 1388,
+            "candidatesTokenCount": 16,
+            "totalTokenCount": 1404
+          },
+          "estimated_cost_usd": 0.0004564,
+          "duration_ms": 5319.895600026939
+        }
+      ],
       "correct": true,
       "cited_pages": [],
       "citation_correct": null,
       "abstained": true,
       "decision_correct": true,
       "retrieval_scores": {
+        "precision_at_k": null,
+        "recall_at_k": null,
+        "ndcg_at_k": null,
+        "ranked_context_precision": null,
         "context_precision": null,
         "context_recall": null,
         "reciprocal_rank": null
@@ -221,7 +1239,7 @@
     {
       "id": "H6",
       "kind": "unanswerable",
-      "trace_id": "1ecc5ba6a8b8455ebcd69db84d1f08ef",
+      "trace_id": "0ab03c51d4134c57a6b0bfed78209c18",
       "status": "insufficient_evidence",
       "response": "There is insufficient evidence in this document to answer that question.",
       "citations": [],
@@ -232,15 +1250,60 @@
         "P2V"
       ],
       "quality": {
+        "retrieval_cosine_mean": 0.5443577766418457,
+        "retrieval_cosine_max": 0.5579816699028015,
+        "retrieval_score_rows": [
+          {
+            "rank": 1,
+            "kind": "text",
+            "cosine": 0.5319486856460571,
+            "bm25": 0.7802587093323008,
+            "rrf": 0.09545454545454546
+          },
+          {
+            "rank": 2,
+            "kind": "text",
+            "cosine": 0.5579816699028015,
+            "bm25": 0.0,
+            "rrf": 0.05
+          },
+          {
+            "rank": 3,
+            "kind": "figure",
+            "cosine": 0.5431430339813232,
+            "bm25": 0.0,
+            "rrf": 0.047619047619047616
+          }
+        ],
         "retrieved_count": 3,
         "context_relevance": 0.0
       },
+      "provider_usage": [
+        {
+          "call_id": "a9822b99fa17440fa76d1dd88a8a16b5",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800625.979441,
+          "status": "ok",
+          "ttft_ms": 6623.8621000084095,
+          "usage": {
+            "promptTokenCount": 1388,
+            "candidatesTokenCount": 16,
+            "totalTokenCount": 1404
+          },
+          "estimated_cost_usd": 0.0004564,
+          "duration_ms": 8671.433300012723
+        }
+      ],
       "correct": true,
       "cited_pages": [],
       "citation_correct": null,
       "abstained": true,
       "decision_correct": true,
       "retrieval_scores": {
+        "precision_at_k": null,
+        "recall_at_k": null,
+        "ndcg_at_k": null,
+        "ranked_context_precision": null,
         "context_precision": null,
         "context_recall": null,
         "reciprocal_rank": null
@@ -249,7 +1312,7 @@
     {
       "id": "O1",
       "kind": "text",
-      "trace_id": "131d98bf9cfb4733b0c5fd4340e452cf",
+      "trace_id": "3e6d6c16e76d4595840a3dbf082ed06c",
       "status": "answered",
       "response": "Mira Vale led the orchard survey. [p. 1]",
       "citations": [
@@ -257,7 +1320,7 @@
           "page": 1,
           "kind": "text",
           "source": "P1T1",
-          "evidence": "Orchard survey Survey leader: Mira Vale."
+          "evidence": "Survey leader: Mira Vale."
         }
       ],
       "reason": "verified",
@@ -267,14 +1330,71 @@
         "P2V"
       ],
       "quality": {
+        "retrieval_cosine_mean": 0.5149286985397339,
+        "retrieval_cosine_max": 0.6534645557403564,
+        "retrieval_score_rows": [
+          {
+            "rank": 1,
+            "kind": "text",
+            "cosine": 0.6534645557403564,
+            "bm25": 1.3779340278153613,
+            "rrf": 0.1
+          },
+          {
+            "rank": 2,
+            "kind": "text",
+            "cosine": 0.45874491333961487,
+            "bm25": 0.0,
+            "rrf": 0.047619047619047616
+          },
+          {
+            "rank": 3,
+            "kind": "figure",
+            "cosine": 0.43257665634155273,
+            "bm25": 0.0,
+            "rrf": 0.045454545454545456
+          }
+        ],
         "retrieved_count": 3,
         "context_relevance": 0.3333333333333333,
         "draft_faithfulness": 1.0,
         "draft_responsiveness": 1,
         "source_utilization": 0.3333333333333333,
-        "ragas_answer_relevancy": 0.9999999999999992,
-        "ragas_faithfulness": 1.0
+        "ragas_factual_correctness": 1.0,
+        "ragas_faithfulness": 1.0,
+        "citation_support": 1.0,
+        "ragas_answer_relevancy": 0.9999999999999992
       },
+      "provider_usage": [
+        {
+          "call_id": "e3f94ca2789f4d85991ea37e042965d4",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800634.8654604,
+          "status": "ok",
+          "ttft_ms": 4245.971700001974,
+          "usage": {
+            "promptTokenCount": 1384,
+            "candidatesTokenCount": 78,
+            "totalTokenCount": 1462
+          },
+          "estimated_cost_usd": 0.0006102000000000001,
+          "duration_ms": 4306.841499987058
+        },
+        {
+          "call_id": "e384eadcdc764662bcef1ed33e657cac",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800639.1755352,
+          "status": "ok",
+          "ttft_ms": 7169.298099994194,
+          "usage": {
+            "promptTokenCount": 218,
+            "candidatesTokenCount": 37,
+            "totalTokenCount": 255
+          },
+          "estimated_cost_usd": 0.0001579,
+          "duration_ms": 7181.175799982157
+        }
+      ],
       "correct": true,
       "cited_pages": [
         1
@@ -285,19 +1405,227 @@
       "retrieval_scores": {
         "context_precision": 0.3333333333333333,
         "context_recall": 1.0,
+        "precision_at_k": 0.3333333333333333,
+        "recall_at_k": 1.0,
+        "ndcg_at_k": 1.0,
+        "ranked_context_precision": 1.0,
         "reciprocal_rank": 1.0
       },
       "metric_status": {
         "ragas_answer_relevancy": "complete",
-        "ragas_faithfulness": "complete"
-      }
+        "ragas_factual_correctness": "complete",
+        "ragas_faithfulness": "complete",
+        "citation_support": "complete"
+      },
+      "scoring_usage": [
+        {
+          "call_id": "3cb37aee1904425db9e2821ad08a3a3e",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800888.092867,
+          "status": "error",
+          "ttft_ms": null,
+          "usage": {},
+          "estimated_cost_usd": null,
+          "duration_ms": 654.6757000032812
+        },
+        {
+          "call_id": "60ef008b6ba3499db1178d9987d19428",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800896.7485359,
+          "status": "error",
+          "ttft_ms": null,
+          "usage": {},
+          "estimated_cost_usd": null,
+          "duration_ms": 665.0456999777816
+        },
+        {
+          "call_id": "aa737a6eeb184d2583fe8f2d9ff01efd",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800897.4170465,
+          "status": "error",
+          "ttft_ms": null,
+          "usage": {},
+          "estimated_cost_usd": null,
+          "duration_ms": 649.8393000219949
+        },
+        {
+          "call_id": "5ada2d72293942d789246e1a5e8aee46",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800897.416048,
+          "status": "ok",
+          "ttft_ms": 1072.9876999976113,
+          "usage": {
+            "promptTokenCount": 318,
+            "candidatesTokenCount": 27,
+            "totalTokenCount": 345
+          },
+          "estimated_cost_usd": 0.00016289999999999998,
+          "duration_ms": 1075.529900030233
+        },
+        {
+          "call_id": "e4b4f38f26fe48109ecb621e118fe001",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800898.4953938,
+          "status": "error",
+          "ttft_ms": null,
+          "usage": {},
+          "estimated_cost_usd": null,
+          "duration_ms": 671.3561000069603
+        },
+        {
+          "call_id": "7a117f7f71e14f428371005b236ff28a",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800906.0674255,
+          "status": "ok",
+          "ttft_ms": 1028.6194999935105,
+          "usage": {
+            "promptTokenCount": 318,
+            "candidatesTokenCount": 27,
+            "totalTokenCount": 345
+          },
+          "estimated_cost_usd": 0.00016289999999999998,
+          "duration_ms": 1034.3021000153385
+        },
+        {
+          "call_id": "35de8834fa644df088ed1cd76685c9ff",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800907.1043031,
+          "status": "ok",
+          "ttft_ms": 1076.2868999736384,
+          "usage": {
+            "promptTokenCount": 840,
+            "candidatesTokenCount": 67,
+            "totalTokenCount": 907
+          },
+          "estimated_cost_usd": 0.0004195,
+          "duration_ms": 1121.1656999657862
+        },
+        {
+          "call_id": "56416a5da1f0413693afddce24b460f3",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800907.1674016,
+          "status": "ok",
+          "ttft_ms": 1145.4883000114933,
+          "usage": {
+            "promptTokenCount": 840,
+            "candidatesTokenCount": 62,
+            "totalTokenCount": 902
+          },
+          "estimated_cost_usd": 0.000407,
+          "duration_ms": 1208.4489000262693
+        },
+        {
+          "call_id": "f7989d293e3042c5a0bbe5b4247034da",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800908.3786187,
+          "status": "ok",
+          "ttft_ms": 1285.634600033518,
+          "usage": {
+            "promptTokenCount": 362,
+            "candidatesTokenCount": 22,
+            "totalTokenCount": 384
+          },
+          "estimated_cost_usd": 0.0001636,
+          "duration_ms": 1293.2694000191987
+        },
+        {
+          "call_id": "5c773eefc6ef4d5c990845ff07c945e8",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800909.6765924,
+          "status": "ok",
+          "ttft_ms": 1607.9983999952674,
+          "usage": {
+            "promptTokenCount": 866,
+            "candidatesTokenCount": 70,
+            "totalTokenCount": 936
+          },
+          "estimated_cost_usd": 0.0004348,
+          "duration_ms": 1611.6637000232004
+        },
+        {
+          "call_id": "89d20bbff8744853abbc733c4a9d7bbd",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800911.294056,
+          "status": "ok",
+          "ttft_ms": 1087.3834999511018,
+          "usage": {
+            "promptTokenCount": 142,
+            "candidatesTokenCount": 10,
+            "totalTokenCount": 152
+          },
+          "estimated_cost_usd": 6.759999999999999e-05,
+          "duration_ms": 1089.5358999841847
+        },
+        {
+          "call_id": "4668bd58b40947599aa1e342b99f39e8",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795801057.8335633,
+          "status": "error",
+          "ttft_ms": null,
+          "usage": {},
+          "estimated_cost_usd": null,
+          "duration_ms": 473.5544000286609
+        },
+        {
+          "call_id": "cfff84f732ba41c89df1ede65edfc8aa",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795801078.307986,
+          "status": "error",
+          "ttft_ms": null,
+          "usage": {},
+          "estimated_cost_usd": null,
+          "duration_ms": 625.9587000240572
+        },
+        {
+          "call_id": "295b8f932fc4492f87b753cd0f158f42",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795801251.0206475,
+          "status": "ok",
+          "ttft_ms": 1296.732900023926,
+          "usage": {
+            "promptTokenCount": 363,
+            "candidatesTokenCount": 24,
+            "totalTokenCount": 387
+          },
+          "estimated_cost_usd": 0.00016889999999999999,
+          "duration_ms": 1301.5971000422724
+        },
+        {
+          "call_id": "b731f8b2ae1c46eeae45d8bd6c15548c",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795801252.3236992,
+          "status": "ok",
+          "ttft_ms": 1057.4620000552386,
+          "usage": {
+            "promptTokenCount": 363,
+            "candidatesTokenCount": 24,
+            "totalTokenCount": 387
+          },
+          "estimated_cost_usd": 0.00016889999999999999,
+          "duration_ms": 1061.306300049182
+        },
+        {
+          "call_id": "31507c63630749bc8698febefe029517",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795801253.387792,
+          "status": "ok",
+          "ttft_ms": 1320.7567000063136,
+          "usage": {
+            "promptTokenCount": 363,
+            "candidatesTokenCount": 24,
+            "totalTokenCount": 387
+          },
+          "estimated_cost_usd": 0.00016889999999999999,
+          "duration_ms": 1324.122600024566
+        }
+      ]
     },
     {
       "id": "O2",
       "kind": "text",
-      "trace_id": "61aadaabce1a454daa45a5bcc20d64ce",
+      "trace_id": "2c32362062394880a8395bdeae381782",
       "status": "answered",
-      "response": "The calibration window lasts 36 hours. [p. 1]",
+      "response": "The calibration window is 36 hours long. [p. 1]",
       "citations": [
         {
           "page": 1,
@@ -313,14 +1641,71 @@
         "P2V"
       ],
       "quality": {
+        "retrieval_cosine_mean": 0.6317973136901855,
+        "retrieval_cosine_max": 0.7671729922294617,
+        "retrieval_score_rows": [
+          {
+            "rank": 1,
+            "kind": "text",
+            "cosine": 0.7671729922294617,
+            "bm25": 1.1703880639984512,
+            "rrf": 0.1
+          },
+          {
+            "rank": 2,
+            "kind": "text",
+            "cosine": 0.5650355815887451,
+            "bm25": 0.0,
+            "rrf": 0.047619047619047616
+          },
+          {
+            "rank": 3,
+            "kind": "figure",
+            "cosine": 0.5631833076477051,
+            "bm25": 0.0,
+            "rrf": 0.045454545454545456
+          }
+        ],
         "retrieved_count": 3,
         "context_relevance": 0.3333333333333333,
         "draft_faithfulness": 1.0,
         "draft_responsiveness": 1,
         "source_utilization": 0.3333333333333333,
-        "ragas_answer_relevancy": 0.9388683849266339,
-        "ragas_faithfulness": 1.0
+        "ragas_answer_relevancy": 0.9999999999999121,
+        "ragas_factual_correctness": 1.0,
+        "ragas_faithfulness": 1.0,
+        "citation_support": 1.0
       },
+      "provider_usage": [
+        {
+          "call_id": "629eac03028b4aab894f79c04ee7e3af",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800646.4593613,
+          "status": "ok",
+          "ttft_ms": 8995.31740002567,
+          "usage": {
+            "promptTokenCount": 1385,
+            "candidatesTokenCount": 84,
+            "totalTokenCount": 1469
+          },
+          "estimated_cost_usd": 0.0006255,
+          "duration_ms": 9287.777899997309
+        },
+        {
+          "call_id": "570c16540e1d40f88faa1e4634c16989",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800655.7511194,
+          "status": "ok",
+          "ttft_ms": 8258.348800009117,
+          "usage": {
+            "promptTokenCount": 225,
+            "candidatesTokenCount": 37,
+            "totalTokenCount": 262
+          },
+          "estimated_cost_usd": 0.00016,
+          "duration_ms": 8275.784400000703
+        }
+      ],
       "correct": true,
       "cited_pages": [
         1
@@ -331,17 +1716,165 @@
       "retrieval_scores": {
         "context_precision": 0.3333333333333333,
         "context_recall": 1.0,
+        "precision_at_k": 0.3333333333333333,
+        "recall_at_k": 1.0,
+        "ndcg_at_k": 1.0,
+        "ranked_context_precision": 1.0,
         "reciprocal_rank": 1.0
       },
       "metric_status": {
         "ragas_answer_relevancy": "complete",
-        "ragas_faithfulness": "complete"
-      }
+        "ragas_factual_correctness": "complete",
+        "ragas_faithfulness": "complete",
+        "citation_support": "complete"
+      },
+      "scoring_usage": [
+        {
+          "call_id": "c3b49ef09b134a63b7d87dd41f261114",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800912.4021919,
+          "status": "ok",
+          "ttft_ms": 1064.4013999844901,
+          "usage": {
+            "promptTokenCount": 366,
+            "candidatesTokenCount": 25,
+            "totalTokenCount": 391
+          },
+          "estimated_cost_usd": 0.00017230000000000001,
+          "duration_ms": 1066.952700028196
+        },
+        {
+          "call_id": "b499205ecd6a4b9081d39d3081c86975",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800913.4702456,
+          "status": "ok",
+          "ttft_ms": 1004.0392000228167,
+          "usage": {
+            "promptTokenCount": 366,
+            "candidatesTokenCount": 25,
+            "totalTokenCount": 391
+          },
+          "estimated_cost_usd": 0.00017230000000000001,
+          "duration_ms": 1047.6169000030495
+        },
+        {
+          "call_id": "92e266bc35a7467e8f628d029ed6c71e",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800914.5201783,
+          "status": "ok",
+          "ttft_ms": 1466.9731999747455,
+          "usage": {
+            "promptTokenCount": 366,
+            "candidatesTokenCount": 25,
+            "totalTokenCount": 391
+          },
+          "estimated_cost_usd": 0.00017230000000000001,
+          "duration_ms": 1470.7335999701172
+        },
+        {
+          "call_id": "30eb0dab252947ae8c60f05c3a45b597",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800916.0910382,
+          "status": "ok",
+          "ttft_ms": 1138.9911000151187,
+          "usage": {
+            "promptTokenCount": 321,
+            "candidatesTokenCount": 30,
+            "totalTokenCount": 351
+          },
+          "estimated_cost_usd": 0.00017130000000000002,
+          "duration_ms": 1141.6770000359975
+        },
+        {
+          "call_id": "1ba51b6aa1e744858220687987a101af",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800916.0910382,
+          "status": "ok",
+          "ttft_ms": 1437.3036999604665,
+          "usage": {
+            "promptTokenCount": 320,
+            "candidatesTokenCount": 29,
+            "totalTokenCount": 349
+          },
+          "estimated_cost_usd": 0.0001685,
+          "duration_ms": 1443.2800999493338
+        },
+        {
+          "call_id": "093db142535449a48dec5a48c75d7b1f",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800917.2344387,
+          "status": "ok",
+          "ttft_ms": 1122.339199995622,
+          "usage": {
+            "promptTokenCount": 845,
+            "candidatesTokenCount": 77,
+            "totalTokenCount": 922
+          },
+          "estimated_cost_usd": 0.000446,
+          "duration_ms": 1151.4181999955326
+        },
+        {
+          "call_id": "29633da56a624dd79f6f271ce073c129",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800917.5385513,
+          "status": "ok",
+          "ttft_ms": 1037.035699991975,
+          "usage": {
+            "promptTokenCount": 845,
+            "candidatesTokenCount": 76,
+            "totalTokenCount": 921
+          },
+          "estimated_cost_usd": 0.0004435,
+          "duration_ms": 1135.3254999849014
+        },
+        {
+          "call_id": "45bb8a4011b14483904ee8924530a342",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800918.6789193,
+          "status": "ok",
+          "ttft_ms": 1481.8686000071466,
+          "usage": {
+            "promptTokenCount": 366,
+            "candidatesTokenCount": 25,
+            "totalTokenCount": 391
+          },
+          "estimated_cost_usd": 0.00017230000000000001,
+          "duration_ms": 1485.7486999826506
+        },
+        {
+          "call_id": "62e7c94bbbf341e1ad7dc2a586e91805",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800920.169205,
+          "status": "ok",
+          "ttft_ms": 1080.6262000114657,
+          "usage": {
+            "promptTokenCount": 869,
+            "candidatesTokenCount": 67,
+            "totalTokenCount": 936
+          },
+          "estimated_cost_usd": 0.0004282,
+          "duration_ms": 1134.0854999725707
+        },
+        {
+          "call_id": "235eaae0036542d799d4eb0e2607f9b4",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800921.3102124,
+          "status": "ok",
+          "ttft_ms": 944.6492999559268,
+          "usage": {
+            "promptTokenCount": 146,
+            "candidatesTokenCount": 10,
+            "totalTokenCount": 156
+          },
+          "estimated_cost_usd": 6.879999999999999e-05,
+          "duration_ms": 946.7104999930598
+        }
+      ]
     },
     {
       "id": "O3",
       "kind": "figure",
-      "trace_id": "f244316719c24a5e9c2f5848f9c132b9",
+      "trace_id": "bf5c1936075544cca2b86a7c69dbe393",
       "status": "answered",
       "response": "The yield shown for the alder plot in Figure 1 is 21 kg. [p. 2]",
       "citations": [
@@ -349,7 +1882,7 @@
           "page": 2,
           "kind": "figure",
           "source": "P2V",
-          "evidence": "Alder plot: 21 kg"
+          "evidence": "Alder plot label next to a bar with '21 kg'"
         }
       ],
       "reason": "verified",
@@ -359,13 +1892,70 @@
         "P2V"
       ],
       "quality": {
+        "retrieval_cosine_mean": 0.7542476058006287,
+        "retrieval_cosine_max": 0.8942173719406128,
+        "retrieval_score_rows": [
+          {
+            "rank": 1,
+            "kind": "text",
+            "cosine": 0.8942173719406128,
+            "bm25": 0.4920327078414892,
+            "rrf": 0.09761904761904762
+          },
+          {
+            "rank": 2,
+            "kind": "text",
+            "cosine": 0.5510742664337158,
+            "bm25": 0.7802587093323008,
+            "rrf": 0.09545454545454546
+          },
+          {
+            "rank": 3,
+            "kind": "figure",
+            "cosine": 0.8174511194229126,
+            "bm25": 0.4018044274770725,
+            "rrf": 0.09307359307359307
+          }
+        ],
         "retrieved_count": 3,
         "context_relevance": 0.3333333333333333,
         "draft_faithfulness": 1.0,
         "draft_responsiveness": 1,
         "source_utilization": 0.3333333333333333,
-        "ragas_answer_relevancy": 0.9963719776947287
+        "ragas_answer_relevancy": 0.9963719776947287,
+        "ragas_factual_correctness": 0.0,
+        "citation_support": 1.0
       },
+      "provider_usage": [
+        {
+          "call_id": "8e6d79f09a324c60b3a5acf6bf95f9fc",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800664.1229908,
+          "status": "ok",
+          "ttft_ms": 7619.35110000195,
+          "usage": {
+            "promptTokenCount": 1391,
+            "candidatesTokenCount": 93,
+            "totalTokenCount": 1484
+          },
+          "estimated_cost_usd": 0.0006498,
+          "duration_ms": 7749.657499953173
+        },
+        {
+          "call_id": "370d208044e24212a2b16a35494a7875",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800671.9194446,
+          "status": "ok",
+          "ttft_ms": 8454.278300050646,
+          "usage": {
+            "promptTokenCount": 1321,
+            "candidatesTokenCount": 37,
+            "totalTokenCount": 1358
+          },
+          "estimated_cost_usd": 0.0004888000000000001,
+          "duration_ms": 8459.63280001888
+        }
+      ],
       "correct": true,
       "cited_pages": [
         2
@@ -376,19 +1966,257 @@
       "retrieval_scores": {
         "context_precision": 0.3333333333333333,
         "context_recall": 1.0,
+        "precision_at_k": 0.3333333333333333,
+        "recall_at_k": 1.0,
+        "ndcg_at_k": 0.5,
+        "ranked_context_precision": 0.3333333333333333,
         "reciprocal_rank": 0.3333333333333333
       },
       "metric_status": {
         "ragas_faithfulness": "not_applicable",
-        "ragas_answer_relevancy": "complete"
-      }
+        "ragas_answer_relevancy": "complete",
+        "ragas_factual_correctness": "complete",
+        "citation_support": "complete"
+      },
+      "scoring_usage": [
+        {
+          "call_id": "5e2bdf5e17414269b4102279991bf031",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800922.2781005,
+          "status": "error",
+          "ttft_ms": null,
+          "usage": {},
+          "estimated_cost_usd": null,
+          "duration_ms": 593.3621000149287
+        },
+        {
+          "call_id": "9173223e72fc41d680f19a98110d7a7e",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800930.8722458,
+          "status": "ok",
+          "ttft_ms": 1084.342700021807,
+          "usage": {
+            "promptTokenCount": 373,
+            "candidatesTokenCount": 32,
+            "totalTokenCount": 405
+          },
+          "estimated_cost_usd": 0.00019189999999999998,
+          "duration_ms": 1087.1738000423647
+        },
+        {
+          "call_id": "c155f8e899ef4ecc9ec4d851cd446049",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800931.9605603,
+          "status": "ok",
+          "ttft_ms": 1149.6894999872893,
+          "usage": {
+            "promptTokenCount": 373,
+            "candidatesTokenCount": 32,
+            "totalTokenCount": 405
+          },
+          "estimated_cost_usd": 0.00019189999999999998,
+          "duration_ms": 1152.7302999747917
+        },
+        {
+          "call_id": "5e10338aa425406391536662c092a68d",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800933.1153762,
+          "status": "error",
+          "ttft_ms": null,
+          "usage": {},
+          "estimated_cost_usd": null,
+          "duration_ms": 763.7105999747291
+        },
+        {
+          "call_id": "ee86c46a226c40a1b30c2946301d6da3",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800941.8794746,
+          "status": "error",
+          "ttft_ms": null,
+          "usage": {},
+          "estimated_cost_usd": null,
+          "duration_ms": 620.8935999893583
+        },
+        {
+          "call_id": "75919ab765d64f0193c541e47b35cdf9",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800942.5038416,
+          "status": "error",
+          "ttft_ms": null,
+          "usage": {},
+          "estimated_cost_usd": null,
+          "duration_ms": 803.4105999977328
+        },
+        {
+          "call_id": "33e3ca3aa07c4c63b07dab619b8b4fb9",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800942.5048833,
+          "status": "error",
+          "ttft_ms": null,
+          "usage": {},
+          "estimated_cost_usd": null,
+          "duration_ms": 803.9339000242762
+        },
+        {
+          "call_id": "260534e683bc4f8e914311ff01e505a6",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800951.3094692,
+          "status": "error",
+          "ttft_ms": null,
+          "usage": {},
+          "estimated_cost_usd": null,
+          "duration_ms": 793.0275000398979
+        },
+        {
+          "call_id": "ea3bd4fc82e345778d4e3c7add703a2f",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800951.307461,
+          "status": "error",
+          "ttft_ms": null,
+          "usage": {},
+          "estimated_cost_usd": null,
+          "duration_ms": 802.3138000280596
+        },
+        {
+          "call_id": "54f431b357b840a5bbe89139b3855bc5",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800952.1690097,
+          "status": "error",
+          "ttft_ms": null,
+          "usage": {},
+          "estimated_cost_usd": null,
+          "duration_ms": 1035.511799971573
+        },
+        {
+          "call_id": "3d18fe1116e3477bb3d393f29c18b9b7",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795801078.9578967,
+          "status": "error",
+          "ttft_ms": null,
+          "usage": {},
+          "estimated_cost_usd": null,
+          "duration_ms": 510.80709998495877
+        },
+        {
+          "call_id": "a100890603a641ef92885183fc39e5eb",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795801099.470016,
+          "status": "ok",
+          "ttft_ms": 936.7146999575198,
+          "usage": {
+            "promptTokenCount": 373,
+            "candidatesTokenCount": 32,
+            "totalTokenCount": 405
+          },
+          "estimated_cost_usd": 0.00019189999999999998,
+          "duration_ms": 994.9360999744385
+        },
+        {
+          "call_id": "b6e2785ddaef44e5b96d1ad809bed586",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795801100.4654746,
+          "status": "ok",
+          "ttft_ms": 1742.5177000113763,
+          "usage": {
+            "promptTokenCount": 373,
+            "candidatesTokenCount": 32,
+            "totalTokenCount": 405
+          },
+          "estimated_cost_usd": 0.00019189999999999998,
+          "duration_ms": 1791.7464000056498
+        },
+        {
+          "call_id": "7ce2c2e2404a4adda149c8a919b55cce",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795801102.2583725,
+          "status": "ok",
+          "ttft_ms": 1417.865899973549,
+          "usage": {
+            "promptTokenCount": 373,
+            "candidatesTokenCount": 32,
+            "totalTokenCount": 405
+          },
+          "estimated_cost_usd": 0.00019189999999999998,
+          "duration_ms": 1420.5163999577053
+        },
+        {
+          "call_id": "65eb4b82eca447dd927db1cf8b876fb8",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795801103.7284005,
+          "status": "ok",
+          "ttft_ms": 1013.3871999569237,
+          "usage": {
+            "promptTokenCount": 328,
+            "candidatesTokenCount": 31,
+            "totalTokenCount": 359
+          },
+          "estimated_cost_usd": 0.00017589999999999997,
+          "duration_ms": 1221.6431999695487
+        },
+        {
+          "call_id": "75f56a6d3e6c491d9b13327e848f04f3",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795801103.7299056,
+          "status": "ok",
+          "ttft_ms": 1410.382300033234,
+          "usage": {
+            "promptTokenCount": 321,
+            "candidatesTokenCount": 25,
+            "totalTokenCount": 346
+          },
+          "estimated_cost_usd": 0.0001588,
+          "duration_ms": 1413.8427000143565
+        },
+        {
+          "call_id": "82f3c957841e4dcda3b5044d9777a48e",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795801104.953503,
+          "status": "ok",
+          "ttft_ms": 932.0647999993525,
+          "usage": {
+            "promptTokenCount": 852,
+            "candidatesTokenCount": 86,
+            "totalTokenCount": 938
+          },
+          "estimated_cost_usd": 0.0004706,
+          "duration_ms": 1033.9558999985456
+        },
+        {
+          "call_id": "2abf6f03e4624c8d830963403d4d52bb",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795801105.1459713,
+          "status": "ok",
+          "ttft_ms": 1088.722099957522,
+          "usage": {
+            "promptTokenCount": 853,
+            "candidatesTokenCount": 75,
+            "totalTokenCount": 928
+          },
+          "estimated_cost_usd": 0.0004434,
+          "duration_ms": 1092.2970999963582
+        },
+        {
+          "call_id": "a761b6b02010483dab8166d1f077e62f",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795801106.2686622,
+          "status": "ok",
+          "ttft_ms": 2767.012700031046,
+          "usage": {
+            "promptTokenCount": 1238,
+            "candidatesTokenCount": 14,
+            "totalTokenCount": 1252
+          },
+          "estimated_cost_usd": 0.00040639999999999996,
+          "duration_ms": 2769.8425999842584
+        }
+      ]
     },
     {
       "id": "O4",
       "kind": "figure",
-      "trace_id": "7a49f47565ef44c79b0ebd935026f88b",
+      "trace_id": "b424093c3cf944119a70691f0dab43f6",
       "status": "answered",
-      "response": "The Maple plot had the highest yield, which was 58 kg. [p. 2]",
+      "response": "The Maple plot had the highest yield, which is shown as 58 kg. [p. 2]",
       "citations": [
         {
           "page": 2,
@@ -404,13 +2232,70 @@
         "P2V"
       ],
       "quality": {
+        "retrieval_cosine_mean": 0.6844560503959656,
+        "retrieval_cosine_max": 0.7870451211929321,
+        "retrieval_score_rows": [
+          {
+            "rank": 1,
+            "kind": "text",
+            "cosine": 0.7870451211929321,
+            "bm25": 0.3690245308811169,
+            "rrf": 0.09761904761904762
+          },
+          {
+            "rank": 2,
+            "kind": "text",
+            "cosine": 0.5219781398773193,
+            "bm25": 0.3901293546661504,
+            "rrf": 0.09545454545454546
+          },
+          {
+            "rank": 3,
+            "kind": "figure",
+            "cosine": 0.74434494972229,
+            "bm25": 0.2729120324844273,
+            "rrf": 0.09307359307359307
+          }
+        ],
         "retrieved_count": 3,
         "context_relevance": 0.3333333333333333,
         "draft_faithfulness": 1.0,
         "draft_responsiveness": 1,
         "source_utilization": 0.3333333333333333,
+        "ragas_factual_correctness": 1.0,
+        "citation_support": 1.0,
         "ragas_answer_relevancy": 0.9467426791240544
       },
+      "provider_usage": [
+        {
+          "call_id": "aa4f585719624603b691f82edf5d5cb3",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800680.4741905,
+          "status": "ok",
+          "ttft_ms": 9601.365500013344,
+          "usage": {
+            "promptTokenCount": 1391,
+            "candidatesTokenCount": 87,
+            "totalTokenCount": 1478
+          },
+          "estimated_cost_usd": 0.0006347999999999999,
+          "duration_ms": 9711.157600046135
+        },
+        {
+          "call_id": "89f96c3b1afa4cd19549a1629a674d22",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800690.222575,
+          "status": "ok",
+          "ttft_ms": 7811.1214999808,
+          "usage": {
+            "promptTokenCount": 1314,
+            "candidatesTokenCount": 37,
+            "totalTokenCount": 1351
+          },
+          "estimated_cost_usd": 0.0004867,
+          "duration_ms": 7816.978899994865
+        }
+      ],
       "correct": true,
       "cited_pages": [
         2
@@ -421,17 +2306,177 @@
       "retrieval_scores": {
         "context_precision": 0.3333333333333333,
         "context_recall": 1.0,
+        "precision_at_k": 0.3333333333333333,
+        "recall_at_k": 1.0,
+        "ndcg_at_k": 0.5,
+        "ranked_context_precision": 0.3333333333333333,
         "reciprocal_rank": 0.3333333333333333
       },
       "metric_status": {
         "ragas_faithfulness": "not_applicable",
-        "ragas_answer_relevancy": "complete"
-      }
+        "ragas_answer_relevancy": "complete",
+        "ragas_factual_correctness": "complete",
+        "citation_support": "complete"
+      },
+      "scoring_usage": [
+        {
+          "call_id": "3e44524efc6140d1a59d6a12d94ef6bc",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800953.2229278,
+          "status": "error",
+          "ttft_ms": null,
+          "usage": {},
+          "estimated_cost_usd": null,
+          "duration_ms": 562.9613000201061
+        },
+        {
+          "call_id": "aeeff89b6a074bf4b1e61b4e15913a0c",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800961.7870731,
+          "status": "error",
+          "ttft_ms": null,
+          "usage": {},
+          "estimated_cost_usd": null,
+          "duration_ms": 637.0499000186101
+        },
+        {
+          "call_id": "6f7c2bbe8d5e47338cf052c470a841ea",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800962.427718,
+          "status": "error",
+          "ttft_ms": null,
+          "usage": {},
+          "estimated_cost_usd": null,
+          "duration_ms": 727.0743999979459
+        },
+        {
+          "call_id": "c08cb15640d44881b21b49c642108ad9",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800962.427718,
+          "status": "ok",
+          "ttft_ms": 1142.43120001629,
+          "usage": {
+            "promptTokenCount": 328,
+            "candidatesTokenCount": 43,
+            "totalTokenCount": 371
+          },
+          "estimated_cost_usd": 0.0002059,
+          "duration_ms": 1175.041600014083
+        },
+        {
+          "call_id": "d20640639a73403fbfa65f84e0927570",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800963.6076574,
+          "status": "error",
+          "ttft_ms": null,
+          "usage": {},
+          "estimated_cost_usd": null,
+          "duration_ms": 634.6559000085108
+        },
+        {
+          "call_id": "a16fdfd9b494423781eca204848b1c12",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800971.1564093,
+          "status": "ok",
+          "ttft_ms": 1223.8183000008576,
+          "usage": {
+            "promptTokenCount": 324,
+            "candidatesTokenCount": 39,
+            "totalTokenCount": 363
+          },
+          "estimated_cost_usd": 0.0001947,
+          "duration_ms": 1231.6617000033148
+        },
+        {
+          "call_id": "5cac127fd9c440a294aae694f942b22b",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800972.2430017,
+          "status": "ok",
+          "ttft_ms": 1506.489599996712,
+          "usage": {
+            "promptTokenCount": 862,
+            "candidatesTokenCount": 119,
+            "totalTokenCount": 981
+          },
+          "estimated_cost_usd": 0.0005560999999999999,
+          "duration_ms": 1587.8772999858484
+        },
+        {
+          "call_id": "175be7ee38284c3bb8711bfc17bd8df9",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800972.3931484,
+          "status": "ok",
+          "ttft_ms": 1433.7245000060648,
+          "usage": {
+            "promptTokenCount": 862,
+            "candidatesTokenCount": 116,
+            "totalTokenCount": 978
+          },
+          "estimated_cost_usd": 0.0005485999999999999,
+          "duration_ms": 1673.9825999829918
+        },
+        {
+          "call_id": "07e69e648e8c4cdb8a998c16075b1e15",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800974.1120496,
+          "status": "ok",
+          "ttft_ms": 1925.7707000360824,
+          "usage": {
+            "promptTokenCount": 1238,
+            "candidatesTokenCount": 10,
+            "totalTokenCount": 1248
+          },
+          "estimated_cost_usd": 0.0003964,
+          "duration_ms": 1928.8888000301085
+        },
+        {
+          "call_id": "3372e27b83064726a6cbc5fdb9e18111",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795801109.0531852,
+          "status": "ok",
+          "ttft_ms": 970.1687999768183,
+          "usage": {
+            "promptTokenCount": 373,
+            "candidatesTokenCount": 34,
+            "totalTokenCount": 407
+          },
+          "estimated_cost_usd": 0.0001969,
+          "duration_ms": 972.8522999794222
+        },
+        {
+          "call_id": "222fb90f1d5b4b1fadb56ff7dbe1067d",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795801110.0272665,
+          "status": "ok",
+          "ttft_ms": 1085.1990999653935,
+          "usage": {
+            "promptTokenCount": 373,
+            "candidatesTokenCount": 29,
+            "totalTokenCount": 402
+          },
+          "estimated_cost_usd": 0.00018439999999999998,
+          "duration_ms": 1087.8200000151992
+        },
+        {
+          "call_id": "6b3154aa7ef342cf8bf5f704a820a489",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795801111.1161978,
+          "status": "ok",
+          "ttft_ms": 838.1337000173517,
+          "usage": {
+            "promptTokenCount": 373,
+            "candidatesTokenCount": 34,
+            "totalTokenCount": 407
+          },
+          "estimated_cost_usd": 0.0001969,
+          "duration_ms": 959.8840000107884
+        }
+      ]
     },
     {
       "id": "O5",
       "kind": "unanswerable",
-      "trace_id": "7af9921099c248068ab2b75759e05f18",
+      "trace_id": "9cc5079b29704294b623334170197723",
       "status": "insufficient_evidence",
       "response": "There is insufficient evidence in this document to answer that question.",
       "citations": [],
@@ -442,15 +2487,60 @@
         "P2V"
       ],
       "quality": {
+        "retrieval_cosine_mean": 0.6074692606925964,
+        "retrieval_cosine_max": 0.6499462723731995,
+        "retrieval_score_rows": [
+          {
+            "rank": 1,
+            "kind": "text",
+            "cosine": 0.6499462723731995,
+            "bm25": 0.1230081769603723,
+            "rrf": 0.09761904761904762
+          },
+          {
+            "rank": 2,
+            "kind": "text",
+            "cosine": 0.552768349647522,
+            "bm25": 0.3901293546661504,
+            "rrf": 0.09545454545454546
+          },
+          {
+            "rank": 3,
+            "kind": "figure",
+            "cosine": 0.6196930408477783,
+            "bm25": 0.0909706774948091,
+            "rrf": 0.09307359307359307
+          }
+        ],
         "retrieved_count": 3,
         "context_relevance": 0.0
       },
+      "provider_usage": [
+        {
+          "call_id": "12efbd0879164c3e92339ada2d416da6",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800698.1592987,
+          "status": "ok",
+          "ttft_ms": 8111.683700000867,
+          "usage": {
+            "promptTokenCount": 1388,
+            "candidatesTokenCount": 14,
+            "totalTokenCount": 1402
+          },
+          "estimated_cost_usd": 0.00045139999999999997,
+          "duration_ms": 8140.100600023288
+        }
+      ],
       "correct": true,
       "cited_pages": [],
       "citation_correct": null,
       "abstained": true,
       "decision_correct": true,
       "retrieval_scores": {
+        "precision_at_k": null,
+        "recall_at_k": null,
+        "ndcg_at_k": null,
+        "ranked_context_precision": null,
         "context_precision": null,
         "context_recall": null,
         "reciprocal_rank": null
@@ -459,7 +2549,7 @@
     {
       "id": "O6",
       "kind": "unanswerable",
-      "trace_id": "cc55c2b0bb03430ca477250bfafd9d8c",
+      "trace_id": "429b81745e2242259863fbcf4f54fd59",
       "status": "insufficient_evidence",
       "response": "There is insufficient evidence in this document to answer that question.",
       "citations": [],
@@ -470,15 +2560,60 @@
         "P2V"
       ],
       "quality": {
+        "retrieval_cosine_mean": 0.5168449878692627,
+        "retrieval_cosine_max": 0.6370006203651428,
+        "retrieval_score_rows": [
+          {
+            "rank": 1,
+            "kind": "text",
+            "cosine": 0.6370006203651428,
+            "bm25": 1.1703880639984512,
+            "rrf": 0.1
+          },
+          {
+            "rank": 2,
+            "kind": "text",
+            "cosine": 0.46750807762145996,
+            "bm25": 0.0,
+            "rrf": 0.047619047619047616
+          },
+          {
+            "rank": 3,
+            "kind": "figure",
+            "cosine": 0.4460263252258301,
+            "bm25": 0.0,
+            "rrf": 0.045454545454545456
+          }
+        ],
         "retrieved_count": 3,
-        "context_relevance": 0.3333333333333333
+        "context_relevance": 0.0
       },
+      "provider_usage": [
+        {
+          "call_id": "a02416917dfe4552a04ff8543b983e27",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800706.4040313,
+          "status": "ok",
+          "ttft_ms": 7632.589699991513,
+          "usage": {
+            "promptTokenCount": 1387,
+            "candidatesTokenCount": 14,
+            "totalTokenCount": 1401
+          },
+          "estimated_cost_usd": 0.00045109999999999996,
+          "duration_ms": 7636.15390000632
+        }
+      ],
       "correct": true,
       "cited_pages": [],
       "citation_correct": null,
       "abstained": true,
       "decision_correct": true,
       "retrieval_scores": {
+        "precision_at_k": null,
+        "recall_at_k": null,
+        "ndcg_at_k": null,
+        "ranked_context_precision": null,
         "context_precision": null,
         "context_recall": null,
         "reciprocal_rank": null
@@ -486,6 +2621,22 @@
     }
   ],
   "rag_scores": {
+    "precision_at_k": {
+      "mean": 0.3333333333333333,
+      "n": 8
+    },
+    "recall_at_k": {
+      "mean": 1.0,
+      "n": 8
+    },
+    "ndcg_at_k": {
+      "mean": 0.75,
+      "n": 8
+    },
+    "ranked_context_precision": {
+      "mean": 0.6666666666666666,
+      "n": 8
+    },
     "context_precision": {
       "mean": 0.3333333333333333,
       "n": 8
@@ -499,7 +2650,7 @@
       "n": 8
     },
     "ragas_answer_relevancy": {
-      "mean": 0.9547014274481298,
+      "mean": 0.975810528711768,
       "n": 8
     },
     "ragas_faithfulness": {
@@ -510,8 +2661,16 @@
       "mean": 3,
       "n": 12
     },
+    "retrieval_cosine_mean": {
+      "mean": 0.6071884681781133,
+      "n": 12
+    },
+    "retrieval_cosine_max": {
+      "mean": 0.6977919886509577,
+      "n": 12
+    },
     "context_relevance": {
-      "mean": 0.25,
+      "mean": 0.2222222222222222,
       "n": 12
     },
     "draft_faithfulness": {
@@ -525,8 +2684,18 @@
     "source_utilization": {
       "mean": 0.3333333333333333,
       "n": 8
+    },
+    "ragas_factual_correctness": {
+      "mean": 0.58375,
+      "n": 8
+    },
+    "citation_support": {
+      "mean": 1.0,
+      "n": 8
     }
   },
+  "evaluation_framework": "ragas==0.3.7",
+  "retrieval_k": 3,
   "scores": {
     "answer_correctness": {
       "passed": 12,
@@ -543,11 +2712,24 @@
     "evidence_decisions": {
       "passed": 12,
       "total": 12
+    },
+    "abstention_accuracy": {
+      "passed": 12,
+      "total": 12
     }
   },
-  "finished_at": "2026-11-24T19:25:06.342241+00:00",
-  "evaluation_framework": "ragas==0.3.7",
-  "ragas_scored_at": "2026-11-26T13:40:47.705367+00:00",
+  "finished_at": "2026-11-27T17:31:54.083529+00:00",
+  "pricing": {
+    "rates_per_million": [
+      0.3,
+      2.5,
+      0.03
+    ],
+    "source": "https://aistudio.google.com/docs/pricing#gemini-3.5-flash-lite",
+    "verified_on": "2026-11-27",
+    "basis": "Paid Standard list estimate"
+  },
+  "ragas_scored_at": "2026-11-27T17:40:54.874281+00:00",
   "ragas_configuration": {
     "version": "0.3.7",
     "judge_model": "gemini-3.5-flash-lite",

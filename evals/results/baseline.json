@@ -1,22 +1,39 @@
 {
   "mode": "baseline",
   "model": "gemini-3.5-flash-lite",
-  "suite_sha256": "7165648f411a95b5a4d56781c87913a93fa17084fef44d3d12541925014152c1",
+  "protocol": "full-metrics-v1",
+  "suite_sha256": "37004bd70eda571d0269daa86100a2cda1bb7686f5e6b54f2f2b5fd0b6fd4a86",
   "pdf_sha256": {
     "harbor": "f094fda6f6b6f999306a4147cc623c48fc88a1b54d3cb418ecadad03c111ae06",
     "orchard": "4ad7304435ee96fda1afcca5ec298efde191f527ca143099dc9b1f24ef713530"
   },
-  "run_id": "184dc99a0a0d4256889f8b8b6a0dc064",
+  "run_id": "ee252a599ba64ceaace4158ad6f32be0",
   "cases": [
     {
       "id": "H1",
       "kind": "text",
-      "trace_id": "95692fa4fc424ea8bb235468ea862116",
+      "trace_id": "221a2427fb7b447f9bdf9b18fd4f883f",
       "response": "The pilot trial was held at Cedar Quay.",
       "retrieved_context_ids": [
         "P1T1",
         "P2T1"
       ],
+      "provider_usage": [
+        {
+          "call_id": "39ba2ec4cdd242a28a769fd36b015c37",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800573.2281334,
+          "status": "ok",
+          "ttft_ms": 1203.6944000283256,
+          "usage": {
+            "promptTokenCount": 181,
+            "candidatesTokenCount": 9,
+            "totalTokenCount": 190
+          },
+          "estimated_cost_usd": 7.68e-05,
+          "duration_ms": 1206.9733000244014
+        }
+      ],
       "correct": true,
       "cited_pages": [],
       "citation_correct": false,
@@ -25,26 +42,178 @@
       "retrieval_scores": {
         "context_precision": 0.5,
         "context_recall": 1.0,
+        "precision_at_k": 0.3333333333333333,
+        "recall_at_k": 1.0,
+        "ndcg_at_k": 1.0,
+        "ranked_context_precision": 1.0,
         "reciprocal_rank": 1.0
       },
       "quality": {
+        "ragas_answer_relevancy": 0.9999999999999053,
+        "ragas_factual_correctness": 1.0,
         "ragas_faithfulness": 1.0,
-        "ragas_answer_relevancy": 0.9999999999999053
+        "citation_support": 0.0
       },
       "metric_status": {
+        "ragas_answer_relevancy": "complete",
+        "ragas_factual_correctness": "complete",
         "ragas_faithfulness": "complete",
-        "ragas_answer_relevancy": "complete"
-      }
+        "citation_support": "complete"
+      },
+      "scoring_usage": [
+        {
+          "call_id": "b0c6c20095f440c293c69bad7c8373c3",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800731.287666,
+          "status": "ok",
+          "ttft_ms": 1103.4909999580123,
+          "usage": {
+            "promptTokenCount": 365,
+            "candidatesTokenCount": 25,
+            "totalTokenCount": 390
+          },
+          "estimated_cost_usd": 0.000172,
+          "duration_ms": 1109.231899958104
+        },
+        {
+          "call_id": "e42cd00976494d9e9524de1ab526319c",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800732.3990984,
+          "status": "ok",
+          "ttft_ms": 1028.1589000369422,
+          "usage": {
+            "promptTokenCount": 365,
+            "candidatesTokenCount": 25,
+            "totalTokenCount": 390
+          },
+          "estimated_cost_usd": 0.000172,
+          "duration_ms": 1075.6047000177205
+        },
+        {
+          "call_id": "9ed1225997c4493b9462c00f67de6461",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800733.4763975,
+          "status": "ok",
+          "ttft_ms": 1040.7534000114538,
+          "usage": {
+            "promptTokenCount": 365,
+            "candidatesTokenCount": 25,
+            "totalTokenCount": 390
+          },
+          "estimated_cost_usd": 0.000172,
+          "duration_ms": 1071.291200001724
+        },
+        {
+          "call_id": "f1910f7d4aca4efbb1c27196f1f50dcb",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800734.642705,
+          "status": "ok",
+          "ttft_ms": 1231.4589999732561,
+          "usage": {
+            "promptTokenCount": 320,
+            "candidatesTokenCount": 29,
+            "totalTokenCount": 349
+          },
+          "estimated_cost_usd": 0.0001685,
+          "duration_ms": 1238.2875999901444
+        },
+        {
+          "call_id": "1aaa44ebe8f8488d90194ab0277a9ddf",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800734.6437044,
+          "status": "ok",
+          "ttft_ms": 1636.8799000047147,
+          "usage": {
+            "promptTokenCount": 320,
+            "candidatesTokenCount": 29,
+            "totalTokenCount": 349
+          },
+          "estimated_cost_usd": 0.0001685,
+          "duration_ms": 1640.1544000254944
+        },
+        {
+          "call_id": "181ef60efead4d9b97fa389a1dc28520",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800735.8853555,
+          "status": "ok",
+          "ttft_ms": 1088.036400033161,
+          "usage": {
+            "promptTokenCount": 844,
+            "candidatesTokenCount": 66,
+            "totalTokenCount": 910
+          },
+          "estimated_cost_usd": 0.0004182,
+          "duration_ms": 1091.479700000491
+        },
+        {
+          "call_id": "30d6d29512ca49448204507a98067193",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800736.288207,
+          "status": "ok",
+          "ttft_ms": 1040.4411000199616,
+          "usage": {
+            "promptTokenCount": 844,
+            "candidatesTokenCount": 66,
+            "totalTokenCount": 910
+          },
+          "estimated_cost_usd": 0.0004182,
+          "duration_ms": 1073.3692000503652
+        },
+        {
+          "call_id": "e9002d707cda4916ace40e7a698b459d",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800737.379045,
+          "status": "ok",
+          "ttft_ms": 1049.5661000022665,
+          "usage": {
+            "promptTokenCount": 365,
+            "candidatesTokenCount": 24,
+            "totalTokenCount": 389
+          },
+          "estimated_cost_usd": 0.0001695,
+          "duration_ms": 1052.7972999843769
+        },
+        {
+          "call_id": "502f09de305c426ea7ecd30fcc70add4",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800738.436126,
+          "status": "ok",
+          "ttft_ms": 1084.8466000170447,
+          "usage": {
+            "promptTokenCount": 869,
+            "candidatesTokenCount": 71,
+            "totalTokenCount": 940
+          },
+          "estimated_cost_usd": 0.00043819999999999997,
+          "duration_ms": 1169.6462000254542
+        }
+      ]
     },
     {
       "id": "H2",
       "kind": "text",
-      "trace_id": "65d103ef34c04ee9bb477c6528be871e",
+      "trace_id": "519ea4276b5f46dda0e29c2a6d1ac1b6",
       "response": "The inspection was scheduled to take place every 18 days.",
       "retrieved_context_ids": [
         "P1T1",
         "P2T1"
       ],
+      "provider_usage": [
+        {
+          "call_id": "08a71f38b41544fb8155bc46fbd611a6",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800574.449049,
+          "status": "ok",
+          "ttft_ms": 1112.6728999661282,
+          "usage": {
+            "promptTokenCount": 181,
+            "candidatesTokenCount": 13,
+            "totalTokenCount": 194
+          },
+          "estimated_cost_usd": 8.68e-05,
+          "duration_ms": 1116.2725999602117
+        }
+      ],
       "correct": true,
       "cited_pages": [],
       "citation_correct": false,
@@ -53,25 +222,207 @@
       "retrieval_scores": {
         "context_precision": 0.5,
         "context_recall": 1.0,
+        "precision_at_k": 0.3333333333333333,
+        "recall_at_k": 1.0,
+        "ndcg_at_k": 1.0,
+        "ranked_context_precision": 1.0,
         "reciprocal_rank": 1.0
       },
       "quality": {
+        "ragas_answer_relevancy": 0.9827305122821542,
+        "ragas_factual_correctness": 1.0,
         "ragas_faithfulness": 1.0,
-        "ragas_answer_relevancy": 0.9827305122821542
+        "citation_support": 0.0
       },
       "metric_status": {
+        "ragas_answer_relevancy": "complete",
+        "ragas_factual_correctness": "complete",
         "ragas_faithfulness": "complete",
-        "ragas_answer_relevancy": "complete"
-      }
+        "citation_support": "complete"
+      },
+      "scoring_usage": [
+        {
+          "call_id": "a357bb7d8774479d8f78eb66c91695b9",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800739.63804,
+          "status": "ok",
+          "ttft_ms": 1276.3555999845266,
+          "usage": {
+            "promptTokenCount": 369,
+            "candidatesTokenCount": 28,
+            "totalTokenCount": 397
+          },
+          "estimated_cost_usd": 0.0001807,
+          "duration_ms": 1279.4670999865048
+        },
+        {
+          "call_id": "d8268ce339d8487a9a8bbc1a24914152",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800740.9184172,
+          "status": "ok",
+          "ttft_ms": 1206.1911999480799,
+          "usage": {
+            "promptTokenCount": 369,
+            "candidatesTokenCount": 28,
+            "totalTokenCount": 397
+          },
+          "estimated_cost_usd": 0.0001807,
+          "duration_ms": 1211.7944999481551
+        },
+        {
+          "call_id": "f419235fd81b480799940436ec5b4ff4",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800742.1339202,
+          "status": "ok",
+          "ttft_ms": 1214.8307000170462,
+          "usage": {
+            "promptTokenCount": 369,
+            "candidatesTokenCount": 28,
+            "totalTokenCount": 397
+          },
+          "estimated_cost_usd": 0.0001807,
+          "duration_ms": 1238.9825000427663
+        },
+        {
+          "call_id": "f1a707361b5d40c8982ddbe80240745b",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800743.4748275,
+          "status": "ok",
+          "ttft_ms": 1152.2993000107817,
+          "usage": {
+            "promptTokenCount": 324,
+            "candidatesTokenCount": 33,
+            "totalTokenCount": 357
+          },
+          "estimated_cost_usd": 0.00017969999999999998,
+          "duration_ms": 1155.369799991604
+        },
+        {
+          "call_id": "581b955e38954bcd982c7718e3328d94",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800743.4759088,
+          "status": "ok",
+          "ttft_ms": 1265.6908999779262,
+          "usage": {
+            "promptTokenCount": 322,
+            "candidatesTokenCount": 26,
+            "totalTokenCount": 348
+          },
+          "estimated_cost_usd": 0.0001616,
+          "duration_ms": 1268.6283999937586
+        },
+        {
+          "call_id": "57a160826a4b4327a9e0656f1fa1f91e",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800744.748459,
+          "status": "error",
+          "ttft_ms": null,
+          "usage": {},
+          "estimated_cost_usd": null,
+          "duration_ms": 850.0930999871343
+        },
+        {
+          "call_id": "813cfb9c25ef493bb39b35b94d054ac8",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800744.634333,
+          "status": "ok",
+          "ttft_ms": 1309.3306999653578,
+          "usage": {
+            "promptTokenCount": 850,
+            "candidatesTokenCount": 75,
+            "totalTokenCount": 925
+          },
+          "estimated_cost_usd": 0.0004425,
+          "duration_ms": 1363.4490999975242
+        },
+        {
+          "call_id": "3338da3fae8b4c4b9765de70fe43603c",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800753.5986784,
+          "status": "ok",
+          "ttft_ms": 1390.9480000147596,
+          "usage": {
+            "promptTokenCount": 850,
+            "candidatesTokenCount": 72,
+            "totalTokenCount": 922
+          },
+          "estimated_cost_usd": 0.000435,
+          "duration_ms": 1454.317900002934
+        },
+        {
+          "call_id": "537826d1670448759d31dbb388d3808c",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800755.0590224,
+          "status": "error",
+          "ttft_ms": null,
+          "usage": {},
+          "estimated_cost_usd": null,
+          "duration_ms": 608.9647000189871
+        },
+        {
+          "call_id": "e488e8a34b7046228418518624656e1d",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800763.6684384,
+          "status": "ok",
+          "ttft_ms": 1150.344000023324,
+          "usage": {
+            "promptTokenCount": 369,
+            "candidatesTokenCount": 28,
+            "totalTokenCount": 397
+          },
+          "estimated_cost_usd": 0.0001807,
+          "duration_ms": 1165.8323000301607
+        },
+        {
+          "call_id": "4f8d526c44ca47de98544e3f173642ed",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800764.8373997,
+          "status": "error",
+          "ttft_ms": null,
+          "usage": {},
+          "estimated_cost_usd": null,
+          "duration_ms": 563.2204999565147
+        },
+        {
+          "call_id": "895b9b1e062d492dbfab594856a1ad12",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800773.4013243,
+          "status": "ok",
+          "ttft_ms": 1114.7545999847353,
+          "usage": {
+            "promptTokenCount": 873,
+            "candidatesTokenCount": 76,
+            "totalTokenCount": 949
+          },
+          "estimated_cost_usd": 0.0004519,
+          "duration_ms": 1274.0259999991395
+        }
+      ]
     },
     {
       "id": "H3",
       "kind": "figure",
-      "trace_id": "a0ff68144fc1460c96599bb0a3b967eb",
-      "response": "Based on the provided information, the text mentions that Figure 1 shows \"Dock throughput\" along with an image placeholder, but it doesn't include any specific data or numbers regarding how many crates the west dock handled.",
+      "trace_id": "81914955c4fe484498001a4920dc8f3d",
+      "response": "Based on the provided information, Figure 1 shows dock throughput, but the specific number of crates handled by the west dock is not mentioned in the text.",
       "retrieved_context_ids": [
         "P1T1",
         "P2T1"
+      ],
+      "provider_usage": [
+        {
+          "call_id": "e408053003c741c59f17e963300a4edf",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800575.5781062,
+          "status": "ok",
+          "ttft_ms": 1077.380099974107,
+          "usage": {
+            "promptTokenCount": 188,
+            "candidatesTokenCount": 31,
+            "totalTokenCount": 219
+          },
+          "estimated_cost_usd": 0.0001339,
+          "duration_ms": 1087.0009000063874
+        }
       ],
       "correct": false,
       "cited_pages": [],
@@ -81,17 +432,45 @@
       "retrieval_scores": {
         "context_precision": 0.0,
         "context_recall": 0.0,
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "ndcg_at_k": 0.0,
+        "ranked_context_precision": 0.0,
         "reciprocal_rank": 0.0
+      },
+      "quality": {
+        "ragas_factual_correctness": 0.0,
+        "citation_support": 0.0
+      },
+      "metric_status": {
+        "ragas_factual_correctness": "abstained_on_answerable",
+        "citation_support": "missing_citations"
       }
     },
     {
       "id": "H4",
       "kind": "figure",
-      "trace_id": "7efd5c68786149c5979023a05ffbd7b3",
-      "response": "Based on Figure 1, the specific throughput numbers for each dock aren't explicitly listed in the text, so I can't give you the exact crate count from the provided information.",
+      "trace_id": "642ee526279b4670a0cf0e5460132cb5",
+      "response": "Based on Figure 1, the document doesn't provide the specific names of the docks or the exact number of crates handled—it just shows the chart itself, which isn't visible in the text!",
       "retrieved_context_ids": [
         "P1T1",
         "P2T1"
+      ],
+      "provider_usage": [
+        {
+          "call_id": "4d0db59504684b17a11a67b9e28c46a7",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800576.6793578,
+          "status": "ok",
+          "ttft_ms": 1328.0815000180155,
+          "usage": {
+            "promptTokenCount": 193,
+            "candidatesTokenCount": 42,
+            "totalTokenCount": 235
+          },
+          "estimated_cost_usd": 0.0001629,
+          "duration_ms": 1357.8418000251986
+        }
       ],
       "correct": false,
       "cited_pages": [],
@@ -101,17 +480,45 @@
       "retrieval_scores": {
         "context_precision": 0.0,
         "context_recall": 0.0,
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "ndcg_at_k": 0.0,
+        "ranked_context_precision": 0.0,
         "reciprocal_rank": 0.0
+      },
+      "quality": {
+        "ragas_factual_correctness": 0.0,
+        "citation_support": 0.0
+      },
+      "metric_status": {
+        "ragas_factual_correctness": "abstained_on_answerable",
+        "citation_support": "missing_citations"
       }
     },
     {
       "id": "H5",
       "kind": "unanswerable",
-      "trace_id": "9bdad32a4f3641748b731e4103d843bb",
-      "response": "Based on the provided information, there is no mention of workers or the west dock crates. The text only notes a harbor pilot, a trial site at Cedar Quay, an 18-day inspection interval, a reference gauge mounted on Pier K, and dock throughput figures.",
+      "trace_id": "a88d27896783476d8ba40bcb091ecd20",
+      "response": "Based on the provided information, there is no mention of how many workers unloaded the west dock crates.",
       "retrieved_context_ids": [
         "P1T1",
         "P2T1"
+      ],
+      "provider_usage": [
+        {
+          "call_id": "ff307a6d91d1497f8ea4c9a34d1ccd86",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800578.0526164,
+          "status": "ok",
+          "ttft_ms": 1419.4774000206962,
+          "usage": {
+            "promptTokenCount": 183,
+            "candidatesTokenCount": 20,
+            "totalTokenCount": 203
+          },
+          "estimated_cost_usd": 0.0001049,
+          "duration_ms": 1421.6725999722257
+        }
       ],
       "correct": true,
       "cited_pages": [],
@@ -119,6 +526,10 @@
       "abstained": true,
       "decision_correct": true,
       "retrieval_scores": {
+        "precision_at_k": null,
+        "recall_at_k": null,
+        "ndcg_at_k": null,
+        "ranked_context_precision": null,
         "context_precision": null,
         "context_recall": null,
         "reciprocal_rank": null
@@ -127,11 +538,27 @@
     {
       "id": "H6",
       "kind": "unanswerable",
-      "trace_id": "3419f37b2125457f80c55f1355380083",
+      "trace_id": "353f9021c8d5481e86661771ae7c226d",
       "response": "I'm sorry, but the provided information doesn't mention anything about a fuel budget for the harbor pilot.",
       "retrieved_context_ids": [
         "P1T1",
         "P2T1"
+      ],
+      "provider_usage": [
+        {
+          "call_id": "6a28c1579f9f497e98c273baaf369d80",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800579.4868808,
+          "status": "ok",
+          "ttft_ms": 1233.5209000157192,
+          "usage": {
+            "promptTokenCount": 183,
+            "candidatesTokenCount": 23,
+            "totalTokenCount": 206
+          },
+          "estimated_cost_usd": 0.00011240000000000001,
+          "duration_ms": 1238.189700001385
+        }
       ],
       "correct": true,
       "cited_pages": [],
@@ -139,6 +566,10 @@
       "abstained": true,
       "decision_correct": true,
       "retrieval_scores": {
+        "precision_at_k": null,
+        "recall_at_k": null,
+        "ndcg_at_k": null,
+        "ranked_context_precision": null,
         "context_precision": null,
         "context_recall": null,
         "reciprocal_rank": null
@@ -147,12 +578,28 @@
     {
       "id": "O1",
       "kind": "text",
-      "trace_id": "3b4ca614ab374a9590556687e2c694ca",
+      "trace_id": "66373f664a7841b095bbef3fb50839e2",
       "response": "Mira Vale led the orchard survey.",
       "retrieved_context_ids": [
         "P1T1",
         "P2T1"
       ],
+      "provider_usage": [
+        {
+          "call_id": "ade24f1f139c4fa2823b21d67f6091c8",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800580.7416587,
+          "status": "ok",
+          "ttft_ms": 1103.1112000346184,
+          "usage": {
+            "promptTokenCount": 179,
+            "candidatesTokenCount": 7,
+            "totalTokenCount": 186
+          },
+          "estimated_cost_usd": 7.119999999999998e-05,
+          "duration_ms": 1105.6272000423633
+        }
+      ],
       "correct": true,
       "cited_pages": [],
       "citation_correct": false,
@@ -161,26 +608,208 @@
       "retrieval_scores": {
         "context_precision": 0.5,
         "context_recall": 1.0,
+        "precision_at_k": 0.3333333333333333,
+        "recall_at_k": 1.0,
+        "ndcg_at_k": 1.0,
+        "ranked_context_precision": 1.0,
         "reciprocal_rank": 1.0
       },
       "quality": {
-        "ragas_answer_relevancy": 0.9999999999999992,
-        "ragas_faithfulness": 1.0
+        "ragas_factual_correctness": 1.0,
+        "ragas_faithfulness": 1.0,
+        "citation_support": 0.0,
+        "ragas_answer_relevancy": 0.9999999999999992
       },
       "metric_status": {
+        "ragas_answer_relevancy": "complete",
+        "ragas_factual_correctness": "complete",
         "ragas_faithfulness": "complete",
-        "ragas_answer_relevancy": "complete"
-      }
+        "citation_support": "complete"
+      },
+      "scoring_usage": [
+        {
+          "call_id": "8b3a74d7d81147378992b5a1e75a9aa0",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800774.7795355,
+          "status": "error",
+          "ttft_ms": null,
+          "usage": {},
+          "estimated_cost_usd": null,
+          "duration_ms": 697.1343000186607
+        },
+        {
+          "call_id": "960107a9c13549a5a0c540ab2e1ce480",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800783.4773388,
+          "status": "error",
+          "ttft_ms": null,
+          "usage": {},
+          "estimated_cost_usd": null,
+          "duration_ms": 754.131999972742
+        },
+        {
+          "call_id": "67bb03e9c17d4da894398b7644f9df2d",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800784.2361958,
+          "status": "error",
+          "ttft_ms": null,
+          "usage": {},
+          "estimated_cost_usd": null,
+          "duration_ms": 696.7868999927305
+        },
+        {
+          "call_id": "1bbb9bc3145d49788c1a5434bba14e92",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800784.2351532,
+          "status": "ok",
+          "ttft_ms": 1217.6025999942794,
+          "usage": {
+            "promptTokenCount": 318,
+            "candidatesTokenCount": 27,
+            "totalTokenCount": 345
+          },
+          "estimated_cost_usd": 0.00016289999999999998,
+          "duration_ms": 1221.3991999742575
+        },
+        {
+          "call_id": "395ea06be45045959213abcc541b1049",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800785.4602227,
+          "status": "ok",
+          "ttft_ms": 1177.5403000065126,
+          "usage": {
+            "promptTokenCount": 840,
+            "candidatesTokenCount": 62,
+            "totalTokenCount": 902
+          },
+          "estimated_cost_usd": 0.000407,
+          "duration_ms": 1208.3523999899626
+        },
+        {
+          "call_id": "a766368c8637435e9541407afdc04259",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800792.9333098,
+          "status": "ok",
+          "ttft_ms": 1011.9008000474423,
+          "usage": {
+            "promptTokenCount": 318,
+            "candidatesTokenCount": 22,
+            "totalTokenCount": 340
+          },
+          "estimated_cost_usd": 0.00015039999999999997,
+          "duration_ms": 1020.2594000147656
+        },
+        {
+          "call_id": "8c65f94d5ae841f78d794ec4781d543f",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800793.9565713,
+          "status": "ok",
+          "ttft_ms": 1138.147400051821,
+          "usage": {
+            "promptTokenCount": 840,
+            "candidatesTokenCount": 63,
+            "totalTokenCount": 903
+          },
+          "estimated_cost_usd": 0.0004095,
+          "duration_ms": 1141.3416000432335
+        },
+        {
+          "call_id": "5dfa5ef8e8e443c4a12eb859212e6bd2",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800795.1015377,
+          "status": "ok",
+          "ttft_ms": 946.473199990578,
+          "usage": {
+            "promptTokenCount": 362,
+            "candidatesTokenCount": 22,
+            "totalTokenCount": 384
+          },
+          "estimated_cost_usd": 0.0001636,
+          "duration_ms": 1014.6039999672212
+        },
+        {
+          "call_id": "056b4ff3fcb244bf9cff396d5aaa4367",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800796.1183639,
+          "status": "ok",
+          "ttft_ms": 942.794100032188,
+          "usage": {
+            "promptTokenCount": 866,
+            "candidatesTokenCount": 70,
+            "totalTokenCount": 936
+          },
+          "estimated_cost_usd": 0.0004348,
+          "duration_ms": 1031.8675000453368
+        },
+        {
+          "call_id": "2b0efb8ec36d464983dfaf7c294efafd",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795801040.526008,
+          "status": "ok",
+          "ttft_ms": 1280.0291000166908,
+          "usage": {
+            "promptTokenCount": 363,
+            "candidatesTokenCount": 24,
+            "totalTokenCount": 387
+          },
+          "estimated_cost_usd": 0.00016889999999999999,
+          "duration_ms": 1282.3590000043623
+        },
+        {
+          "call_id": "640c39c3f5a74a389c92abf68bae7b40",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795801041.8089628,
+          "status": "ok",
+          "ttft_ms": 1191.0641999565996,
+          "usage": {
+            "promptTokenCount": 363,
+            "candidatesTokenCount": 24,
+            "totalTokenCount": 387
+          },
+          "estimated_cost_usd": 0.00016889999999999999,
+          "duration_ms": 1194.1399999777786
+        },
+        {
+          "call_id": "d3efafdc3c2a422b8614b9615229226c",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795801043.0042894,
+          "status": "ok",
+          "ttft_ms": 1143.3818999794312,
+          "usage": {
+            "promptTokenCount": 363,
+            "candidatesTokenCount": 24,
+            "totalTokenCount": 387
+          },
+          "estimated_cost_usd": 0.00016889999999999999,
+          "duration_ms": 1146.0746999946423
+        }
+      ]
     },
     {
       "id": "O2",
       "kind": "text",
-      "trace_id": "11316c8f828e43a8a9041b34e6dc7f4e",
+      "trace_id": "313c83e082204ca081cf22f0f015bde0",
       "response": "The calibration window lasts 36 hours.",
       "retrieved_context_ids": [
         "P1T1",
         "P2T1"
       ],
+      "provider_usage": [
+        {
+          "call_id": "e839a5ef29e740ef81eec29de94acb32",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800581.8634975,
+          "status": "ok",
+          "ttft_ms": 1103.094800026156,
+          "usage": {
+            "promptTokenCount": 180,
+            "candidatesTokenCount": 9,
+            "totalTokenCount": 189
+          },
+          "estimated_cost_usd": 7.65e-05,
+          "duration_ms": 1106.6465000039898
+        }
+      ],
       "correct": true,
       "cited_pages": [],
       "citation_correct": false,
@@ -189,25 +818,177 @@
       "retrieval_scores": {
         "context_precision": 0.5,
         "context_recall": 1.0,
+        "precision_at_k": 0.3333333333333333,
+        "recall_at_k": 1.0,
+        "ndcg_at_k": 1.0,
+        "ranked_context_precision": 1.0,
         "reciprocal_rank": 1.0
       },
       "quality": {
         "ragas_answer_relevancy": 0.9388683849266339,
-        "ragas_faithfulness": 1.0
+        "ragas_factual_correctness": 1.0,
+        "ragas_faithfulness": 1.0,
+        "citation_support": 0.0
       },
       "metric_status": {
         "ragas_answer_relevancy": "complete",
-        "ragas_faithfulness": "complete"
-      }
+        "ragas_factual_correctness": "complete",
+        "ragas_faithfulness": "complete",
+        "citation_support": "complete"
+      },
+      "scoring_usage": [
+        {
+          "call_id": "03e9934182cd4ba5a71a024464bdd10e",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800797.1704988,
+          "status": "ok",
+          "ttft_ms": 1473.9643999491818,
+          "usage": {
+            "promptTokenCount": 365,
+            "candidatesTokenCount": 26,
+            "totalTokenCount": 391
+          },
+          "estimated_cost_usd": 0.0001745,
+          "duration_ms": 1476.3961999560706
+        },
+        {
+          "call_id": "f23d92e59a2e49e6b6ebeb81bf2d3199",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800798.648195,
+          "status": "ok",
+          "ttft_ms": 1270.200900034979,
+          "usage": {
+            "promptTokenCount": 365,
+            "candidatesTokenCount": 26,
+            "totalTokenCount": 391
+          },
+          "estimated_cost_usd": 0.0001745,
+          "duration_ms": 1285.1969000184909
+        },
+        {
+          "call_id": "9c8be29f847948ecb2a07a5afaa5de16",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800799.9350135,
+          "status": "ok",
+          "ttft_ms": 1236.0590000171214,
+          "usage": {
+            "promptTokenCount": 365,
+            "candidatesTokenCount": 26,
+            "totalTokenCount": 391
+          },
+          "estimated_cost_usd": 0.0001745,
+          "duration_ms": 1238.6233999859542
+        },
+        {
+          "call_id": "5a33f05a50d5430eb75bf5fe9d87e73f",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800801.2561107,
+          "status": "ok",
+          "ttft_ms": 1255.5747000151314,
+          "usage": {
+            "promptTokenCount": 320,
+            "candidatesTokenCount": 29,
+            "totalTokenCount": 349
+          },
+          "estimated_cost_usd": 0.0001685,
+          "duration_ms": 1258.1611000350676
+        },
+        {
+          "call_id": "0c8886fd19eb4575b6ea1591492b7c93",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800801.2571108,
+          "status": "ok",
+          "ttft_ms": 1509.1776000335813,
+          "usage": {
+            "promptTokenCount": 320,
+            "candidatesTokenCount": 29,
+            "totalTokenCount": 349
+          },
+          "estimated_cost_usd": 0.0001685,
+          "duration_ms": 1518.2954000192694
+        },
+        {
+          "call_id": "31ebeb94a6c945e992c828312e3b66a5",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800802.5166993,
+          "status": "ok",
+          "ttft_ms": 974.7610000194982,
+          "usage": {
+            "promptTokenCount": 844,
+            "candidatesTokenCount": 61,
+            "totalTokenCount": 905
+          },
+          "estimated_cost_usd": 0.0004057,
+          "duration_ms": 1042.111799994018
+        },
+        {
+          "call_id": "26cca08f7edd45bc95320f1d2bff69fe",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800802.7789986,
+          "status": "ok",
+          "ttft_ms": 1066.709000035189,
+          "usage": {
+            "promptTokenCount": 844,
+            "candidatesTokenCount": 64,
+            "totalTokenCount": 908
+          },
+          "estimated_cost_usd": 0.0004132,
+          "duration_ms": 1072.8370000142604
+        },
+        {
+          "call_id": "b2746806aa6941f3a36851226c2e6fee",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800803.8543391,
+          "status": "ok",
+          "ttft_ms": 971.6753999819048,
+          "usage": {
+            "promptTokenCount": 365,
+            "candidatesTokenCount": 24,
+            "totalTokenCount": 389
+          },
+          "estimated_cost_usd": 0.0001695,
+          "duration_ms": 982.6765999896452
+        },
+        {
+          "call_id": "540d5b0c90304085a30744869d5a6846",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800804.8386824,
+          "status": "ok",
+          "ttft_ms": 1175.6024999776855,
+          "usage": {
+            "promptTokenCount": 868,
+            "candidatesTokenCount": 66,
+            "totalTokenCount": 934
+          },
+          "estimated_cost_usd": 0.0004254,
+          "duration_ms": 1181.805100000929
+        }
+      ]
     },
     {
       "id": "O3",
       "kind": "figure",
-      "trace_id": "0f4e3dbdf14a49a886e8c75b81257143",
-      "response": "Based on Figure 1, the specific yield for the alder plot isn't mentioned in the text — it just shows an image of the plot yield.",
+      "trace_id": "15802e8d0abd457f8494ad49c2b9257d",
+      "response": "Based on Figure 1, the specific yield for the alder plot isn't actually detailed in the available information—it just notes that Figure 1 shows the plot yield, without giving the numbers for individual trees or plots like the alder.",
       "retrieved_context_ids": [
         "P1T1",
         "P2T1"
+      ],
+      "provider_usage": [
+        {
+          "call_id": "3b1c70d5b66e45d88134c5fc8c26a6fa",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800582.9849925,
+          "status": "ok",
+          "ttft_ms": 961.4993999712169,
+          "usage": {
+            "promptTokenCount": 186,
+            "candidatesTokenCount": 48,
+            "totalTokenCount": 234
+          },
+          "estimated_cost_usd": 0.00017580000000000002,
+          "duration_ms": 1069.7622999432497
+        }
       ],
       "correct": false,
       "cited_pages": [],
@@ -217,17 +998,45 @@
       "retrieval_scores": {
         "context_precision": 0.0,
         "context_recall": 0.0,
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "ndcg_at_k": 0.0,
+        "ranked_context_precision": 0.0,
         "reciprocal_rank": 0.0
+      },
+      "quality": {
+        "ragas_factual_correctness": 0.0,
+        "citation_support": 0.0
+      },
+      "metric_status": {
+        "ragas_factual_correctness": "abstained_on_answerable",
+        "citation_support": "missing_citations"
       }
     },
     {
       "id": "O4",
       "kind": "figure",
-      "trace_id": "4ddac9f473244a2ba4356252463cde22",
-      "response": "Based on the provided information, Figure 1 (Plot yield) shows the plot results, but the specific plot with the highest yield and the exact yield value are not mentioned in the text.",
+      "trace_id": "7ad6a9391d39495bb79444be9b620ab3",
+      "response": "Based on the provided information, Figure 1 (Plot yield) shows the plot yields, but the specific details regarding which plot had the highest yield and the exact yield numbers are not mentioned in the text.",
       "retrieved_context_ids": [
         "P1T1",
         "P2T1"
+      ],
+      "provider_usage": [
+        {
+          "call_id": "8e19014675d4492081f1a9dc60588e69",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800584.0687213,
+          "status": "ok",
+          "ttft_ms": 1128.6562999594025,
+          "usage": {
+            "promptTokenCount": 186,
+            "candidatesTokenCount": 41,
+            "totalTokenCount": 227
+          },
+          "estimated_cost_usd": 0.0001583,
+          "duration_ms": 1141.7574000079185
+        }
       ],
       "correct": false,
       "cited_pages": [],
@@ -237,17 +1046,45 @@
       "retrieval_scores": {
         "context_precision": 0.0,
         "context_recall": 0.0,
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "ndcg_at_k": 0.0,
+        "ranked_context_precision": 0.0,
         "reciprocal_rank": 0.0
+      },
+      "quality": {
+        "ragas_factual_correctness": 0.0,
+        "citation_support": 0.0
+      },
+      "metric_status": {
+        "ragas_factual_correctness": "abstained_on_answerable",
+        "citation_support": "missing_citations"
       }
     },
     {
       "id": "O5",
       "kind": "unanswerable",
-      "trace_id": "468a7b69b67945f78ab443cb4a3e03dc",
-      "response": "I'm sorry, but the provided information doesn't mention anything about fertilizer doses or a maple plot!",
+      "trace_id": "f12c1f894b8d4665ace4c069378ef0ff",
+      "response": "I'm sorry, but the provided information doesn't mention what fertilizer dose was applied to the maple plot.",
       "retrieved_context_ids": [
         "P1T1",
         "P2T1"
+      ],
+      "provider_usage": [
+        {
+          "call_id": "5de60600e4f44209a1c8c2cbae322c61",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800585.224126,
+          "status": "ok",
+          "ttft_ms": 1251.5182999777608,
+          "usage": {
+            "promptTokenCount": 183,
+            "candidatesTokenCount": 23,
+            "totalTokenCount": 206
+          },
+          "estimated_cost_usd": 0.00011240000000000001,
+          "duration_ms": 1254.9921000027098
+        }
       ],
       "correct": true,
       "cited_pages": [],
@@ -255,6 +1092,10 @@
       "abstained": true,
       "decision_correct": true,
       "retrieval_scores": {
+        "precision_at_k": null,
+        "recall_at_k": null,
+        "ndcg_at_k": null,
+        "ranked_context_precision": null,
         "context_precision": null,
         "context_recall": null,
         "reciprocal_rank": null
@@ -263,11 +1104,27 @@
     {
       "id": "O6",
       "kind": "unanswerable",
-      "trace_id": "b1d5387678ff457c9ba9df9a4f6b253c",
+      "trace_id": "93e2029749764687a63e00217a0c50c6",
       "response": "Based on the provided information, there is no mention of the temperature at which the amber cases were stored.",
       "retrieved_context_ids": [
         "P1T1",
         "P2T1"
+      ],
+      "provider_usage": [
+        {
+          "call_id": "47bb9b89728b456d816de25638d4b034",
+          "model": "gemini-3.5-flash-lite",
+          "started": 1795800586.49096,
+          "status": "ok",
+          "ttft_ms": 1240.9418000024743,
+          "usage": {
+            "promptTokenCount": 182,
+            "candidatesTokenCount": 21,
+            "totalTokenCount": 203
+          },
+          "estimated_cost_usd": 0.00010709999999999999,
+          "duration_ms": 1258.735500043258
+        }
       ],
       "correct": true,
       "cited_pages": [],
@@ -275,6 +1132,10 @@
       "abstained": true,
       "decision_correct": true,
       "retrieval_scores": {
+        "precision_at_k": null,
+        "recall_at_k": null,
+        "ndcg_at_k": null,
+        "ranked_context_precision": null,
         "context_precision": null,
         "context_recall": null,
         "reciprocal_rank": null
@@ -282,6 +1143,22 @@
     }
   ],
   "rag_scores": {
+    "precision_at_k": {
+      "mean": 0.16666666666666666,
+      "n": 8
+    },
+    "recall_at_k": {
+      "mean": 0.5,
+      "n": 8
+    },
+    "ndcg_at_k": {
+      "mean": 0.5,
+      "n": 8
+    },
+    "ranked_context_precision": {
+      "mean": 0.5,
+      "n": 8
+    },
     "context_precision": {
       "mean": 0.25,
       "n": 8
@@ -306,6 +1183,14 @@
       "mean": null,
       "n": 0
     },
+    "retrieval_cosine_mean": {
+      "mean": null,
+      "n": 0
+    },
+    "retrieval_cosine_max": {
+      "mean": null,
+      "n": 0
+    },
     "context_relevance": {
       "mean": null,
       "n": 0
@@ -321,8 +1206,18 @@
     "source_utilization": {
       "mean": null,
       "n": 0
+    },
+    "ragas_factual_correctness": {
+      "mean": 0.5,
+      "n": 8
+    },
+    "citation_support": {
+      "mean": 0.0,
+      "n": 8
     }
   },
+  "evaluation_framework": "ragas==0.3.7",
+  "retrieval_k": 3,
   "scores": {
     "answer_correctness": {
       "passed": 8,
@@ -339,11 +1234,24 @@
     "evidence_decisions": {
       "passed": 8,
       "total": 12
+    },
+    "abstention_accuracy": {
+      "passed": 8,
+      "total": 12
     }
   },
-  "finished_at": "2026-11-24T19:24:33.596647+00:00",
-  "evaluation_framework": "ragas==0.3.7",
-  "ragas_scored_at": "2026-11-26T13:40:47.689590+00:00",
+  "finished_at": "2026-11-27T17:29:47.788516+00:00",
+  "pricing": {
+    "rates_per_million": [
+      0.3,
+      2.5,
+      0.03
+    ],
+    "source": "https://aistudio.google.com/docs/pricing#gemini-3.5-flash-lite",
+    "verified_on": "2026-11-27",
+    "basis": "Paid Standard list estimate"
+  },
+  "ragas_scored_at": "2026-11-27T17:40:48.891578+00:00",
   "ragas_configuration": {
     "version": "0.3.7",
     "judge_model": "gemini-3.5-flash-lite",

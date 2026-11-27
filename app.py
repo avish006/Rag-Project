@@ -14,7 +14,7 @@ from flask import Flask, g, jsonify, render_template, request, send_file
 from werkzeug.exceptions import HTTPException
 
 from rag import ask, prepare_document
-from provider import ProviderError
+from provider import ProviderError, CALLS, MODEL, pricing, PRICING_SOURCE
 from telemetry import Traces, latest_evals
 from rag_metrics import LIVE, OFFLINE, EVAL_LABELS
 from tracing import CAPTURE, stage
@@ -47,6 +47,8 @@ def create_app(directory=None):
         g.started, g.clock = time.time(), time.perf_counter()
         g.outcome, g.stage, g.reason = "ok", "validation", "ok"
         g.measurements = {}
+        g.provider_calls = []
+        g.calls_token = CALLS.set(g.provider_calls)
 
     @app.after_request
     def finish(response):
@@ -58,6 +60,7 @@ def create_app(directory=None):
             traces.add((g.trace_id, g.started, request.path[1:], response.status_code,
                         round((time.perf_counter() - g.clock) * 1000, 2), g.outcome, g.stage, g.reason),
                        g.measurements)
+            traces.save_calls(g.trace_id, "request", g.provider_calls)
             if getattr(g, "evaluate", None):
                 evaluator.submit(g.trace_id, *g.evaluate, context=copy_context())
         g.trace_scope.__exit__(None, None, None)
@@ -76,6 +79,9 @@ def create_app(directory=None):
         token = g.pop("capture_token", None)
         if token is not None:
             CAPTURE.reset(token)
+        calls_token = g.pop("calls_token", None)
+        if calls_token is not None:
+            CALLS.reset(calls_token)
 
     @app.errorhandler(Exception)
     def unexpected(exc):
@@ -195,11 +201,14 @@ def create_app(directory=None):
             return failure("Evaluation unavailable.", 404, "unknown_evaluation")
         report = json.loads(path.read_text(encoding="utf-8"))
         labels = {c["id"]: c for c in json.loads((root / "cases.json").read_text(encoding="utf-8"))}
-        return render_template("evaluation.html", mode=mode, report=report, labels=labels, offline=OFFLINE, live=LIVE)
+        return render_template("evaluation.html", mode=mode, report=report, labels=labels, offline=OFFLINE, live=LIVE,
+                               metric_labels={**{k:v[0] for k,v in LIVE.items()},**EVAL_LABELS})
 
     @app.get("/api/metrics")
     def metrics():
-        return jsonify(**traces.overview(), evals=latest_evals())
+        return jsonify(**traces.overview(), evals=latest_evals(),
+                       pricing={"model":MODEL,"rates_per_million":pricing(),"source":PRICING_SOURCE,
+                                "basis":"Paid Standard list estimate; actual billing depends on the visitor's tier."})
 
     @app.get("/metrics")
     def prometheus():

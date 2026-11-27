@@ -43,8 +43,18 @@ Ground-truth recall, precision and correctness require labeled evidence and answ
 ### Answer and citation metrics
 
 - **Answer correctness** counts an answerable case when the response contains all labeled facts after case, spacing and punctuation normalization, and counts an unanswerable case when it declines. Required facts include the unit for numeric answers. For this run, the raw answers were also inspected for contradictory extra claims. The automated rule alone cannot detect every contradiction or paraphrase.
-- **Citation accuracy** counts an answerable case when the set of cited pages equals the gold page set. Missing and extraneous pages fail. Baseline page citations are parsed from prose. Guarded citations come from validated source metadata. This metric measures page location, with runtime verification separately checking the evidence.
-- **Insufficient-evidence recall** counts the correctly declined questions among the four unanswerable cases. **Evidence decision accuracy** also penalizes declining an answerable question. The guarded arm reports a structured status. Legacy prose uses an English refusal-pattern matcher. During review the matcher was expanded to recognize “no mention of” and “doesn't specifically mention”; both arms were rescored from the unchanged recorded outputs.
+- **Citation accuracy** counts an answerable case when the set of cited pages equals the gold page set and the independent citation check supports every cited claim. Missing and extraneous pages fail. Baseline page citations are parsed from prose. Guarded citations come from validated source metadata. Per-case citation support is also reported separately.
+- **Insufficient-evidence recall** counts the correctly declined questions among the four unanswerable cases. **Abstention accuracy** (also exported as evidence decision accuracy) also penalizes declining an answerable question. The guarded arm reports a structured status. Legacy prose uses an English refusal-pattern matcher. The matcher normalizes qualifiers and contractions; both arms are scored with the same rule and preserve their raw outputs.
 - Every report includes the model, completion time, run ID, fixture and suite hashes, case trace IDs, raw response, predicted abstention, cited pages and case grades. The guarded report also records the verification outcome and supporting evidence.
 
 The checked-in fixtures are the reference inputs. `python -m evals.make_fixtures` rebuilds their content. Fonts and PDF library versions can change the resulting file hashes. This suite covers straightforward English text, labeled charts and near-miss questions. It does not characterize cross-page reasoning, ambiguous chart labels or retrieval quality across a long corpus.
+
+## Complete metric audit
+
+The full metric definitions, formulas, implementation pointers and limitations are documented in the [metrics reference](../docs/metrics.md). The current protocol records Precision@3, Recall@3, NDCG@3, MRR, full-context ID precision/recall, rank-aware context average precision, Ragas answer relevancy, text faithfulness and reference-based factual F1, independent citation evidence support, page-plus-support citation accuracy and abstention accuracy.
+
+Each case includes a natural-language reference answer as well as reference source IDs. The independent citation pass checks each cited source by itself, including its actual page pixels for visual claims. A refusal on an answerable question has zero factual correctness and zero citation support. Unanswerable cases are evaluated through abstention metrics.
+
+The baseline English refusal matcher normalizes qualifiers and contractions, including “isn't actually detailed.” Raw responses are preserved for review. Additions to the matcher change grading of the recorded answer, and the reports are summarized again with the current matcher.
+
+Foreground and independent scoring calls include numeric usage metadata, first-text timing and paid list-price estimates. Scores and provider failures are checkpointed. Running --score-recorded again retries incomplete scores while preserving completed measurements.

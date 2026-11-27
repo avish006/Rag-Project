@@ -6,6 +6,7 @@ import threading
 
 from ragas_eval import score_answer
 from tracing import CAPTURE
+from provider import CALLS
 
 
 class ContinuousEvaluator:
@@ -26,6 +27,9 @@ class ContinuousEvaluator:
         def evaluate():
             collected = []
             token = CAPTURE.set(collected)
+            calls = []
+            calls_token = CALLS.set(calls)
+            state = "error"
             try:
                 self.traces.evaluation_state(trace_id, "running")
                 states = []
@@ -36,11 +40,13 @@ class ContinuousEvaluator:
                                          save))
                 failed = any(status not in ("complete", "not_applicable") for status in states)
                 state = ("partial" if "complete" in states else "error") if failed else "complete"
-                self.traces.evaluation_state(trace_id, state)
             except Exception:
-                self.traces.evaluation_state(trace_id, "error")
+                state = "error"
             finally:
+                self.traces.save_calls(trace_id, "evaluation", calls)
                 self.traces.save_spans(trace_id, collected)
+                self.traces.evaluation_state(trace_id, state)
+                CALLS.reset(calls_token)
                 CAPTURE.reset(token)
                 self.capacity.release()
 

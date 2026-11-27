@@ -5,6 +5,16 @@
 {% for id, label in [('requests','Requests'),('latency','p95 latency'),('errors','Errors'),('insufficient','Insufficient evidence')] %}
 <article><h2>{{ label }}</h2><strong id="{{ id }}">—</strong></article>
 {% endfor %}</section>
+<section class="panel"><h2>Request health and timing</h2><p class="sub">Rolling 24 hours, except total requests and the trailing 60-second request count.</p>
+<table><tbody>{% for key,label in [('total_requests','Total recorded requests'),('requests_per_minute','Requests per minute'),('success_rate','Success rate'),('error_rate','Error rate'),('mean_ms','Average latency'),('p50_ms','p50 latency'),('p99_ms','p99 latency'),('guardrail_trigger_rate','Guardrail trigger rate'),('abstention_rate','Abstention rate')] %}
+<tr><th>{{ label }}</th><td id="op-{{ key }}">—</td></tr>{% endfor %}
+<tr><th>Provider TTFT, mean / p95</th><td id="op-ttft">—</td></tr></tbody></table>
+<p class="sub">TTFT measures the first text chunk of the first upstream generation call. The reader displays the answer after guardrail verification. Guardrail rate uses queries that reached retrieval. Abstention rate uses successful queries.</p></section>
+<section class="panel"><h2>Provider tokens and estimated cost</h2><div class="table-scroll"><table><thead>
+<tr><th>Phase</th><th>Input</th><th>Output</th><th>Thinking</th><th>Cached input</th><th>Total</th><th>Usage / calls</th><th>Recorded cost</th></tr></thead>
+<tbody id="provider-usage"></tbody></table></div><p class="sub" id="cost-per-query"></p>
+<p class="sub" id="pricing"></p><a href="https://aistudio.google.com/docs/pricing#gemini-3.5-flash-lite" target="_blank" rel="noopener">Google pricing reference</a></section>
+<section class="panel"><h2>Stage latency</h2><table><thead><tr><th>Stage</th><th>Samples</th><th>Mean</th><th>p95</th></tr></thead><tbody id="stage-latency"></tbody></table></section>
 <section class="panel"><h2>Live RAG quality</h2>
 <p class="sub" id="rag-window">Last 24 hours</p>
 <p class="sub" id="eval-jobs" role="status"></p>
@@ -21,7 +31,7 @@
 <section class="panel"><h2>Latest evaluation</h2><p id="eval-info" class="sub"></p>
 <table><thead><tr><th>Metric</th><th><a href="/evaluations/baseline">Baseline</a></th><th><a href="/evaluations/guarded">Guarded</a></th></tr></thead><tbody id="scores"></tbody>
 <tbody>{% for name,label in offline.items() %}<tr><td>{{ label }}</td>{% for mode in ['baseline','guarded'] %}<td id="eval-{{ mode }}-{{ name }}">—</td>{% endfor %}</tr>{% endfor %}</tbody></table>
-<p class="sub">Retrieval scores use the labeled evidence for answerable questions. MRR is the mean reciprocal rank of the first relevant source.</p></section>
+<p class="sub">Precision@3, Recall@3 and NDCG@3 use the first three source IDs supplied to the model. Context precision (AP) uses their full presentation order. Reference-based scores use labeled questions. Each average displays its eligible sample count.</p></section>
 <section class="panel"><h2>Recent failures</h2><p id="empty" class="sub">Loading…</p>
 <div id="failures"></div></section>
 {% endblock %}

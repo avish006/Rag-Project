@@ -11,10 +11,10 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from dotenv import load_dotenv
-from provider import MODEL, ProviderError
+from provider import MODEL, ProviderError, CALLS, pricing, PRICING_SOURCE
 from evals import baseline
-from ragas_eval import score_answer
-from rag_metrics import LIVE, OFFLINE, retrieval_scores, summarize_metrics
+from ragas_eval import score_answer, score_citations
+from rag_metrics import LIVE, OFFLINE, RETRIEVAL_K, retrieval_scores, summarize_metrics
 
 ROOT = Path(__file__).resolve().parent
 CASES = json.loads((ROOT / "cases.json").read_text())
@@ -31,10 +31,10 @@ def norm(s):
 
 def score(case, result):
     raw = result["response"]
-    prose = re.sub(r"\b(?:specifically|explicitly)\s+", "", raw, flags=re.I)
+    prose = re.sub(r"\b(?:specifically|explicitly|actually)\s+", "", raw, flags=re.I)
     prose = re.sub(r"\b(is|are|was|were)n['’]t\b", r"\1 not", prose, flags=re.I)
     abstained = (result["status"] == "insufficient_evidence" if "status" in result
-                 else bool(ABSENCE.search(prose) or re.search(r"\bno mention of\b", prose, re.I)))
+                 else bool(ABSENCE.search(prose) or re.search(r"\b(?:no mention of|not detailed)\b", prose, re.I)))
     pages = {c["page"] for c in result.get("citations", [])}
     if "citations" not in result:
         pages.update(int(p) for p in re.findall(r"\b(?:page|p\.)\s*(\d+)\b", raw, re.I))
@@ -42,7 +42,8 @@ def score(case, result):
     correct = abstained if expected_absent else (
         not abstained and all(f" {norm(f)} " in f" {norm(raw)} " for f in case["facts"]))
     return {"correct": correct, "cited_pages": sorted(pages),
-            "citation_correct": None if expected_absent else pages == {case["page"]},
+            "citation_correct": None if expected_absent else (
+                pages == {case["page"]} and result.get("quality",{}).get("citation_support",1.0)==1.0),
             "abstained": abstained, "decision_correct": abstained == expected_absent}
 
 
@@ -68,13 +69,18 @@ def summarize(report):
     report["rag_scores"] = {
         **summarize_metrics([r["retrieval_scores"] for r in cases], OFFLINE),
         **summarize_metrics([r.get("quality", {}) for r in cases], LIVE),
+        **summarize_metrics([r.get("quality", {}) for r in cases], ["ragas_factual_correctness","citation_support"]),
     }
     report["evaluation_framework"] = "ragas==0.3.7"
+    report["retrieval_k"] = RETRIEVAL_K
+    report["pricing"] = {"rates_per_million":pricing(),"source":PRICING_SOURCE,"verified_on":"2026-11-27",
+                         "basis":"Paid Standard list estimate"}
     report["scores"] = {
         "answer_correctness": metric([r["correct"] for r in cases]),
         "citation_accuracy": metric([r["citation_correct"] for r in cases if r["citation_correct"] is not None]),
         "abstention_recall": metric([r["abstained"] for r in cases if r["kind"] == "unanswerable"]),
         "evidence_decisions": metric([r["decision_correct"] for r in cases]),
+        "abstention_accuracy": metric([r["decision_correct"] for r in cases]),
     }
 
 
@@ -83,13 +89,13 @@ def run(mode, output):
     key = os.environ["GOOGLE_API_KEY"]
     manifest = {d: digest((ROOT / "fixtures" / f"{d}.pdf").read_bytes())
                 for d in sorted({c["document"] for c in CASES})}
-    report = {"mode": mode, "model": MODEL, "suite_sha256": digest((ROOT / "cases.json").read_bytes()),
+    report = {"mode": mode, "model": MODEL, "protocol":"full-metrics-v1", "suite_sha256": digest((ROOT / "cases.json").read_bytes()),
               "pdf_sha256": manifest, "run_id": uuid.uuid4().hex, "cases": []}
     cache = {}
     checkpoint = output / f".{mode}-{MODEL}.partial.json"
     if checkpoint.exists():
         prior = json.loads(checkpoint.read_text(encoding="utf-8"))
-        if all(prior[k] == report[k] for k in ("mode", "model", "suite_sha256", "pdf_sha256")):
+        if all(prior.get(k) == report[k] for k in ("mode", "model", "protocol", "suite_sha256", "pdf_sha256")):
             report = prior
     finished = {r["id"] for r in report["cases"]}
     if mode == "guarded":
@@ -99,22 +105,28 @@ def run(mode, output):
             continue
         pdf = ROOT / "fixtures" / (case["document"] + ".pdf")
         trace = uuid.uuid4().hex
-        for attempt in range(4):
-            try:
-                if mode == "baseline":
-                    result = baseline.answer(pdf, case["question"], key)
-                else:
-                    if pdf not in cache:
-                        cache[pdf] = prepare_document(pdf)
-                    observed = {}
-                    result = ask(pdf, cache[pdf], case["question"], key, [], measurements=observed)
-                    result["retrieved_context_ids"] = observed.pop("retrieved_context_ids")
-                    result["quality"] = observed
-                break
-            except ProviderError as exc:
-                if str(exc) not in {"provider_http_429", "provider_http_503", "provider_unreachable"} or attempt == 3:
-                    raise
-                time.sleep(20 * (attempt + 1))
+        calls = []
+        token = CALLS.set(calls)
+        try:
+            for attempt in range(4):
+                try:
+                    if mode == "baseline":
+                        result = baseline.answer(pdf, case["question"], key)
+                    else:
+                        if pdf not in cache:
+                            cache[pdf] = prepare_document(pdf)
+                        observed = {}
+                        result = ask(pdf, cache[pdf], case["question"], key, [], measurements=observed)
+                        result["retrieved_context_ids"] = observed.pop("retrieved_context_ids")
+                        result["quality"] = observed
+                    break
+                except ProviderError as exc:
+                    if str(exc) not in {"provider_http_429", "provider_http_503", "provider_unreachable"} or attempt == 3:
+                        raise
+                    time.sleep(20 * (attempt + 1))
+        finally:
+            CALLS.reset(token)
+        result["provider_usage"] = calls
         report["cases"].append({"id": case["id"], "kind": case["kind"], "trace_id": trace,
                                 **result, **score(case, result)})
         atomic_json(checkpoint, report)
@@ -142,24 +154,40 @@ if __name__ == "__main__":
             docs = {}
             for row in report["cases"]:
                 case = by_id[row["id"]]
-                if score(case, row)["abstained"] or case["kind"] == "unanswerable":
+                if case["kind"] == "unanswerable":
                     continue
                 quality = row.setdefault("quality", {})
-                if "ragas_answer_relevancy" in quality and ("ragas_faithfulness" in quality or case["kind"] == "figure"):
+                statuses = row.setdefault("metric_status", {})
+                if score(case,row)["abstained"]:
+                    quality["ragas_factual_correctness"] = 0.0
+                    quality["citation_support"] = 0.0
+                    statuses["ragas_factual_correctness"] = "abstained_on_answerable"
+                    statuses["citation_support"] = "missing_citations"
                     continue
                 pdf = ROOT / "fixtures" / (case["document"]+".pdf")
                 if pdf not in docs:
                     docs[pdf] = prepare_document(pdf)[0]
                 retrieved = set(row.get("retrieved_context_ids", []))
                 sources = [s for s in docs[pdf] if s["id"] in retrieved]
-                statuses = row.setdefault("metric_status", {})
                 def save(name, value, status):
                     statuses[name] = status
                     if value is not None:
                         quality[name] = value
-                asyncio.run(score_answer(case["question"], row["response"], sources,
-                                         case["kind"] == "figure", os.environ["GOOGLE_API_KEY"], save,
-                                         skip=set(quality)))
+                calls = []
+                token = CALLS.set(calls)
+                try:
+                    asyncio.run(score_answer(case["question"], row["response"], sources,
+                                             case["kind"] == "figure", os.environ["GOOGLE_API_KEY"], save,
+                                             skip=set(quality), reference=case["reference_answer"]))
+                    if "citation_support" not in quality:
+                        try:
+                            quality["citation_support"] = score_citations(pdf,case["question"],row,docs[pdf],os.environ["GOOGLE_API_KEY"])
+                            statuses["citation_support"] = "complete"
+                        except ProviderError as exc:
+                            statuses["citation_support"] = str(exc)
+                finally:
+                    CALLS.reset(token)
+                row.setdefault("scoring_usage",[]).extend(calls)
                 print(mode, row["id"], statuses, flush=True)
                 atomic_json(args.output / f"{mode}.json", report)
             summarize(report)

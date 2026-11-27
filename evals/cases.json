@@ -10,7 +10,8 @@
     "page": 1,
     "reference_context_ids": [
       "P1T1"
-    ]
+    ],
+    "reference_answer": "The pilot trial was held at Cedar Quay."
   },
   {
     "id": "H2",
@@ -23,7 +24,8 @@
     "page": 1,
     "reference_context_ids": [
       "P1T1"
-    ]
+    ],
+    "reference_answer": "Inspections are scheduled every 18 days."
   },
   {
     "id": "H3",
@@ -36,7 +38,8 @@
     "page": 2,
     "reference_context_ids": [
       "P2V"
-    ]
+    ],
+    "reference_answer": "The west dock handled 42 crates."
   },
   {
     "id": "H4",
@@ -50,7 +53,8 @@
     "page": 2,
     "reference_context_ids": [
       "P2V"
-    ]
+    ],
+    "reference_answer": "East dock had the highest throughput, handling 67 crates."
   },
   {
     "id": "H5",
@@ -59,7 +63,8 @@
     "question": "How many workers unloaded the west dock crates?",
     "facts": [],
     "page": null,
-    "reference_context_ids": []
+    "reference_context_ids": [],
+    "reference_answer": "The document does not provide this information."
   },
   {
     "id": "H6",
@@ -68,7 +73,8 @@
     "question": "What was the pilot's fuel budget?",
     "facts": [],
     "page": null,
-    "reference_context_ids": []
+    "reference_context_ids": [],
+    "reference_answer": "The document does not provide this information."
   },
   {
     "id": "O1",
@@ -81,7 +87,8 @@
     "page": 1,
     "reference_context_ids": [
       "P1T1"
-    ]
+    ],
+    "reference_answer": "Mira Vale led the orchard survey."
   },
   {
     "id": "O2",
@@ -94,7 +101,8 @@
     "page": 1,
     "reference_context_ids": [
       "P1T1"
-    ]
+    ],
+    "reference_answer": "The calibration window lasts 36 hours."
   },
   {
     "id": "O3",
@@ -107,7 +115,8 @@
     "page": 2,
     "reference_context_ids": [
       "P2V"
-    ]
+    ],
+    "reference_answer": "The alder plot yield was 21 kg."
   },
   {
     "id": "O4",
@@ -121,7 +130,8 @@
     "page": 2,
     "reference_context_ids": [
       "P2V"
-    ]
+    ],
+    "reference_answer": "Maple plot had the highest yield, at 58 kg."
   },
   {
     "id": "O5",
@@ -130,7 +140,8 @@
     "question": "What fertilizer dose was applied to the maple plot?",
     "facts": [],
     "page": null,
-    "reference_context_ids": []
+    "reference_context_ids": [],
+    "reference_answer": "The document does not provide this information."
   },
   {
     "id": "O6",
@@ -139,6 +150,7 @@
     "question": "At what temperature were the amber cases stored?",
     "facts": [],
     "page": null,
-    "reference_context_ids": []
+    "reference_context_ids": [],
+    "reference_answer": "The document does not provide this information."
   }
 ]

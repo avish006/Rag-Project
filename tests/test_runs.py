@@ -83,10 +83,15 @@ class RunTests(unittest.TestCase):
             self.assertNotIn(secret, trace + str(metrics))
 
     def test_ranked_retrieval_uses_only_reference_evidence(self):
-        self.assertEqual(retrieval_scores(["irrelevant", "gold", "gold"], ["gold", "missing"]),
+        scores = retrieval_scores(["irrelevant", "gold", "gold"], ["gold", "missing"])
+        self.assertEqual({k:scores[k] for k in ("context_precision","context_recall","reciprocal_rank")},
                          {"context_precision":0.5, "context_recall":0.5, "reciprocal_rank":0.5})
+        self.assertAlmostEqual(scores["precision_at_k"],1/3)
+        self.assertEqual(scores["ranked_context_precision"],0.5)
+        self.assertAlmostEqual(scores["ndcg_at_k"],0.38685280723454163)
         self.assertIsNone(retrieval_scores(["irrelevant"], [])["context_recall"])
         self.assertEqual(retrieval_scores([], ["missing"])["context_recall"], 0)
+        self.assertEqual(retrieval_scores(["bad","bad2","bad3","gold"],["gold"])["recall_at_k"],0)
 
     @patch("rag.evidence_parts", return_value=[])
     @patch("rag.retrieve", return_value=[{"id":"P1T1","page":1,"kind":"text","text":"Budget 50"}])

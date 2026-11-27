@@ -61,11 +61,12 @@ def tokens(text):
     return re.findall(r"\w+", text.lower())
 
 
-def retrieve(question, data):
+def retrieve(question, data, *, measurements=None):
     sources, vectors = data
     # Exact cosine search. NumPy's dot product is equivalent to IndexFlatIP
     # for normalized embeddings and avoids competing OpenMP runtimes on Windows.
-    dense = np.argsort(-(vectors @ embeddings([question])[0]), kind="stable")
+    cosine = vectors @ embeddings([question])[0]
+    dense = np.argsort(-cosine, kind="stable")
     lexical = BM25Okapi([tokens(s["text"]) for s in sources]).get_scores(tokens(question))
     scores = np.zeros(len(sources))
     for rank, idx in enumerate(dense):
@@ -73,9 +74,17 @@ def retrieve(question, data):
     for rank, idx in enumerate(np.argsort(-lexical, kind="stable")):
         if lexical[idx] > 0:
             scores[idx] += 1 / (20 + rank)
-    ranked = [sources[i] for i in np.argsort(-scores, kind="stable")]
-    return ([s for s in ranked if s["kind"] == "text"][:5] +
-            [s for s in ranked if s["kind"] == "figure"][:2])
+    ranked = list(np.argsort(-scores, kind="stable"))
+    selected = ([i for i in ranked if sources[i]["kind"] == "text"][:5] +
+                [i for i in ranked if sources[i]["kind"] == "figure"][:2])
+    if measurements is not None and selected:
+        measurements.update(retrieval_cosine_mean=float(np.mean(cosine[selected])),
+                            retrieval_cosine_max=float(np.max(cosine[selected])),
+                            retrieval_score_rows=[{"rank":rank, "kind":sources[i]["kind"],
+                                                   "cosine":float(cosine[i]), "bm25":float(lexical[i]),
+                                                   "rrf":float(scores[i])}
+                                                  for rank,i in enumerate(selected,1)])
+    return [sources[i] for i in selected]
 
 
 def evidence_parts(pdf, sources):
@@ -111,7 +120,7 @@ def abstain(reason):
 def ask(pdf, data, question, key, history, *, measurements=None, evaluation=None):
     measurements = {} if measurements is None else measurements
     with stage("retrieval"):
-        sources = retrieve(question, data)
+        sources = retrieve(question, data, measurements=measurements)
     if evaluation is not None:
         evaluation["sources"] = sources
     source_ids = [s["id"] for s in sources]
