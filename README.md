@@ -4,7 +4,13 @@
 
 DocuMind combines a PDF reader with a conversational assistant. It retrieves relevant text and visual pages, generates answers with page citations, and reports insufficient evidence when the document cannot support a response. A live dashboard tracks request performance, guardrail decisions, and RAG quality as users ask questions.
 
-[Live application](https://avish006-documind.hf.space) · [Live dashboard](https://avish006-documind.hf.space/dashboard) · [Hugging Face Space](https://huggingface.co/spaces/Avish006/DocuMind) · [Evaluation methodology](evals/README.md) · [Metrics reference](docs/metrics.md)
+[Live application](https://avish006-documind.hf.space) · [Live dashboard](https://avish006-documind.hf.space/dashboard) · [Latest release](https://github.com/avish006/Rag-Project/releases/latest) · [Evaluation methodology](evals/README.md) · [Metrics reference](docs/metrics.md)
+
+## Latest release
+
+**v1.1.0 — RAG evaluations and live observability** documents the deployed metrics upgrade: 11 RAG evaluation metrics, 13 operational measurement groups, evidence guardrails, and request-level diagnostics. The reader and chat interface retain their existing layout.
+
+The November 27, 2026 release includes fresh baseline and guarded reports from the same labeled questions, sample counts for every quality average, and definitions of each metric's calculation and limitations. [Release notes](https://github.com/avish006/Rag-Project/releases/tag/v1.1.0)
 
 ## Features
 
@@ -74,13 +80,33 @@ Unknown sources, mismatched quotes, and failed evidence checks lead to an insuff
 | Dashboard charts | Chart.js |
 | Deployment | Docker on Hugging Face Spaces |
 
+## Evaluation coverage
+
+Reference-based metrics run on the labeled fixture suite. Live questions receive reference-free Ragas checks and guardrail measurements; the dashboard shows these alongside the latest published evaluation results.
+
+| RAG metric | Evaluation procedure | Availability |
+| --- | --- | --- |
+| Precision@K | Relevant sources in the first K positions divided by K; K = 3 | Labeled suite |
+| Recall@K | Gold sources retrieved within the first K positions divided by all gold sources | Labeled suite |
+| MRR | Reciprocal rank of the first relevant source, averaged across questions | Labeled suite |
+| NDCG | Binary relevance discounted by rank and normalized against the ideal ranking; K = 3 | Labeled suite |
+| Faithfulness | Ragas checks answer statements against retrieved text | Live background scoring and labeled text answers |
+| Answer relevance | Ragas reverse-question similarity with BGE embeddings | Live background scoring and delivered fixture answers |
+| Answer correctness | Gold-fact coverage and Ragas reference-based factual F1 | Labeled suite |
+| Context precision | Rank-aware average precision plus Ragas ID-based source precision | Labeled suite |
+| Context recall | Ragas ID-based coverage of the gold evidence | Labeled suite |
+| Citation accuracy | Expected page set plus an independent check of cited text or image evidence | Labeled suite; evidence verification also runs in the live guardrail |
+| Abstention accuracy | Correct answer-or-abstain decisions across all labeled questions | Labeled suite; abstention rate is measured live |
+
+Figure answers use rendered page pixels for evidence verification. Ragas text faithfulness remains unavailable for visual-only evidence. Missing or failed measurements are excluded from averages and retain their status. [Formulas, denominators and limitations](docs/metrics.md)
+
 ## Evaluation results
 
 The labeled regression suite contains **12 questions across two synthetic PDFs**, with four text questions, four figure questions, and four unanswerable questions. Chart values are present only in image pixels. Both arms use `gemini-3.5-flash-lite` with the same documents, questions, and fresh conversation history.
 
 | Metric | Baseline | Guarded |
 | --- | ---: | ---: |
-| Answer correctness | 8/12 | 12/12 |
+| Answer correctness, gold-fact coverage | 8/12 | 12/12 |
 | Citation accuracy, page and evidence | 0/8 | 8/8 |
 | Insufficient-evidence recall | 4/4 | 4/4 |
 | Abstention accuracy | 8/12 | 12/12 |
@@ -120,7 +146,7 @@ The dashboard refreshes every **five seconds** over a rolling **24-hour window**
 | Trends | Hourly traffic, latency, and RAG quality |
 | Diagnostics | Request trace IDs, stage timings, recent failures, background evaluation status |
 
-The dashboard also reports total recorded requests, requests per minute, success and error rates, mean/p50/p95/p99 latency, stage latency, abstention and guardrail trigger rates, provider tokens, cost estimates, and provider TTFT. Query traces include per-source cosine, BM25 and fused rank scores. [Definitions and formulas](docs/metrics.md)
+These measurements cover total requests, requests per minute, success rate, error rate, average latency, latency percentiles, stage latency, token consumption, cost per query, retrieval similarity, guardrail trigger rate, abstention rate, and time to first token. Query traces include per-source cosine, BM25 and fused rank scores. [Definitions and formulas](docs/metrics.md)
 
 Every upload and query returns a `trace_id` and an `X-Trace-ID` response header. Select **View trace** in chat or a failure in the dashboard to inspect its OpenTelemetry spans. Quality metrics display their measured sample counts, and traces show evaluation status.
 
@@ -131,6 +157,12 @@ Ragas scoring starts after an answer is delivered. Answer relevancy uses three g
 Background scoring typically adds three Google calls for relevancy and two for text faithfulness, with limited retries. These calls use the visitor's API key and consume its quota. One worker accepts up to eight pending or running jobs in memory. At capacity, scoring is marked skipped busy and the answer still returns. A restart marks unfinished jobs interrupted.
 
 Prometheus can scrape `/metrics` for rolling request counts, p95 latency, score means, sample counts, evaluation status, and guardrail outcomes. [Prometheus endpoint](https://avish006-documind.hf.space/metrics)
+
+## Release validation
+
+The v1.1.0 upgrade passed **12 automated regression tests** covering metric calculations, cumulative streaming usage, cost accounting, persistence, document isolation, guardrail rejection, and traceable failures. Both evaluation arms regenerated all 12 answers from the same suite and PDFs; eligible independent scoring completed after retrying rate-limited calls.
+
+A real local application request verified generation, evidence verification, provider usage, upstream TTFT, background Ragas scoring, and trace rendering. Public deployment checks verified health, uploads, dashboard refresh, the exact published reports, Prometheus export, and clickable failure traces. Successful model generation was verified locally; hosted error handling was checked with an invalid test key.
 
 ## Local development
 
@@ -199,6 +231,8 @@ docker run --rm -p 7860:7860 -v documind-data:/app/instance documind
 The named volume retains local uploads and telemetry across container replacements.
 
 The Hugging Face Space uses a Dockerfile pinned to a public commit from this repository. Generate it with the deployment helper, then commit the output as the Space's root Dockerfile.
+
+For v1.1.0, the deployed application source is pinned to [`2adb589`](https://github.com/avish006/Rag-Project/commit/2adb5890f1f314e7b5a3068ba657df1c1301529d). The release also includes the subsequent README update. [Hugging Face Space](https://huggingface.co/spaces/Avish006/DocuMind)
 
 ```bash
 python deploy/space_file.py <full-github-commit-sha>
